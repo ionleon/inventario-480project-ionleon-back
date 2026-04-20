@@ -9,8 +9,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserManager
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private UserPasswordHasherInterface $passwordHasher
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserPasswordHasherInterface $passwordHasher
     )
     {}
 
@@ -28,7 +28,10 @@ class UserManager
         return $user;
     }
 
-
+    public function update(AppUser $user): void
+    {
+        $this->entityManager->flush();
+    }
 
     public function deactivate(AppUser $user): void
     {

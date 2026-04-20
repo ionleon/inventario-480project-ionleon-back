@@ -6,6 +6,7 @@ use App\Entity\AppUser;
 use App\Repository\AppUserRepository;
 use App\Service\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
+use http\Client\Curl\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,7 +86,7 @@ final class UserController extends AbstractController
         AppUserRepository $repository,
         Request $request,
         SerializerInterface $serializer,
-        EntityManagerInterface $entityManager,
+        UserManager $userManager,
         ValidatorInterface $validator
     ): JsonResponse
     {
@@ -99,8 +100,9 @@ final class UserController extends AbstractController
             $request->getContent(),
             AppUser::class,
             'json',
-            [AbstractNormalizer::OBJECT_TO_POPULATE => $user,
-            'groups' => ['user:write']
+            [
+                AbstractNormalizer::OBJECT_TO_POPULATE => $user,
+                'groups' => ['user:write']
             ]
         );
 
@@ -109,7 +111,7 @@ final class UserController extends AbstractController
             return $this->json($errors, 400);
         }
 
-        $entityManager->flush();
+        $userManager->update($user);
 
         return $this->json($user, 200, [], ['groups' => 'user:read']);
 
@@ -146,10 +148,5 @@ final class UserController extends AbstractController
             'id' => $user->getId()
         ], 200);
     }
-
-
-
-
-
 
 }
