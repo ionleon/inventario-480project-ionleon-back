@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Entity;
+
+use App\Enum\Enviroment;
+use App\Repository\LinkRepository;
+
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
+
+#[ORM\Entity(repositoryClass: LinkRepository::class)]
+class Link
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $id = null;
+
+    #[ORM\Column(enumType: Enviroment::class)]
+    private ?Enviroment $enviroment = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $url = null;
+
+    #[ORM\ManyToOne(inversedBy: 'links')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Development $developmentId = null;
+
+    public function getId(): ?Uuid
+    {
+        return $this->id;
+    }
+
+    public function setId(Uuid $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getEnviroment(): ?Enviroment
+    {
+        return $this->enviroment;
+    }
+
+    public function setEnviroment(Enviroment $enviroment): static
+    {
+        $this->enviroment = $enviroment;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): static
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function getDevelopmentId(): ?Development
+    {
+        return $this->developmentId;
+    }
+
+    public function setDevelopmentId(?Development $developmentId): static
+    {
+        $this->developmentId = $developmentId;
+
+        return $this;
+    }
+}
