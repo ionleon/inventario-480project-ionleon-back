@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Entity\AppUser;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserManager
 {
@@ -24,5 +26,13 @@ class UserManager
         $this->entityManager->flush();
 
         return $user;
+    }
+
+
+
+    public function deactivate(AppUser $user): void
+    {
+        $user->setIsActive(false);
+        $this->entityManager->flush();
     }
 }
