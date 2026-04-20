@@ -115,6 +115,7 @@ final class UserController extends AbstractController
 
     }
 
+    #[Route('/{id}', name: 'app_user_delete', methods: ['DELETE'])]
     public function delete(Uuid $id, AppUserRepository $repository, EntityManagerInterface $em): JsonResponse
     {
         $user = $repository->find($id);
@@ -125,7 +126,7 @@ final class UserController extends AbstractController
 
         return $this->json(null, 204);
     }
-
+    #[Route('/{id}', name: 'app_user_deactivate', methods: ['PATCH'])]
     public function deactivate(
         Uuid $id,
         AppUserRepository $repository,
