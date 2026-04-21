@@ -9,3 +9,5 @@
 
 controllers:
     resource: routing.controllers
+    type: attribute
+    prefix: /480project
