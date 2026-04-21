@@ -133,7 +133,8 @@ final class UserController extends AbstractController
         Uuid $id,
         AppUserRepository $repository,
         UserManager $userManager
-    ) : JsonResponse {
+    ) : JsonResponse
+    {
 
         $user = $repository -> find($id);
 

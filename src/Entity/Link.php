@@ -25,7 +25,7 @@ class Link
 
     #[ORM\ManyToOne(inversedBy: 'links')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Development $developmentId = null;
+    private ?Development $development = null;
 
     public function getId(): ?Uuid
     {
@@ -63,14 +63,14 @@ class Link
         return $this;
     }
 
-    public function getDevelopmentId(): ?Development
+    public function getDevelopment(): ?Development
     {
-        return $this->developmentId;
+        return $this->development;
     }
 
-    public function setDevelopmentId(?Development $developmentId): static
+    public function setDevelopment(?Development $development): static
     {
-        $this->developmentId = $developmentId;
+        $this->development = $development;
 
         return $this;
     }

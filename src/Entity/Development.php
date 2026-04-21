@@ -19,11 +19,11 @@ class Development
 
     #[ORM\ManyToOne(inversedBy: 'developments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Project $projectId = null;
+    private ?Project $project = null;
 
     #[ORM\ManyToOne(inversedBy: 'developments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Technology $technologyId = null;
+    private ?Technology $technology = null;
 
     #[ORM\Column(length: 100)]
     private ?string $name = null;
@@ -57,26 +57,26 @@ class Development
         return $this;
     }
 
-    public function getProjectId(): ?Project
+    public function getProject(): ?Project
     {
-        return $this->projectId;
+        return $this->project;
     }
 
-    public function setProjectId(?Project $projectId): static
+    public function setProject(?Project $project): static
     {
-        $this->projectId = $projectId;
+        $this->project = $project;
 
         return $this;
     }
 
-    public function getTechnologyId(): ?Technology
+    public function getTechnology(): ?Technology
     {
-        return $this->technologyId;
+        return $this->technology;
     }
 
-    public function setTechnologyId(?Technology $technologyId): static
+    public function setTechnology(?Technology $technology): static
     {
-        $this->technologyId = $technologyId;
+        $this->technology = $technology;
 
         return $this;
     }
@@ -129,7 +129,7 @@ class Development
     {
         if (!$this->links->contains($link)) {
             $this->links->add($link);
-            $link->setDevelopmentId($this);
+            $link->setDevelopment($this);
         }
 
         return $this;
@@ -139,8 +139,8 @@ class Development
     {
         if ($this->links->removeElement($link)) {
             // set the owning side to null (unless already changed)
-            if ($link->getDevelopmentId() === $this) {
-                $link->setDevelopmentId(null);
+            if ($link->getDevelopment() === $this) {
+                $link->setDevelopment(null);
             }
         }
 

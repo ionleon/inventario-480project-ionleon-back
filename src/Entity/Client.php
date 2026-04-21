@@ -97,7 +97,7 @@ class Client
     {
         if (!$this->projects->contains($project)) {
             $this->projects->add($project);
-            $project->setClientId($this);
+            $project->setClient($this);
         }
 
         return $this;
@@ -107,8 +107,8 @@ class Client
     {
         if ($this->projects->removeElement($project)) {
             // set the owning side to null (unless already changed)
-            if ($project->getClientId() === $this) {
-                $project->setClientId(null);
+            if ($project->getClient() === $this) {
+                $project->setClient(null);
             }
         }
 

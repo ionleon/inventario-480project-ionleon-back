@@ -7,7 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
@@ -15,27 +18,39 @@ class Project
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
+    #[Groups(['project:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 150)]
+    #[Groups(['project:read', 'project:write'])]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['project:read', 'project:write'])]
+    #[Assert\NotBlank]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups(['project:read', 'project:write'])]
     private ?\DateTime $startDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Client $clientId = null;
+    #[Groups(['project:read', 'project:write'])]
+    private ?Client $client = null;
 
     /**
      * @var Collection<int, Development>
      */
     #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'projectId', orphanRemoval: true)]
+    #[Groups(['project:read'])]
     private Collection $developments;
+
+    #[ORM\Column]
+    #[Groups(['project:read'])]
+    private ?bool $isActive = null;
 
     public function __construct()
     {
@@ -92,14 +107,14 @@ class Project
         return $this;
     }
 
-    public function getClientId(): ?Client
+    public function getClient(): ?Client
     {
-        return $this->clientId;
+        return $this->client;
     }
 
-    public function setClientId(?Client $clientId): static
+    public function setClient(?Client $client): static
     {
-        $this->clientId = $clientId;
+        $this->client = $client;
 
         return $this;
     }
@@ -116,7 +131,7 @@ class Project
     {
         if (!$this->developments->contains($development)) {
             $this->developments->add($development);
-            $development->setProjectId($this);
+            $development->setProject($this);
         }
 
         return $this;
@@ -126,10 +141,22 @@ class Project
     {
         if ($this->developments->removeElement($development)) {
             // set the owning side to null (unless already changed)
-            if ($development->getProjectId() === $this) {
-                $development->setProjectId(null);
+            if ($development->getProject() === $this) {
+                $development->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

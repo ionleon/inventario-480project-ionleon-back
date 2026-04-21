@@ -66,7 +66,7 @@ class Technology
     {
         if (!$this->developments->contains($development)) {
             $this->developments->add($development);
-            $development->setTechnologyId($this);
+            $development->setTechnology($this);
         }
 
         return $this;
@@ -76,8 +76,8 @@ class Technology
     {
         if ($this->developments->removeElement($development)) {
             // set the owning side to null (unless already changed)
-            if ($development->getTechnologyId() === $this) {
-                $development->setTechnologyId(null);
+            if ($development->getTechnology() === $this) {
+                $development->setTechnology(null);
             }
         }
 
