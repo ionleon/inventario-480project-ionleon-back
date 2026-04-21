@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Entity\AppUser;
 use App\Repository\AppUserRepository;
 use App\Service\UserManager;
-use Doctrine\ORM\EntityManagerInterface;
-use http\Client\Curl\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +13,7 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Validator\Constraints\Json;
+
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -69,10 +67,8 @@ final class UserController extends AbstractController
             return $this->json($errors, 400);
         }
 
-        $data = json_decode($request->getContent(), true);
-        $plainPassword = $data['password'] ?? '';
 
-        $userManager->create($user, $plainPassword);
+        $userManager->create($user);
 
         return $this->json($user, 201, [], ['groups' => 'user:read']);
     }
@@ -102,7 +98,7 @@ final class UserController extends AbstractController
             'json',
             [
                 AbstractNormalizer::OBJECT_TO_POPULATE => $user,
-                'groups' => ['user:write']
+                'groups' => ['user:update']
             ]
         );
 
@@ -118,13 +114,12 @@ final class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['DELETE'])]
-    public function delete(Uuid $id, AppUserRepository $repository, EntityManagerInterface $em): JsonResponse
+    public function delete(Uuid $id, AppUserRepository $repository, UserManager $um): JsonResponse
     {
         $user = $repository->find($id);
         if (!$user) return $this->json(['error' => 'User not found'], 404);
 
-        $em->remove($user);
-        $em->flush();
+        $um->remove($user);
 
         return $this->json(null, 204);
     }

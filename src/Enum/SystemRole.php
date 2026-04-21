@@ -4,6 +4,6 @@ namespace App\Enum;
 
 enum SystemRole: string
 {
-    case ADMIN = 'ADMIN';
-    case EMPLOYEE = 'EMPLOYEE';
+    case ADMIN = 'ROLE_ADMIN';
+    case EMPLOYEE = 'ROLE_EMPLOYEE';
 }

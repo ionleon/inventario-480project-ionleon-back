@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/projects')]
 final class ProjectController extends AbstractController
 {
-    #[Route('', name: 'project_index')]
+    #[Route('', name: 'project_index', methods: ['GET'])]
     public function index(ProjectRepository $repository): JsonResponse
     {
 
@@ -125,7 +125,7 @@ final class ProjectController extends AbstractController
         return $this->json(null, 204);
     }
 
-    #[Route('/{id}', name: 'project_deactivate', methods: ['DELETE'])]
+    #[Route('/{id}', name: 'project_deactivate', methods: ['PATCH'])]
     public function deactivate(
         Uuid $id,
         ProjectRepository $repository,
@@ -142,7 +142,7 @@ final class ProjectController extends AbstractController
         $projectManager->deactivate($project);
 
         return $this->json([
-            'message' => 'User has been deactivated',
+            'message' => 'Project has been deactivated',
             'id' => $project->getId()
         ], 200);
     }

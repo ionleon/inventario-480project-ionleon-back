@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\Project;
@@ -24,7 +26,12 @@ class ProjectManager
 
     public function update(Project $project) : void
     {
+        $this->entityManager->flush();
+    }
 
+    public function remove(Project $project) : void
+    {
+        $this->entityManager->remove($project);
         $this->entityManager->flush();
     }
 
