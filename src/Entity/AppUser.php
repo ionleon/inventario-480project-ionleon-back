@@ -17,24 +17,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    //#[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['user:read'])]
+    #[Assert\Uuid]
+    #[Groups(['user:read', 'user:write'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'user:update'])]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
     private ?string $name = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'user:update'])]
     #[Assert\NotBlank]
     private ?string $surname = null;
 
     #[ORM\Column(length: 150, unique: true)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'user:update'])]
     #[Assert\NotBlank(message: "El email no puede estar vacío")]
     #[Assert\Email(message: "El formato del email no es válido")]
     private ?string $email = null;
@@ -53,7 +54,7 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $isActive = null;
 
     #[ORM\Column(type: 'string', enumType: SystemRole::class)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write' , 'user:update'])]
     #[Assert\Type(SystemRole::class)]
     private SystemRole $role = SystemRole::EMPLOYEE;
 

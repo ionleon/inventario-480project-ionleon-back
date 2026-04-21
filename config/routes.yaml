@@ -8,6 +8,9 @@
 #   bin/console debug:router
 
 controllers:
-    resource: routing.controllers
+    resource: ../src/Controller/
     type: attribute
     prefix: /480project
+
+api_login_check:
+    path: /480project/login

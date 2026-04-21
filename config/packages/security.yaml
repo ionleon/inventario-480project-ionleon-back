@@ -7,18 +7,33 @@ security:
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        app_user_provider:
+            entity:
+                class: App\Entity\AppUser
+                property: email # React enviará el email para loguearse
 
     firewalls:
         dev:
             # Ensure dev tools and static assets are always allowed
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
-        main:
-            lazy: true
-            provider: users_in_memory
         login:
-            pattern: ^/api/login
+            pattern: ^/480project/login
+            stateless: true
+            json_login:
+                check_path: /480project/login
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern: ^/480project
+            stateless: true
+            jwt: ~
+
+        #main:
+        #    lazy: true
+        #    provider: app_user_provider #El que creamos vinculado a tu Entidad users_in_memory, original
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -29,6 +44,8 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/480project/login, roles: PUBLIC_ACCESS }
+        - { path: ^/480project, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
