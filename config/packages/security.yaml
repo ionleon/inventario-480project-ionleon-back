@@ -44,8 +44,8 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/480project/login, roles: PUBLIC_ACCESS }
-        - { path: ^/480project, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/480project/login,   roles: PUBLIC_ACCESS }
+        - { path: ^/480project,         roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
