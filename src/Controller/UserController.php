@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Controller;
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
+use Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use App\Entity\AppUser;
 use App\Repository\AppUserRepository;
@@ -24,13 +27,28 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 #[Route('/users')]
+#[OA\Tag(name: 'Users')]
 final class UserController extends AbstractController
 {
     #[Route('', name: 'app_user_index', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Retorna la lista de usuarios',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: AppUser::class))
+        )
+    )]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(AppUserRepository $repository): JsonResponse
+    public function index(Request $request, AppUserRepository $repository): JsonResponse
     {
-        $users = $repository->findAll();
+        $term = $request->query->get('term');
+        $role = $request->query->get('role');
+        $isActive = $request->query->has('IsActive')
+                    ? $request->query->getBoolean('IsActive')
+                    : null;
+
+        $users = $repository->findByFilters($term, $role, $isActive);
 
         return $this->json($users, 200, [], ['groups' => 'user:read']);
     }
