@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Project
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
     #[Groups(['project:read'])]
     private ?Uuid $id = null;
@@ -45,20 +44,21 @@ class Project
      * @var Collection<int, Development>
      */
     #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'project', orphanRemoval: true)]
-    #[Groups(['project:read'])]
+    #[Groups(['project:read', 'project:write'])]
     private Collection $developments;
 
-    #[ORM\OneToMany(targetEntity: Projectuser::class, mappedBy: 'project', orphanRemoval: true)]
-    #[Groups(['project:read'])]
+    #[ORM\OneToMany(targetEntity: ProjectUser::class, mappedBy: 'project', orphanRemoval: true)]
+    #[Groups(['project:read', 'project:write'])]
     private  Collection $projectUsers;
 
     #[ORM\Column]
-    #[Groups(['project:read'])]
+    #[Groups(['project:read', 'project:write'])]
     private ?bool $isActive = null;
 
     public function __construct()
     {
         $this->developments = new ArrayCollection();
+        $this->projectUsers = new ArrayCollection();
     }
 
 
