@@ -15,9 +15,9 @@ class TimeEntry
     #[ORM\Column(type: 'uuid')]
     private ?uuid $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'date')]
+    #[ORM\ManyToOne(inversedBy: 'timeEntries')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ProjectUser $projectUserId = null;
+    private ?ProjectUser $projectUser = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $date = null;
@@ -40,14 +40,14 @@ class TimeEntry
         return $this;
     }
 
-    public function getProjectUserId(): ?ProjectUser
+    public function getProjectUser(): ?ProjectUser
     {
-        return $this->projectUserId;
+        return $this->projectUser;
     }
 
-    public function setProjectUserId(?ProjectUser $projectUserId): static
+    public function setProjectUser(?ProjectUser $projectUser): static
     {
-        $this->projectUserId = $projectUserId;
+        $this->projectUser = $projectUser;
 
         return $this;
     }
