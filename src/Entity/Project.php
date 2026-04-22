@@ -44,9 +44,13 @@ class Project
     /**
      * @var Collection<int, Development>
      */
-    #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'projectId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'project', orphanRemoval: true)]
     #[Groups(['project:read'])]
     private Collection $developments;
+
+    #[ORM\OneToMany(targetEntity: Projectuser::class, mappedBy: 'project', orphanRemoval: true)]
+    #[Groups(['project:read'])]
+    private  Collection $projectUsers;
 
     #[ORM\Column]
     #[Groups(['project:read'])]
@@ -148,6 +152,36 @@ class Project
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, ProjectUser>
+     */
+
+    /**
+     * @return Collection
+     */
+    public function getProjectUsers(): Collection
+    {
+        return $this->projectUsers;
+    }
+
+    public function addProjectUser(ProjectUser $projectUser): static
+    {
+        if (!$this->projectUsers->contains($projectUser)) {
+            $this->projectUsers->add($projectUser);
+            $projectUser->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectUser(ProjectUser $projectUser): static
+    {
+        $this->projectUsers->removeElement($projectUser);
+        return $this;
+    }
+
+
 
     public function isActive(): ?bool
     {
