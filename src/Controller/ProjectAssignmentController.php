@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/projects/{id}/users')]
-#[OA\OA\Tag(name: 'Project Assigments')]
+#[OA\Tag(name: 'Project Assigments')]
 final class ProjectAssignmentController extends AbstractController
 {
     #[Route('', name: 'project_users_index', methods: ['GET'])]
@@ -23,6 +24,7 @@ final class ProjectAssignmentController extends AbstractController
     }
 
     #[Route('', name: 'project_users_update', methods: ['PUT'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function update(
         Project $project,
         Request $request,
