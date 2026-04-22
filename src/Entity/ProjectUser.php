@@ -16,22 +16,22 @@ class ProjectUser
     #[ORM\Column(type: 'uuid')]
     private ?Uuid $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Project $project_id = null;
+    private ?Project $project = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?AppUser $AppUserId = null;
+    private ?AppUser $appUser = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ProjectRole $projectRoleId = null;
+    private ?ProjectRole $projectRole = null;
 
     /**
      * @var Collection<int, TimeEntry>
      */
-    #[ORM\OneToMany(targetEntity: TimeEntry::class, mappedBy: 'projectUserId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: TimeEntry::class, mappedBy: 'projectUser', orphanRemoval: true)]
     private Collection $timeEntries;
 
     public function __construct()
@@ -51,38 +51,38 @@ class ProjectUser
         return $this;
     }
 
-    public function getProjectId(): ?Project
+    public function getProject(): ?Project
     {
-        return $this->project_id;
+        return $this->project;
     }
 
-    public function setProjectId(Project $project_id): static
+    public function setProject(Project $project): static
     {
-        $this->project_id = $project_id;
+        $this->project = $project;
 
         return $this;
     }
 
-    public function getAppUserId(): ?AppUser
+    public function getAppUser(): ?AppUser
     {
-        return $this->AppUserId;
+        return $this->appUser;
     }
 
-    public function setAppUserId(AppUser $AppUserId): static
+    public function setAppUser(AppUser $appUser): static
     {
-        $this->AppUserId = $AppUserId;
+        $this->appUser = $appUser;
 
         return $this;
     }
 
-    public function getProjectRoleId(): ?ProjectRole
+    public function getProjectRole(): ?ProjectRole
     {
-        return $this->projectRoleId;
+        return $this->projectRole;
     }
 
-    public function setProjectRoleId(ProjectRole $projectRoleId): static
+    public function setProjectRole(ProjectRole $projectRole): static
     {
-        $this->projectRoleId = $projectRoleId;
+        $this->projectRole = $projectRole;
 
         return $this;
     }
@@ -99,7 +99,7 @@ class ProjectUser
     {
         if (!$this->timeEntries->contains($timeEntry)) {
             $this->timeEntries->add($timeEntry);
-            $timeEntry->setProjectUserId($this);
+            $timeEntry->setProjectUser($this);
         }
 
         return $this;
@@ -109,8 +109,8 @@ class ProjectUser
     {
         if ($this->timeEntries->removeElement($timeEntry)) {
             // set the owning side to null (unless already changed)
-            if ($timeEntry->getProjectUserId() === $this) {
-                $timeEntry->setProjectUserId(null);
+            if ($timeEntry->getProjectUser() === $this) {
+                $timeEntry->setProjectUser(null);
             }
         }
 
