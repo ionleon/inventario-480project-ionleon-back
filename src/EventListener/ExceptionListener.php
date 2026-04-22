@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener
 {
-        public function onKernerlException(ExceptionEvent $event): void
+        public function onKernelException(ExceptionEvent $event): void
         {
 
             $exception = $event->getThrowable();
