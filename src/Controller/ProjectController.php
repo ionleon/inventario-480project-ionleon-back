@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Controller;
-
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
 use App\Service\ProjectManager;
@@ -21,9 +22,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * */
 
 #[Route('/projects')]
+#[OA\Tag(name: 'Projects')]
 final class ProjectController extends AbstractController
 {
     #[Route('', name: 'project_index', methods: ['GET'])]
+    #[OA\Get(
+        summary: 'Listar todos los proyectos',
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Lista de proyectos obtenida correctamente',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: new Model(type: Project::class, groups: ['project:read']))
+                )
+            )
+        ]
+    )]
     public function index(ProjectRepository $repository): JsonResponse
     {
 
@@ -33,6 +48,19 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/{id}', name: 'project_detail_show', methods: ['GET'])]
+    #[OA\Get(
+        path: '/projects/{id}',
+        summary: 'Obtiene el detalle de un proyecto',
+        tags: ['Projects'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Proyecto encontrado',
+                content: new OA\JsonContent(ref: new Model(type: Project::class, groups: ['project:read']))
+            ),
+            new OA\Response(response: 404, description: 'Proyecto no encontrado')
+        ]
+    )]
     public function show(Uuid $id, ProjectRepository $repository): JsonResponse
     {
         $project = $repository -> find($id);

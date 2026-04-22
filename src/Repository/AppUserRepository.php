@@ -16,6 +16,42 @@ class AppUserRepository extends ServiceEntityRepository
         parent::__construct($registry, AppUser::class);
     }
 
+    public function findByFilters(?string $term, ?string $role, ?bool $isActive)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        if($term) {
+            $qb->andWhere('u.name LIKE :term OR u.surname LIKE :term OR u.email LIKE :term')
+                ->setParameter('term', '%' . $term . '%');
+        }
+
+        if($role) {
+            $qb->andWhere('u.roles LIKE :role')
+                ->setParameter('role', '%'. $role .'%');
+        }
+
+        if($isActive !== null) {
+            $qb->andWhere('u.isActive = :isActive')
+                ->setParameter('isActive', '%'. $isActive .'%');
+        }
+
+        $qb->orderBy('u.surname' . 'ASC')
+            ->addOrderBy('u.name' . 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findUserByProject(string $projectId): array
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('App\Entity\ProjectUser', 'pu', 'WITH', 'pu..appUser = u')
+            ->innerJoin('pu.project', 'p')
+            ->andWhere('p.id = :projectId')
+            ->setParameter('projectId', $projectId)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return AppUser[] Returns an array of AppUser objects
     //     */
