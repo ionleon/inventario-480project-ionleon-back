@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\ProjectUser;
+use App\Service\ProjectAssignmentManager;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,6 +26,12 @@ final class ProjectAssignmentController extends AbstractController
     public function update(
         Project $project,
         Request $request,
-        ProjectAssigmentManager $assigmentManager
-    ): JsonRespose{}
+        ProjectAssignmentManager $assignmentManager
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        $assignmentManager->syncProjectUsers($project, $data['users'] ?? []);
+
+        return $this->json($project->getProjectUsers(), 200, [], ['groups' => 'project:read']);
+    }
 }
