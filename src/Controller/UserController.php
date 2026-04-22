@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -26,6 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class UserController extends AbstractController
 {
     #[Route('', name: 'app_user_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(AppUserRepository $repository): JsonResponse
     {
         $users = $repository->findAll();
@@ -33,6 +35,7 @@ final class UserController extends AbstractController
         return $this->json($users, 200, [], ['groups' => 'user:read']);
     }
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
+
     public function show(Uuid  $id, AppUserRepository $repository): JsonResponse
     {
         $user = $repository -> find($id);
@@ -48,6 +51,7 @@ final class UserController extends AbstractController
      * @throws ExceptionInterface
      */
     #[Route('',name: 'app_user_create', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function create(
         Request $request,
         SerializerInterface $serializer,
@@ -77,6 +81,7 @@ final class UserController extends AbstractController
      * @throws ExceptionInterface
      */
     #[Route('/{id}', name: 'app_user_edit', methods: ['PUT'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(
         Uuid  $id,
         AppUserRepository $repository,
@@ -114,6 +119,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Uuid $id, AppUserRepository $repository, UserManager $um): JsonResponse
     {
         $user = $repository->find($id);
@@ -124,6 +130,7 @@ final class UserController extends AbstractController
         return $this->json(null, 204);
     }
     #[Route('/{id}', name: 'app_user_deactivate', methods: ['PATCH'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function deactivate(
         Uuid $id,
         AppUserRepository $repository,
