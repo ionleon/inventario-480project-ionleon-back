@@ -32,7 +32,7 @@ class AppUserRepository extends ServiceEntityRepository
 
         if($isActive !== null) {
             $qb->andWhere('u.isActive = :isActive')
-                ->setParameter('isActive', '%'. $isActive .'%');
+                ->setParameter('isActive', $isActive);
         }
 
         $qb->orderBy('u.surname' , 'ASC')
