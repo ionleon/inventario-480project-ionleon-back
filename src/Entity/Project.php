@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,7 +18,7 @@ class Project
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['project:read'])]
+    #[Groups(['project:read', 'project:write'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 150)]
@@ -38,6 +39,7 @@ class Project
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['project:read', 'project:write'])]
+    #[SerializedName('client_id')]
     private ?Client $client = null;
 
     /**
