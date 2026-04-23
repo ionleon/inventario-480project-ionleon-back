@@ -33,7 +33,7 @@ final class UserController extends AbstractController
     #[Route('', name: 'app_user_index', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: 'Retorna la lista de usuarios',
+        description: 'Devuelve la lista de usuarios',
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(ref: new Model(type: AppUser::class))

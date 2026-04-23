@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use App\Entity\Project;
@@ -25,6 +26,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[OA\Tag(name: 'Projects')]
 final class ProjectController extends AbstractController
 {
+
+
     #[Route('', name: 'project_index', methods: ['GET'])]
     #[OA\Get(
         summary: 'Listar todos los proyectos',
@@ -74,30 +77,31 @@ final class ProjectController extends AbstractController
 
     /**
      * @throws ExceptionInterface
+     * @throws Exception
      */
     #[Route('',name: 'project_create', methods: ['POST'])]
     public function create(
         Request $request,
         SerializerInterface $serializer,
-        ProjectManager $projectManager,
-        ValidatorInterface $validator
+        ProjectManager $projectManager
     ):JsonResponse
     {
-        $project = $serializer->deserialize(
-          $request->getContent(),
-          Project::class,
-          'json',
-          ['groups' => ['project:write']]
-        );
+        try {
+            $project = $serializer->deserialize($request->getContent(), Project::class, 'json', [
+                'groups' => ['project:write'],
+            ]);
 
-        $errors = $validator->validate($project);
-        if(count($errors) > 0) {
-            return $this->json($errors, 400);
+            $data = json_decode($request->getContent(), true);
+
+            $projectManager->create($project, $data['client_id'] ?? null);
+
+            return $this->json($project, 201, [], ['groups' => 'project:read']);
+        } catch(\Exception $e) {
+            return $this->json(
+                ['error' => $e->getMessage()],
+                $e->getCode() ?: 500
+            );
         }
-
-        $projectManager->create($project);
-
-        return $this->json($project, 201, [], ['groups' => 'project:read']);
 
     }
 

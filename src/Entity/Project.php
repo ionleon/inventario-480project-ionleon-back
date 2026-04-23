@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,9 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Project
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['project:read'])]
+    #[Groups(['project:read', 'project:write'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 150)]
@@ -39,22 +39,28 @@ class Project
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['project:read', 'project:write'])]
+    #[SerializedName('client_id')]
     private ?Client $client = null;
 
     /**
      * @var Collection<int, Development>
      */
-    #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'projectId', orphanRemoval: true)]
-    #[Groups(['project:read'])]
+    #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'project', orphanRemoval: true)]
+    #[Groups(['project:read', 'project:write'])]
     private Collection $developments;
 
+    #[ORM\OneToMany(targetEntity: ProjectUser::class, mappedBy: 'project', orphanRemoval: true)]
+    #[Groups(['project:read', 'project:write'])]
+    private  Collection $projectUsers;
+
     #[ORM\Column]
-    #[Groups(['project:read'])]
+    #[Groups(['project:read', 'project:write'])]
     private ?bool $isActive = null;
 
     public function __construct()
     {
         $this->developments = new ArrayCollection();
+        $this->projectUsers = new ArrayCollection();
     }
 
 
@@ -148,6 +154,36 @@ class Project
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, ProjectUser>
+     */
+
+    /**
+     * @return Collection
+     */
+    public function getProjectUsers(): Collection
+    {
+        return $this->projectUsers;
+    }
+
+    public function addProjectUser(ProjectUser $projectUser): static
+    {
+        if (!$this->projectUsers->contains($projectUser)) {
+            $this->projectUsers->add($projectUser);
+            $projectUser->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectUser(ProjectUser $projectUser): static
+    {
+        $this->projectUsers->removeElement($projectUser);
+        return $this;
+    }
+
+
 
     public function isActive(): ?bool
     {

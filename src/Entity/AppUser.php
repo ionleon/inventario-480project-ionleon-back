@@ -20,22 +20,22 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
     //#[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
     #[Assert\Uuid]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'project:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['user:read', 'user:write', 'user:update'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'project:read'])]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
     private ?string $name = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['user:read', 'user:write', 'user:update'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'project:read'])]
     #[Assert\NotBlank]
     private ?string $surname = null;
 
     #[ORM\Column(length: 150, unique: true)]
-    #[Groups(['user:read', 'user:write', 'user:update'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'project:read'])]
     #[Assert\NotBlank(message: "El email no puede estar vacío")]
     #[Assert\Email(message: "El formato del email no es válido")]
     private ?string $email = null;
@@ -50,7 +50,7 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $firstTime = null;
 
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'project:read'])]
     private ?bool $isActive = null;
 
     #[ORM\Column(type: 'string', enumType: SystemRole::class)]
