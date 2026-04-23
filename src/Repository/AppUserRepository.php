@@ -41,6 +41,7 @@ class AppUserRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    #Revisar esto para mas adelante
     public function findUserByProject(string $projectId): array
     {
         return $this->createQueryBuilder('u')
