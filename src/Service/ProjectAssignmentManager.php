@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\AppUser;
 use App\Entity\Project;
 use App\Entity\ProjectUser;
 use App\Repository\AppUserRepository;
@@ -92,6 +93,30 @@ class ProjectAssignmentManager
             $this->em->flush();
 
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function removeAssignment(Project $project, string $userId): void
+    {
+        $user = $this->userRepository->find($userId);
+
+        if (!$user ) {
+            throw new Exception('User not found', 404);
+        }
+
+        $assignment = $this->puRepository->findOneBy([
+           'project' => $project,
+           'appUser' => $user
+        ]);
+
+        if ($assignment) {
+            $this->em->remove($assignment);
+            $this->em->flush();
+        }
+
+
     }
 
 

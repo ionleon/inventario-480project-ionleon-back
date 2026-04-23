@@ -111,27 +111,15 @@ final class ProjectAssignmentController extends AbstractController
     public function removeUser(
         Project $project,
         Uuid $userId,
-        ProjectUserRepository $puRepository,
-        AppUserRepository $userRepository,
-        EntityManagerInterface $em
+        ProjectAssignmentManager $assignmentManager
     ): JsonResponse
     {
-        $user = $userRepository->find($userId);
 
-        if(!$user) {
-            return $this->json(['error' => 'User not found'], 404);
+        try {
+            $assignmentManager->removeAssignment($project,$userId);
+            return $this->json(null, 204);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
         }
-
-        $assignment = $puRepository->findOneBy([
-            'project' => $project,
-            'appUser' => $user
-        ]);
-
-        if ($assignment) {
-            $em->remove($assignment);
-            $em->flush();
-        }
-
-        return $this->json(null, 204);
     }
 }
