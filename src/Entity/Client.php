@@ -22,14 +22,16 @@ class Client
     #[Groups(['client:read', 'project:read'])]
     private ?string $name = null;
 
+    #[ORM\Column]
+    #[Groups(['client:read'])]
+    private ?bool $isActive = null;
+
     #[ORM\ManyToOne(inversedBy: 'clients')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['client:read'])]
     private ?Sector $sector = null;
 
-    #[ORM\Column]
-    #[Groups(['client:read'])]
-    private ?bool $isActive = null;
+
 
     /**
      * @var Collection<int, Project>
