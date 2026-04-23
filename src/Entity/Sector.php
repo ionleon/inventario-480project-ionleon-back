@@ -6,6 +6,7 @@ use App\Repository\SectorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: SectorRepository::class)]
@@ -13,10 +14,12 @@ class Sector
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'uuid')]
+    #[Groups(['client:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['sector:read', 'sector:write', 'client:read'])]
     private ?string $name = null;
 
     /**
