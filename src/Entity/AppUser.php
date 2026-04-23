@@ -35,7 +35,7 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $surname = null;
 
     #[ORM\Column(length: 150, unique: true)]
-    #[Groups(['user:read', 'user:write', 'user:update'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'project:read'])]
     #[Assert\NotBlank(message: "El email no puede estar vacío")]
     #[Assert\Email(message: "El formato del email no es válido")]
     private ?string $email = null;

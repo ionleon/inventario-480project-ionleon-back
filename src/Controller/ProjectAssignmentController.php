@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\ProjectUser;
+use App\Repository\AppUserRepository;
 use App\Repository\ProjectUserRepository;
 use App\Service\ProjectAssignmentManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -68,7 +69,11 @@ final class ProjectAssignmentController extends AbstractController
             $assignment = $assignmentManager->assignUser($project, $userId, $roleId);
             return $this->json($assignment, 201, [], ['groups' => 'project:read']);
         } catch (\Exception $e) {
-            return $this->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
+            $code = $e->getCode();
+            if (!is_int($code) || $code < 100 || $code >= 600) {
+                $code = 500;
+            }
+            return $this->json(['error' => $e->getMessage()], $code);
         }
 
     }
@@ -107,12 +112,19 @@ final class ProjectAssignmentController extends AbstractController
         Project $project,
         Uuid $userId,
         ProjectUserRepository $puRepository,
+        AppUserRepository $userRepository,
         EntityManagerInterface $em
     ): JsonResponse
     {
+        $user = $userRepository->find($userId);
+
+        if(!$user) {
+            return $this->json(['error' => 'User not found'], 404);
+        }
+
         $assignment = $puRepository->findOneBy([
             'project' => $project,
-            'appUser' => $userId
+            'appUser' => $user
         ]);
 
         if ($assignment) {

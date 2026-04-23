@@ -8,6 +8,7 @@ use App\Repository\AppUserRepository;
 use App\Repository\ProjectRoleRepository;
 use App\Repository\ProjectUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 class ProjectAssignmentManager
 {
@@ -19,25 +20,31 @@ class ProjectAssignmentManager
      ) {}
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function assignUser(Project $project, string $userId, string $roleId): ProjectUser
     {
+        try {
+            $user = $this->userRepository->find($userId);
+            $role = $this->roleRepository->find($roleId);
+        } catch(\Exception $e) {
+            throw new \Exception("Invalid UUID format provided", 400, $e->getMessage());
+        }
+
+        if (!$user || !$role) {
+            throw new Exception('User or Role not found', 404);
+        }
+
+
         $exists = $this->puRepository->findOneBy([
            'project' => $project,
            'appUser' => $userId
         ]);
 
         if ($exists) {
-            throw new \Exception('user is already assigned', 409);
+            throw new Exception('user is already assigned', 409);
         }
 
-        $user = $this->userRepository->find($userId);
-        $role = $this->roleRepository->find($roleId);
-
-        if (!$user || !$role) {
-            throw new \Exception('user or Role not found', 404);
-        }
 
         $assignment = new ProjectUser();
         $assignment->setProject($project);

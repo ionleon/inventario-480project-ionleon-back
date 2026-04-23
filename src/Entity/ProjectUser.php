@@ -6,14 +6,17 @@ use App\Repository\ProjectUserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ProjectUserRepository::class)]
 class ProjectUser
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups('project:read')]
     private ?Uuid $id = null;
 
     #[ORM\ManyToOne(cascade: ['persist'])]
@@ -22,10 +25,12 @@ class ProjectUser
 
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('project:read')]
     private ?AppUser $appUser = null;
 
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('project:read')]
     private ?ProjectRole $projectRole = null;
 
     /**

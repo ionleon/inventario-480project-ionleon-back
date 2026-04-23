@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProjectRoleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ProjectRoleRepository::class)]
@@ -16,6 +17,7 @@ class ProjectRole
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups('project:read')]
     private ?string $name = null;
 
 
