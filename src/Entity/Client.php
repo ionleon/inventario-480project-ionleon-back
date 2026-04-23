@@ -15,18 +15,20 @@ class Client
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['project:read', 'project:write'])]
+    #[Groups(['client:read', 'project:read', 'project:write'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 120)]
+    #[Groups(['client:read', 'project:read'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
     #[ORM\JoinColumn(nullable: false)]
-
-    private ?Sector $sectorId = null;
+    #[Groups(['client:read'])]
+    private ?Sector $sector = null;
 
     #[ORM\Column]
+    #[Groups(['client:read'])]
     private ?bool $isActive = null;
 
     /**
@@ -64,14 +66,14 @@ class Client
         return $this;
     }
 
-    public function getSectorId(): ?Sector
+    public function getSector(): ?Sector
     {
-        return $this->sectorId;
+        return $this->sector;
     }
 
-    public function setSectorId(?Sector $sectorId): static
+    public function setSector(?Sector $sector): static
     {
-        $this->sectorId = $sectorId;
+        $this->sector = $sector;
 
         return $this;
     }
