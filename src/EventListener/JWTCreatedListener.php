@@ -15,10 +15,15 @@ class JWTCreatedListener
 
     public function onJWTCreated(JWTCreatedEvent $event): void
     {
+        #Cambiar fecha de caducidad más adelante
+        $expiration = new \DateTime('+1 day');
+        $expiration->setTime(3,0,0);
+
         /** @var AppUser $user */
         $user = $event->getUser();
 
         $payload = $event->getData();
+        $payload['exp'] = $expiration->getTimestamp();
 
         $payload['id'] = $user->getId();
         $payload['name'] = $user->getName();
