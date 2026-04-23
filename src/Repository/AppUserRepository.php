@@ -26,7 +26,7 @@ class AppUserRepository extends ServiceEntityRepository
         }
 
         if($role) {
-            $qb->andWhere('u.roles LIKE :role')
+            $qb->andWhere('u.role LIKE :role')
                 ->setParameter('role', '%'. $role .'%');
         }
 
