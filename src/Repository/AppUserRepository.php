@@ -26,13 +26,13 @@ class AppUserRepository extends ServiceEntityRepository
         }
 
         if($role) {
-            $qb->andWhere('u.roles LIKE :role')
+            $qb->andWhere('u.role LIKE :role')
                 ->setParameter('role', '%'. $role .'%');
         }
 
         if($isActive !== null) {
             $qb->andWhere('u.isActive = :isActive')
-                ->setParameter('isActive', '%'. $isActive .'%');
+                ->setParameter('isActive', $isActive);
         }
 
         $qb->orderBy('u.surname' , 'ASC')
@@ -41,10 +41,11 @@ class AppUserRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    #Revisar esto para mas adelante
     public function findUserByProject(string $projectId): array
     {
         return $this->createQueryBuilder('u')
-            ->innerJoin('App\Entity\ProjectUser', 'pu', 'WITH', 'pu.appUser = u')
+            ->innerJoin('App\Entity\ProjectUser', 'pu', 'ON', 'pu.appUser = u')
             ->innerJoin('pu.project', 'p')
             ->andWhere('p.id = :projectId')
             ->setParameter('projectId', $projectId)

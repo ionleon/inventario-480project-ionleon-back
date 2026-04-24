@@ -44,8 +44,8 @@ final class UserController extends AbstractController
     {
         $term = $request->query->get('term');
         $role = $request->query->get('role');
-        $isActive = $request->query->has('IsActive')
-                    ? $request->query->getBoolean('IsActive')
+        $isActive = $request->query->has('isActive')
+                    ? $request->query->getBoolean('isActive')
                     : null;
 
         $users = $repository->findByFilters($term, $role, $isActive);

@@ -6,6 +6,7 @@ use App\Repository\SectorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: SectorRepository::class)]
@@ -13,16 +14,18 @@ class Sector
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'uuid')]
+    #[Groups(['client:read'])]
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['sector:read', 'sector:write', 'client:read'])]
     private ?string $name = null;
 
     /**
      * @var Collection<int, Client>
      */
-    #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'sectorId')]
+    #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'sector')]
     private Collection $clients;
 
     public function __construct()
@@ -30,7 +33,7 @@ class Sector
         $this->clients = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -66,7 +69,7 @@ class Sector
     {
         if (!$this->clients->contains($client)) {
             $this->clients->add($client);
-            $client->setSectorId($this);
+            $client->setSector($this);
         }
 
         return $this;
@@ -76,8 +79,8 @@ class Sector
     {
         if ($this->clients->removeElement($client)) {
             // set the owning side to null (unless already changed)
-            if ($client->getSectorId() === $this) {
-                $client->setSectorId(null);
+            if ($client->getSector() === $this) {
+                $client->setSector(null);
             }
         }
 
