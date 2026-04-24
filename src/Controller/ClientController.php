@@ -9,7 +9,7 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
@@ -36,6 +36,23 @@ final class ClientController extends AbstractController
         $clients = $clientRepository->findWithSectorsByFilters($term, $isActive);
 
         return $this->json($clients, 200, [], ['groups' => ['client:read']]);
+    }
+
+    #[Route('/{id}', name:'client_show', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function show(Client $client): JsonResponse
+    {
+
+        return $this->json($client, 200, [], ['groups' => ['client:read']]);
+    }
+
+    #[Route('/{id}/contacts', name:'client_show_contacts', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function showContacts(Client $client): JsonResponse
+    {
+        $contacts = $client->getContacts();
+
+        return $this->json($contacts, 200, [], ['groups' => ['contact:read']]);
     }
 
     #[Route('', name: 'create_client', methods: ['POST'])]
@@ -80,19 +97,7 @@ final class ClientController extends AbstractController
         return $this->json(null, 204);
     }
 
-    #[Route('/{id}', name:'client_show', methods: ['PATCH'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function show(Uuid $clientId, ClientRepository $clientRepository): JsonResponse
-    {
-        $client = $clientRepository->find($clientId);
 
-        if(!$client) {
-            return $this->json(['error' => 'Client not found'], 404);
-        }
-
-
-        return $this->json($client, 200, [], ['groups' => ['client:read']]);
-    }
 
 
 }
