@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
@@ -12,24 +13,32 @@ class Contact
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
+    #[Groups('client:read')]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('client:read')]
     private ?string $fullName = null;
 
     #[ORM\Column(length: 30)]
+    #[Groups('client:read')]
     private ?string $phoneNumber = null;
 
+
     #[ORM\Column(length: 255)]
+    #[Groups('client:read')]
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Groups('client:read')]
     private ?bool $isActive = null;
 
     #[ORM\Column]
+    #[Groups('client:read')]
     private ?bool $isMain = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups('client:read')]
     private ?string $note = null;
 
     #[ORM\ManyToOne(inversedBy: 'contacts')]

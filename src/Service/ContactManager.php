@@ -53,8 +53,6 @@ class ContactManager
             throw new NotFoundHttpException('Cliente no encontrado.');
         }
 
-
-
         $contact = new Contact();
 
         try {
@@ -70,8 +68,27 @@ class ContactManager
 
     public function save(Contact $contact, array $data): Contact
     {
-        $totalContacts = $this->contactRepository->countContactsForClient($contact->getClient());
+        if (isset($data['fullName'])) {
+            $contact->setFullName($data['fullName']);
+        }
 
+        if (isset($data['email'])) {
+            $contact->setEmail($data['email']);
+        }
+
+        if (isset($data['phoneNumber'])) {
+            $contact->setPhoneNumber($data['phoneNumber']);
+        }
+
+        if (isset($data['note'])) {
+            $contact->setNote($data['note']);
+        }
+
+        if (isset($data['isActive'])) {
+            $contact->setIsActive((bool)$data['isActive']);
+        }
+
+        $totalContacts = $this->contactRepository->countContactsForClient($contact->getClient());
         $wantsToBeMain = $data['isMain'] ?? $contact->isMain();
 
         if ($totalContacts === 0) {
@@ -106,7 +123,7 @@ class ContactManager
         $totalContacts = $this->contactRepository->countContactsForClient($contact->getClient());
 
         if ($totalContacts <= 1) {
-            return;
+            throw new \LogicException('Cannot delete contact: clients must have at least one contact.');
         }
 
         $this->em->remove($contact);

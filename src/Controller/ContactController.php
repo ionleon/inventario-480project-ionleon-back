@@ -31,7 +31,7 @@ final class ContactController extends AbstractController
             $contacts = $this->contactRepository->findAll();
         }
 
-        return $this->json($contacts, 200, [], ['groups' => 'contact:read']);
+        return $this->json($contacts, 200, [], ['groups' => 'client:read']);
     }
 
     #[Route('', name: 'create_contact', methods: ['POST'])]
@@ -62,8 +62,14 @@ final class ContactController extends AbstractController
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Contact $contact): JsonResponse
     {
-        $this->contactManager->delete($contact);
-        // Devolvemos 204 aunque el borrado haya sido ignorado por ser el último (según tu lógica)
-        return $this->json(null, 204);
+        try {
+            $this->contactManager->delete($contact);
+            return $this->json(null, 204);
+        } catch (\LogicException $e) {
+            return $this->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 }
