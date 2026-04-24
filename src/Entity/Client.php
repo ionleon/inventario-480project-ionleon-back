@@ -13,7 +13,6 @@ use Symfony\Component\Uid\Uuid;
 class Client
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
     #[Groups(['client:read', 'client:write', 'project:read', 'project:write'])]
     private ?Uuid $id = null;
@@ -40,8 +39,12 @@ class Client
     #[Groups('client:write')]
     private Collection $projects;
 
-    public function __construct()
+    public function __construct(Uuid $id, string $name, Sector $sector)
     {
+        $this->id = $id;
+        $this->name = $name;
+        $this->sector = $sector;
+        $this->isActive = true;
         $this->projects = new ArrayCollection();
     }
 
