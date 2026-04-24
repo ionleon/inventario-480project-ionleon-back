@@ -15,20 +15,20 @@ class Client
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['client:read', 'project:read', 'project:write'])]
+    #[Groups(['client:read', 'client:write', 'project:read', 'project:write'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 120)]
-    #[Groups(['client:read', 'project:read'])]
+    #[Groups(['client:read', 'client:write', 'project:read'])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(['client:read'])]
+    #[Groups(['client:read', 'client:write'])]
     private ?bool $isActive = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['client:read'])]
+    #[Groups(['client:read', 'client:write'])]
     private ?Sector $sector = null;
 
 
@@ -37,6 +37,7 @@ class Client
      * @var Collection<int, Project>
      */
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'clientId')]
+    #[Groups('client:write')]
     private Collection $projects;
 
     public function __construct()
