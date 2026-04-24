@@ -6,6 +6,7 @@ use App\Entity\Client;
 use App\Repository\SectorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Uid\Uuid;
 
 class ClientManager
 {
@@ -16,18 +17,32 @@ class ClientManager
 
     public function create(array $data): Client
     {
-        $client = new Client();
+        if (!isset($data['name'], $data['sector_id'])) {
+            throw new \InvalidArgumentException('Name and Sector are mandatory for new clients');
+        }
+
+        $id = Uuid::fromString($data['id']);
+        $sector = $this->sectorRepository->find($data['sector_id']);
+
+        $client = new Client(
+            $id,
+            $data['name'],
+            $sector
+        );
+
         return $this->update($client, $data);
     }
 
     public function update(Client $client, array $data): Client
     {
+
+
         if (isset($data['name'])) {
-            $client->setName($data['name'] ?? $client->getName());
+            $client->setName($data['name']);
         }
 
         if (isset($data['isActive'])) {
-            $client->setIsActive($data['isActive'] ?? $client->isActive() ?? true);
+            $client->setIsActive((bool)$data['isActive']);
         }
 
         if (isset($data['sector_id'])) {
@@ -36,8 +51,10 @@ class ClientManager
                 throw new NotFoundHttpException('Sector not found');
             }
             $client->setSector($sector);
-        } elseif (!$client->getSector()) {
-            throw new \InvalidArgumentException('sector_id is required');
+        }
+
+        if (null === $client->getSector()) {
+            throw new \LogicException('A client must have a sector');
         }
 
         $this->em->persist($client);

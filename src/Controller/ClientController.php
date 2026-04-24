@@ -45,25 +45,25 @@ final class ClientController extends AbstractController
 
         try {
             $client = $this->clientManager->create($data);
-            return $this->json(null, 201);
+            return $this->json([], 201);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
         }
     }
 
-    #[Route('{id}', name:'client_update', methods: ['PUT'])]
+    #[Route('/{id}', name:'client_update', methods: ['PUT'])]
     #[IsGranted('ROLE_ADMIN')]
     public function update(Client $client, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $this->clientManager->update($client, $data);
 
-        return $this->json(null, 201, [], ['groups' => ['client:read']]);
+        return $this->json([], 201, [], ['groups' => ['client:read']]);
     }
 
 
 
-    #[Route('{id}', name:'client_delete', methods: ['DELETE'])]
+    #[Route('/{id}', name:'client_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Client $client): JsonResponse
     {
@@ -71,7 +71,7 @@ final class ClientController extends AbstractController
         return $this->json(null, 204);
     }
 
-    #[Route('{id}', name:'client_deactivate', methods: ['PATCH'])]
+    #[Route('/{id}', name:'client_deactivate', methods: ['PATCH'])]
     #[IsGranted('ROLE_ADMIN')]
     public function deactivate(Client $client): JsonResponse
     {
