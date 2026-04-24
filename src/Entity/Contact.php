@@ -15,7 +15,7 @@ class Contact
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $full_name = null;
+    private ?string $fullName = null;
 
     #[ORM\Column(length: 30)]
     private ?string $phoneNumber = null;
@@ -50,12 +50,12 @@ class Contact
 
     public function getFullName(): ?string
     {
-        return $this->full_name;
+        return $this->fullName;
     }
 
-    public function setFullName(string $full_name): static
+    public function setFullName(string $fullName): static
     {
-        $this->full_name = $full_name;
+        $this->fullName = $fullName;
 
         return $this;
     }
