@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Client;
 use App\Entity\Contact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,6 +15,35 @@ class ContactRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Contact::class);
+    }
+
+    public function resetMainContactsForClient(Client $client, ?Contact $excludeContact = null): void
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->update()
+            ->set('c.isMain', ':false')
+            ->where('c.client = :client')
+            ->andWhere('c.isMain = :true')
+            ->setParameter('false', false)
+            ->setParameter('true', true)
+            ->setParameter('client', $client);
+
+        if ($excludeContact && $excludeContact->getId()) {
+            $qb->andWhere('c.id != :excludeId')
+                ->setParameter('excludeId', $excludeContact->getId());
+        }
+
+        $qb->getQuery()->execute();
+    }
+
+    public function countContactsForClient(Client $client): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->where('c.client = :client')
+            ->setParameter('client', $client)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     //    /**
