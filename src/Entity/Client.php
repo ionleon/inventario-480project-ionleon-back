@@ -43,6 +43,7 @@ class Client
      * @var Collection<int, Contact>
      */
     #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'client', orphanRemoval: true)]
+    #[Groups('contact:read')]
     private Collection $contacts;
 
     public function __construct(Uuid $id, string $name, Sector $sector)
