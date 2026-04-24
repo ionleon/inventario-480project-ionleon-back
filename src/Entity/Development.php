@@ -37,7 +37,7 @@ class Development
     /**
      * @var Collection<int, Link>
      */
-    #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'developmentId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'development', orphanRemoval: true)]
     private Collection $links;
 
     public function __construct()
