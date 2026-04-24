@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
 
 
 #[Route('/clients', name: 'app_client')]
@@ -77,6 +78,20 @@ final class ClientController extends AbstractController
     {
         $this->clientManager->deactivate($client);
         return $this->json(null, 204);
+    }
+
+    #[Route('/{id}', name:'client_show', methods: ['PATCH'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function show(Uuid $clientId, ClientRepository $clientRepository): JsonResponse
+    {
+        $client = $clientRepository->find($clientId);
+
+        if(!$client) {
+            return $this->json(['error' => 'Client not found'], 404);
+        }
+
+
+        return $this->json($client, 200, [], ['groups' => ['client:read']]);
     }
 
 
