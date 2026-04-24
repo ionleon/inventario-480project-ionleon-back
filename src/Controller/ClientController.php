@@ -21,8 +21,7 @@ final class ClientController extends AbstractController
 
 
     public function __construct(private readonly ClientManager $clientManager)
-    {
-    }
+    {}
 
     #[Route('', name: 'client_index', methods:['GET'])]
     #[IsGranted('ROLE_ADMIN')]
@@ -46,7 +45,7 @@ final class ClientController extends AbstractController
 
         try {
             $client = $this->clientManager->create($data);
-            return $this->json($client, 201, [], ['group' => ['client:read']]);
+            return $this->json(null, 201);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
         }
@@ -59,7 +58,7 @@ final class ClientController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $this->clientManager->update($client, $data);
 
-        return $this->json($client, 200, [], ['groups' => ['client:read']]);
+        return $this->json(null, 201, [], ['groups' => ['client:read']]);
     }
 
 
