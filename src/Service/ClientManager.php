@@ -14,13 +14,13 @@ class ClientManager
         private SectorRepository $sectorRepository
     ) {}
 
-    public function createClient(array $data): Client
+    public function create(array $data): Client
     {
         $client = new Client();
-        return $this->updateClient($client, $data);
+        return $this->update($client, $data);
     }
 
-    public function updateClient(Client $client, array $data): Client
+    public function update(Client $client, array $data): Client
     {
         if (isset($data['name'])) {
             $client->setName($data['name'] ?? $client->getName());
@@ -46,9 +46,15 @@ class ClientManager
         return $client;
     }
 
-    public function deleteClient(Client $client): void
+    public function delete(Client $client): void
     {
         $this->em->remove($client);
+        $this->em->flush();
+    }
+
+    public function deactivate(Client $client): void
+    {
+        $client->setIsActive(false);
         $this->em->flush();
     }
 }
