@@ -47,11 +47,11 @@ final class LinkController extends AbstractController
     }
 
     #[Route('/{id}',name: 'link_update', methods:['PUT'])]
-    public function update(Request $request): JsonResponse
+    public function update(Link $link,Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         try {
-            $this->manager->update($data);
+            $this->manager->save($link, $data);
             return $this->json([], 201, [], []);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
