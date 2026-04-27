@@ -13,8 +13,9 @@ use Symfony\Component\Uid\Uuid;
 class Sector
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     #[Groups(['client:read'])]
     private ?Uuid $id = null;
 
