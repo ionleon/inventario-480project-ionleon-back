@@ -16,7 +16,7 @@ final class ProjectRoleController extends AbstractController
 {
 
     public function __construct(
-        private ProjectRoleManagerManager $manager,
+        private ProjectRoleManager $manager,
         private ProjectRoleRepository $repository
     )
     {}
