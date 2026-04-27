@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Technology;
 use App\Repository\TechnologyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,6 +39,30 @@ final class TechnologyController extends AbstractController
         try {
             $this->manager->create($data);
             return $this->json([], 200, [], []);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
+    #[Route('/{id}', name: 'technologies_update', methods: ['PUT'])]
+    public function update(Technology $technology, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        try {
+            $this->manager->save($technology, $data);
+            return $this->json([], 200, [], []);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
+    #[Route('/{id}', name: 'technologies_delete', methods: ['DELETE'])]
+    public function delete(Technology $technology): JsonResponse
+    {
+
+        try {
+            $this->manager->delete($technology);
+            return $this->json(null, 204, [], []);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
         }
