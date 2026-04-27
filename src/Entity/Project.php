@@ -167,6 +167,12 @@ class Project
         return $this->projectUsers;
     }
 
+    #[Groups(['project:read'])]
+    public function getCountProjectUsers() : int
+    {
+        return $this->projectUsers->count();
+    }
+
     public function addProjectUser(ProjectUser $projectUser): static
     {
         if (!$this->projectUsers->contains($projectUser)) {
