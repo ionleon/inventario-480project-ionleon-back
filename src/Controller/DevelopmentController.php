@@ -30,6 +30,13 @@ final class DevelopmentController extends AbstractController
     {
         return $this->json($development, 200, [], ['groups' => 'dev:read']);
     }
+    #[Route('/{id}/links', name: 'show_links', methods: ['GET'])]
+    public function getDevelopmentLinks(Development $development): JsonResponse
+    {
+        $links = $development->getLinks();
+
+        return $this->json($links, 200, [], ['groups' => 'link:read']);
+    }
 
     #[Route('', name: 'development_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
