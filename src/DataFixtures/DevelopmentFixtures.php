@@ -23,8 +23,8 @@ class DevelopmentFixtures extends Fixture implements DependentFixtureInterface
             $development = new Development();
 
             // Asignamos relaciones (usando referencias de otras fixtures)
-            $development->setProject($this->getReference(ProjectFixtures::PROJECT_REF . $faker->numberBetween(1, 5), Project::class));
-            $development->setTechnology($this->getReference(TechnologyFixtures::TECH_REF . $faker->numberBetween(1, 5), Technology::class));
+            $development->setProject($this->getReference(ProjectFixtures::PROJECT_REF . $faker->numberBetween(1, 4), Project::class));
+            $development->setTechnology($this->getReference(TechnologyFixtures::TECH_REF . $faker->numberBetween(1, 4), Technology::class));
 
             $development->setName($faker->words(3, true));
             $development->setDescription($faker->paragraphs(2, true));
