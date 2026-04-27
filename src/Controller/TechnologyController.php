@@ -2,17 +2,25 @@
 
 namespace App\Controller;
 
+use App\Repository\TechnologyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/technologies', name: 'app_technology')]
 final class TechnologyController extends AbstractController
 {
-    #[Route('/technology', name: 'app_technology')]
-    public function index(): Response
+
+    public function __construct(
+        private TechnologyManager $manager,
+        private TechnologyRepository $repository
+    ) {}
+
+    #[Route('', name: 'technologies_index', methods: ['GET'])]
+    public function index(): JsonResponse
     {
-        return $this->render('technology/index.html.twig', [
-            'controller_name' => 'TechnologyController',
-        ]);
+        $technologies = $this->repository->findAll();
+        return $this->json($technologies, 200, [], ['groups' => ['tech:read']]);
     }
 }
