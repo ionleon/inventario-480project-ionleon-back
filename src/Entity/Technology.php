@@ -22,7 +22,7 @@ class Technology
     /**
      * @var Collection<int, Development>
      */
-    #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'technologyId')]
+    #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'technology')]
     private Collection $developments;
 
     public function __construct()
