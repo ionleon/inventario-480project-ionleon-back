@@ -35,7 +35,7 @@ class Client
     /**
      * @var Collection<int, Project>
      */
-    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'clientId')]
+    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'client')]
     #[Groups('client:write')]
     private Collection $projects;
 
