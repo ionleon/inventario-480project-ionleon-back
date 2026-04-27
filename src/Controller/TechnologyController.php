@@ -31,4 +31,15 @@ final class TechnologyController extends AbstractController
         return $this->json($technology, 200, [], ['groups' => 'tech:read']);
     }
 
+    #[Route('', name: 'technologies_create', methods: ['POST'])]
+    public function create(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        try {
+            $this->manager->create($data);
+            return $this->json([], 200, [], []);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
+    }
 }
