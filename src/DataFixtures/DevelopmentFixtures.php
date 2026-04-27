@@ -2,9 +2,13 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Development;
+use App\Entity\Project;
+use App\Entity\Technology;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class DevelopmentFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -19,8 +23,8 @@ class DevelopmentFixtures extends Fixture implements DependentFixtureInterface
             $development = new Development();
 
             // Asignamos relaciones (usando referencias de otras fixtures)
-            $development->setProject($this->getReference(ProjectFixtures::PROJECT_REFERENCE . $faker->numberBetween(1, 5), Project::class));
-            $development->setTechnology($this->getReference(TechnologyFixtures::TECH_REFERENCE . $faker->numberBetween(1, 5), Technology::class));
+            $development->setProject($this->getReference(ProjectFixtures::PROJECT_REF . $faker->numberBetween(1, 5), Project::class));
+            $development->setTechnology($this->getReference(TechnologyFixtures::TECH_REF . $faker->numberBetween(1, 5), Technology::class));
 
             $development->setName($faker->words(3, true));
             $development->setDescription($faker->paragraphs(2, true));
