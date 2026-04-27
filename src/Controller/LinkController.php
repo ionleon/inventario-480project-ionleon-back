@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 
-#[Route('/link', name: 'app_link')]
+#[Route('/links', name: 'app_link')]
 final class LinkController extends AbstractController
 {
     public function __construct(
