@@ -7,6 +7,7 @@ use App\Repository\LinkRepository;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: LinkRepository::class)]
@@ -15,12 +16,15 @@ class Link
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
+    #[Groups('link:read')]
     private ?Uuid $id = null;
 
     #[ORM\Column(enumType: Enviroment::class)]
+    #[Groups('link:read')]
     private ?Enviroment $enviroment = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups('link:read')]
     private ?string $url = null;
 
     #[ORM\ManyToOne(inversedBy: 'links')]
