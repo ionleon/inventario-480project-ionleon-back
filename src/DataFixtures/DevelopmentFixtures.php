@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 class DevelopmentFixtures extends Fixture implements DependentFixtureInterface
 {
 
-
+    public const DEVELOPMENT_REFERENCE = 'dev-';
 
     public function load(ObjectManager $manager): void
     {
