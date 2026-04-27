@@ -25,13 +25,13 @@ final class DevelopmentController extends AbstractController
         return $this->json($developments, 200, [], ['groups' => 'dev:read']);
     }
 
-    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    #[Route('/{id}', name: 'development_show', methods: ['GET'])]
     public function show(Development $development): JsonResponse
     {
         return $this->json($development, 200, [], ['groups' => 'dev:read']);
     }
 
-    #[Route('', name: 'create', methods: ['POST'])]
+    #[Route('', name: 'development_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -43,7 +43,7 @@ final class DevelopmentController extends AbstractController
         }
     }
 
-    #[Route('/{id}', name: 'update', methods: ['PUT', 'PATCH'])]
+    #[Route('/{id}', name: 'development_update', methods: ['PUT', 'PATCH'])]
     public function update(Development $development, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
