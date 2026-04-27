@@ -46,11 +46,8 @@ class Client
     #[Groups('contact:read')]
     private Collection $contacts;
 
-    public function __construct(Uuid $id, string $name, Sector $sector)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->sector = $sector;
         $this->isActive = true;
         $this->projects = new ArrayCollection();
         $this->contacts = new ArrayCollection();
