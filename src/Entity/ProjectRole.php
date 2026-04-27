@@ -12,8 +12,10 @@ use Symfony\Component\Uid\Uuid;
 class ProjectRole
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups('project:read')]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 50)]
