@@ -16,11 +16,11 @@ class Technology
     #[ORM\Column(type: 'uuid')]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    #[Groups(['dev:read'])]
+    #[Groups(['dev:read', 'tech:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['dev:read'])]
+    #[Groups(['dev:read', 'tech:read'])]
     private ?string $name = null;
 
     /**
