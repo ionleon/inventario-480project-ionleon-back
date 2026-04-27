@@ -3,9 +3,12 @@
 namespace App\DataFixtures;
 
 use App\Entity\Development;
+use App\Entity\Link;
+use App\Enum\Enviroment;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class LinkFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -39,6 +42,5 @@ class LinkFixtures extends Fixture implements DependentFixtureInterface
             DevelopmentFixtures::class,
         ];
     }
-
 
 }
