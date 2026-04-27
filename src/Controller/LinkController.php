@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Link;
 use App\Repository\LinkRepository;
 
+use App\Service\LinkManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
