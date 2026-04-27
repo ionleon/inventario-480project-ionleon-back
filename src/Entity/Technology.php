@@ -12,8 +12,9 @@ use Symfony\Component\Uid\Uuid;
 class Technology
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 50)]
