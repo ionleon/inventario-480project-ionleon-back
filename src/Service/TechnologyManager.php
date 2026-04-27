@@ -30,7 +30,7 @@ class TechnologyManager
     public function save(Technology $technology,array $data): Technology
     {
         $technology->setName($data['name'] ?? $technology->getName());
-        $this->em->remove($technology);
+        $this->em->persist($technology);
         $this->em->flush();
 
         return $technology;
