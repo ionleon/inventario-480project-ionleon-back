@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\TechnologyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -23,4 +24,11 @@ final class TechnologyController extends AbstractController
         $technologies = $this->repository->findAll();
         return $this->json($technologies, 200, [], ['groups' => ['tech:read']]);
     }
+
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    public function show(Technology $technology): JsonResponse
+    {
+        return $this->json($technology, 200, [], ['groups' => 'tech:read']);
+    }
+
 }
