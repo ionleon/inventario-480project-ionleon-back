@@ -13,13 +13,13 @@ use Symfony\Component\Uid\Uuid;
 class Technology
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'uuid')]
+    #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     #[Groups(['dev:read', 'tech:read'])]
     private ?Uuid $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
     #[Groups(['dev:read', 'tech:read'])]
     private ?string $name = null;
 
