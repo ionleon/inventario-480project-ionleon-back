@@ -6,6 +6,7 @@ use App\Repository\TechnologyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TechnologyRepository::class)]
@@ -15,9 +16,11 @@ class Technology
     #[ORM\Column(type: 'uuid')]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['dev:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['dev:read'])]
     private ?string $name = null;
 
     /**
