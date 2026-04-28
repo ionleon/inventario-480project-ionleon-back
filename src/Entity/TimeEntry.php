@@ -18,11 +18,6 @@ class TimeEntry
     #[Groups(['time:read'])]
     private ?uuid $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'timeEntries')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['time:read'])]
-    private ?ProjectUser $projectUser = null;
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Groups(['time:read'])]
     private ?\DateTime $date = null;
@@ -34,6 +29,11 @@ class TimeEntry
     #[ORM\Column(length: 150, nullable: true)]
     #[Groups(['time:read'])]
     private ?string $comment = null;
+
+    #[ORM\ManyToOne(inversedBy: 'timeEntries')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['time:read'])]
+    private ?ProjectUser $projectUser = null;
 
     public function getId(): ?uuid
     {

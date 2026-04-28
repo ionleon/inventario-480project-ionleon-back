@@ -25,13 +25,13 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['user:read', 'user:write', 'user:update', 'project:read'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'project:read', 'time:read'])]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
     private ?string $name = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['user:read', 'user:write', 'user:update', 'project:read'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'project:read', 'time:read'])]
     #[Assert\NotBlank]
     private ?string $surname = null;
 
