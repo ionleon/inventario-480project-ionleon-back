@@ -5,10 +5,13 @@ namespace App\Entity;
 use App\Repository\ProjectRoleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ProjectRoleRepository::class)]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
+#[UniqueEntity(fields: ['name'], message: 'This name already exists.')]
 class ProjectRole
 {
     #[ORM\Id]
