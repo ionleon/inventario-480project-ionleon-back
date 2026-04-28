@@ -6,6 +6,7 @@ use App\Repository\TimeEntryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TimeEntryRepository::class)]
@@ -14,19 +15,24 @@ class TimeEntry
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
+    #[Groups(['time:read'])]
     private ?uuid $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'timeEntries')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['time:read'])]
     private ?ProjectUser $projectUser = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['time:read'])]
     private ?\DateTime $date = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2)]
+    #[Groups(['time:read'])]
     private ?string $hour = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['time:read'])]
     private ?string $comment = null;
 
     public function getId(): ?uuid
