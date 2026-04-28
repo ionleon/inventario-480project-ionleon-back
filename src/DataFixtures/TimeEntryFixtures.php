@@ -16,7 +16,7 @@ class TimeEntryFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         /** @var ProjectUser $projectUser */
-        $projectUser = $this->getReference(ProjectUser::class);
+        $projectUser = $this->getReference(ProjectUserFixtures::PROJECT_USER_DEV_REFERENCE. '0', ProjectUser::class);
 
         $entries = [
             [
