@@ -31,7 +31,7 @@ class TimeEntry
     #[Groups(['time:read'])]
     private ?string $hour = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
+    #[ORM\Column(length: 150, nullable: true)]
     #[Groups(['time:read'])]
     private ?string $comment = null;
 
