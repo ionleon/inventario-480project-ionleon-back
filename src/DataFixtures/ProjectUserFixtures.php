@@ -13,7 +13,7 @@ use Symfony\Component\Uid\Uuid;
 
 class ProjectUserFixtures extends Fixture implements DependentFixtureInterface
 {
-    public const PROJECT_USER_DEV_REF = 'p-user-dev-';
+    public const PROJECT_USER_DEV_REFERENCE = 'p-user-dev-';
     public function load(ObjectManager $manager): void
     {
 
@@ -46,7 +46,7 @@ class ProjectUserFixtures extends Fixture implements DependentFixtureInterface
                 $manager->persist($projectUserDev);
 
 
-                $this->addReference(self::PROJECT_USER_DEV_REF . $i, $projectUserDev);
+                $this->addReference(self::PROJECT_USER_DEV_REFERENCE . $i, $projectUserDev);
             }
         }
 
