@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\TimeEntry;
 use App\Repository\TimeEntryRepository;
 use App\Service\TimeEntryManager;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +16,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 #[Route('/time-entries', name: 'app_time_entry')]
-#[IsGranted('ROLE_USER')]
+#[IsGranted(new Expression("is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')"))]
+
 final class TimeEntryController extends AbstractController
 {
     public function __construct(
