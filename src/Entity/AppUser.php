@@ -13,7 +13,8 @@ use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AppUserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'Este email ya está registrado')]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
+#[UniqueEntity(fields: ['email'], message: 'This mail is already in use.')]
 class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
