@@ -7,10 +7,13 @@ use App\Repository\LinkRepository;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: LinkRepository::class)]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
+
 class Link
 {
     #[ORM\Id]
