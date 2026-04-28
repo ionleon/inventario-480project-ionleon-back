@@ -6,20 +6,23 @@ use App\Repository\SectorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SectorRepository::class)]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
+#[UniqueEntity(fields: ['name'], message: 'This name already exists.')]
 class Sector
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    #[Groups(['client:read'])]
+    #[Groups(['sector:read','client:read'])]
     private ?Uuid $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, unique: true)]
+    #[Assert\NotBlank(message: 'Name cannot be empty.')]
     #[Groups(['sector:read', 'sector:write', 'client:read'])]
     private ?string $name = null;
 
