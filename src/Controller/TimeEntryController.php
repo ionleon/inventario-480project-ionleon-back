@@ -52,7 +52,7 @@ final class TimeEntryController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         try {
-            $this->manager->create($timeEntry, $data);
+            $this->manager->save($timeEntry, $data);
             return $this->json([], 200, [], ['groups' => ['time:read']]);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
