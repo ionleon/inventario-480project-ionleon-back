@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\TimeEntry;
 use App\Repository\TimeEntryRepository;
+use App\Service\TimeEntryManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,10 +41,28 @@ final class TimeEntryController extends AbstractController
         $data = json_decode($request->getContent(), true);
         try {
             $timeEntry = $this->manager->create($data);
+            return $this->json([], 201, [], ['groups' => ['time:read']]);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
+    #[Route('/{id}', name: 'time_entry_update', methods: ['PUT'])]
+    public function update(TimeEntry $timeEntry, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        try {
+            $this->manager->create($timeEntry, $data);
             return $this->json([], 200, [], ['groups' => ['time:read']]);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
         }
+    }
 
+    #[Route('/{id}', name: 'time_entry_delete', methods: ['DELETE'])]
+    public function delete(TimeEntry $timeEntry): JsonResponse
+    {
+        $this->manager->remove($timeEntry);
+        return $this->json(null, 204);
     }
 }
