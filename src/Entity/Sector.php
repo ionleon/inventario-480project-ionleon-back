@@ -14,7 +14,7 @@ class Sector
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['client:read'])]
+    #[Groups(['sector:read','client:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 100)]
