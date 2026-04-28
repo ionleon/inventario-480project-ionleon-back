@@ -6,10 +6,12 @@ use App\Repository\ProjectUserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ProjectUserRepository::class)]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 class ProjectUser
 {
     #[ORM\Id]
