@@ -62,7 +62,7 @@ final class TimeEntryController extends AbstractController
     #[Route('/{id}', name: 'time_entry_delete', methods: ['DELETE'])]
     public function delete(TimeEntry $timeEntry): JsonResponse
     {
-        $this->manager->remove($timeEntry);
+        $this->manager->delete($timeEntry);
         return $this->json(null, 204);
     }
 }
