@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Technology;
 use App\Repository\TechnologyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class TechnologyManager
 {
@@ -15,13 +16,17 @@ class TechnologyManager
     ) {}
 
     public function create(array $data): Technology {
-        //Añadir si pasamos ID por front
-        //if (!isset($data['id'], $data['name'])) {
-        if (!isset($data['name'])) {
+
+        if (!isset($data['id'], $data['name'])) {
             throw new \InvalidArgumentException('Faltan campos obligatorios (name).');
         }
 
         $technology = new Technology();
+        try {
+            $technology->setId(Uuid::fromString($data['id']));
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException('UUID format invalid.');
+        }
 
         return $this->save($technology, $data);
 

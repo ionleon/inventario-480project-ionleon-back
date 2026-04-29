@@ -28,7 +28,11 @@ class TimeEntryManager
         }
 
         $timeEntry = new TimeEntry();
-        $timeEntry->setId(Uuid::fromString($data['id']));
+        try {
+            $timeEntry->setId(Uuid::fromString($data['id']));
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException('UUID format invalid.');
+        }
 
         $projectUser = $this->em->getRepository(ProjectUser::class)->find($data['projectUserId']);
         if (!$projectUser) {

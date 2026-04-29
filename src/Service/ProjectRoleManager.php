@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\ProjectRole;
 use App\Repository\ProjectRoleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class ProjectRoleManager
 {
@@ -15,18 +16,17 @@ class ProjectRoleManager
 
     public function create(array $data): ProjectRole
     {
-        if (!isset($data['name'])) {
-            throw new \InvalidArgumentException('Role name is required.');
+        if (!isset($data['id'], $data['name'])) {
+            throw new \InvalidArgumentException('Role ID and name are required.');
         }
 
         $projectRole = new ProjectRole();
 
-
-//        try {
-//            $projectRole->setId(Uuid::fromString($data['id']));
-//        } catch (\InvalidArgumentException $e) {
-//            throw new \InvalidArgumentException('Formato de UUID inválido.');
-//        }
+        try {
+            $projectRole->setId(Uuid::fromString($data['id']));
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException('UUID format invalid.');
+        }
 
         return $this->save($projectRole, $data);
     }
