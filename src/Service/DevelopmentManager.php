@@ -57,6 +57,10 @@ class DevelopmentManager
             $development->setTechnology($technology);
         }
 
+        if (isset($data['links'])) {
+            $this->syncLinks($development, $data['links']);
+        }
+
 
         $this->em->persist($development);
         $this->em->flush();
