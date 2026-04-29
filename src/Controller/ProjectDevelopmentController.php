@@ -19,8 +19,7 @@ final class ProjectDevelopmentController extends AbstractController
     public function __construct(
         private DevelopmentManager $devManager,
         private DevelopmentRepository $repository
-    )
-    {}
+    ) {}
 
     #[Route('', name: 'project_development_index', methods: ['GET'])]
     public function index(Project $project): Response
