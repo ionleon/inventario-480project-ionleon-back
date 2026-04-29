@@ -18,15 +18,15 @@ class Link
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
-    #[Groups('link:read')]
+    #[Groups(['link:read', 'dev:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(enumType: Enviroment::class)]
-    #[Groups('link:read')]
+    #[Groups(['link:read', 'dev:read'])]
     private ?Enviroment $enviroment = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups('link:read')]
+    #[Groups(['link:read', 'dev:read'])]
     private ?string $url = null;
 
     #[ORM\ManyToOne(inversedBy: 'links')]
