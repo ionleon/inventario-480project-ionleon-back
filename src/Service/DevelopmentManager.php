@@ -21,6 +21,11 @@ class DevelopmentManager
         private ProjectRepository $projectRepository,
     ) {}
 
+    public function findAllByProject(Project $project): array
+    {
+        return $this->devRepository->findBy(['project' => $project]);
+    }
+
     public function create(Project $project, array $data): Development
     {
         if (!isset($data['id'], $data['technologyId'], $data['name'])) {
