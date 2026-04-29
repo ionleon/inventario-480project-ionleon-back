@@ -3,8 +3,10 @@
 namespace App\Service;
 
 use App\Entity\Development;
+use App\Entity\Link;
 use App\Entity\Project;
 use App\Entity\Technology;
+use App\Enum\Enviroment;
 use App\Repository\DevelopmentRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TechnologyRepository;
@@ -19,6 +21,7 @@ class DevelopmentManager
         private DevelopmentRepository $devRepository,
         private TechnologyRepository $technologyRepository,
         private ProjectRepository $projectRepository,
+        private LinkManager $linkManager
     ) {}
 
     public function findAllByProject(Project $project): array
@@ -54,10 +57,22 @@ class DevelopmentManager
             $development->setTechnology($technology);
         }
 
+
         $this->em->persist($development);
         $this->em->flush();
 
         return $development;
+    }
+
+    public function syncLinks(Development $development, array $linksData): void
+    {
+        foreach ($development->getLinks() as $existingLink) {
+            $this->em->remove($existingLink);
+        }
+
+        foreach ($linksData as $linkItem) {
+            $this->linkManager->create($linkItem, $development, false);
+        }
     }
 
     public function delete(Development $development): void
