@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Technology;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Uid\Uuid;
 
 class TechnologyFixtures extends Fixture
 {
@@ -16,6 +17,7 @@ class TechnologyFixtures extends Fixture
     {
         foreach (self::TECHNOLOGIES as $key => $name) {
             $tech = new Technology();
+            $tech->setId(Uuid::v7());
             $tech->setName($name);
             $manager->persist($tech);
 

@@ -8,6 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\Uid\Uuid;
 
 class ContactFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -25,6 +26,7 @@ class ContactFixtures extends Fixture implements DependentFixtureInterface
 
             for ($j = 0; $j < $numContacts; $j++) {
                 $contact = new Contact();
+                $contact->setId(Uuid::v7());
                 $contact->setFullName($faker->name());
                 $contact->setPhoneNumber($faker->phoneNumber());
                 $contact->setEmail($faker->safeEmail());

@@ -9,6 +9,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\Uid\Uuid;
 
 class DevelopmentFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -21,6 +22,8 @@ class DevelopmentFixtures extends Fixture implements DependentFixtureInterface
 
         for ($i = 0; $i < 10; $i++) {
             $development = new Development();
+
+            $development->setId(Uuid::v7());
 
             // Asignamos relaciones (usando referencias de otras fixtures)
             $development->setProject($this->getReference(ProjectFixtures::PROJECT_REF . $faker->numberBetween(1, 4), Project::class));

@@ -9,6 +9,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\Uid\Uuid;
 
 class LinkFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -25,6 +26,7 @@ class LinkFixtures extends Fixture implements DependentFixtureInterface
             $numLinks = rand(1, 3);
             for ($j = 0; $j < $numLinks; $j++) {
                 $link = new Link();
+                $link->setId(Uuid::v7());
                 $link->setUrl($faker->url());
                 $link->setEnviroment($faker->randomElement($enviroments));
                 $link->setDevelopment($dev);
