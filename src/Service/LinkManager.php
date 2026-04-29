@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Development;
 use App\Entity\Link;
 use App\Enum\Enviroment;
+use App\Repository\DevelopmentRepository;
 use App\Repository\LinkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\InvalidArgumentException;
@@ -15,12 +16,13 @@ class LinkManager
 {
     public function __construct(
       private EntityManagerInterface $em,
-      private LinkRepository $repository
+      private LinkRepository $repository,
+      private DevelopmentRepository $developmentRepository
     ) {}
 
-    public function create(array $data): Link
+    public function create(array $data, ?Development $development = null, bool $flush = true): Link
     {
-        if (!isset($data['id'], $data['developmentId'], $data['url'], $data['enviroment'])){
+        if (!isset($data['id'], $data['url'], $data['enviroment'])){
             throw new \InvalidArgumentException('Missing mandatory fields (id, developmentId, url, enviroment)');
         }
 
@@ -32,10 +34,12 @@ class LinkManager
             throw new \InvalidArgumentException('Invalid UUID format.');
         }
 
-        $development = $this->em->getRepository(Development::class)->find($data['developmentId']);
+        if (!$development && isset($data['developmentId'])) {
+            $development = $this->developmentRepository->find($data['developmentId']);
+        }
 
         if (!$development){
-            throw new NotFoundHttpException('Development not found.');
+            throw new NotFoundHttpException('Link must be assigned to a development.');
         }
 
         $link->setDevelopment($development);
@@ -44,7 +48,7 @@ class LinkManager
 
     }
 
-    public function save(Link $link, array $data): Link
+    public function save(Link $link, array $data, bool $flush = true): Link
     {
         if (isset($data['enviroment'])) {
             $link->setEnviroment(Enviroment::from($data['enviroment']));
@@ -53,8 +57,10 @@ class LinkManager
         $link->setUrl($data['url'] ?? $link->getUrl());
 
         $this->em->persist($link);
-        $this->em->flush();
 
+        if ($flush) {
+            $this->em->flush();
+        }
         return $link;
     }
 
