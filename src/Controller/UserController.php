@@ -33,8 +33,7 @@ final class UserController extends AbstractController
 {
     public function __construct(
         private AppUserRepository $repository,
-        private UserManager $um,
-        private UserPasswordHasherInterface $hasher
+        private UserManager $um
     ) {}
 
     #[Route('', name: 'app_user_index', methods: ['GET'])]
