@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Development;
 use App\Repository\DevelopmentRepository;
+use App\Repository\ProjectRepository;
 use App\Service\DevelopmentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,13 +16,14 @@ final class DevelopmentController extends AbstractController
 {
     public function __construct(
         private DevelopmentManager $manager,
-        private DevelopmentRepository $repository
+        private DevelopmentRepository $devRepository,
+        private ProjectRepository $projectRepository
     ) {}
 
     #[Route('' , name: 'development_index', methods: ['GET'])]
     public function index(): JsonResponse
     {
-        $developments = $this->repository->findAll();
+        $developments = $this->devRepository->findAll();
         return $this->json($developments, 200, [], ['groups' => 'dev:read']);
     }
 
@@ -42,8 +44,12 @@ final class DevelopmentController extends AbstractController
     public function create(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        if (!isset($data['projectId'])) {
+            throw new \InvalidArgumentException('Faltan campos obligatorios (projectId).');
+        }
+        $project = $this->projectRepository->find($data['projectId']);
         try {
-            $development = $this->manager->create($data);
+            $development = $this->manager->create($project, $data);
             return $this->json([], 201, [], );
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
