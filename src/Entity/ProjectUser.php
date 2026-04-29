@@ -38,7 +38,7 @@ class ProjectUser
     /**
      * @var Collection<int, TimeEntry>
      */
-    #[ORM\OneToMany(targetEntity: TimeEntry::class, mappedBy: 'projectUser', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: TimeEntry::class, mappedBy: 'projectUser', cascade: ['persist', 'remove'],orphanRemoval: true)]
     private Collection $timeEntries;
 
     public function __construct()

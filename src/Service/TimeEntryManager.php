@@ -3,10 +3,15 @@
 namespace App\Service;
 
 
+use App\Entity\AppUser;
+use App\Entity\Project;
 use App\Entity\ProjectUser;
 use App\Entity\TimeEntry;
+use App\Repository\ProjectUserRepository;
 use App\Repository\TimeEntryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints\Time;
@@ -14,17 +19,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TimeEntryManager
 {
+
+
     public function __construct(
         private EntityManagerInterface $em,
         private TimeEntryRepository $repository,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private ProjectUserRepository $puRepository,
+        private Security $security,
     ) {}
 
 
-    public function create(array $data): TimeEntry
+    public function getAllByProjects(Project $project, ?AppUser $user = null) : array
     {
-        if (!isset($data['id'], $data['projectUserId'], $data['date'], $data['hour'])) {
-            throw new \InvalidArgumentException('Missing mandatory fields (id, projectUser, date, hour)');
+        return $this->repository->findByProjectAndUser($project, $user);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function create(array $data, ?Project $project = null): TimeEntry
+    {
+        if (!isset($data['id'], $data['date'], $data['hour'])) {
+            throw new \InvalidArgumentException('Missing mandatory fields (id, date, hour)');
         }
 
         $timeEntry = new TimeEntry();
@@ -34,9 +51,18 @@ class TimeEntryManager
             throw new \InvalidArgumentException('UUID format invalid.');
         }
 
-        $projectUser = $this->em->getRepository(ProjectUser::class)->find($data['projectUserId']);
+        $projectUser = null;
+        if ($project) {
+            $projectUser = $this->puRepository->findOneBy([
+                'project' => $project,
+                'user' => $this->security->getUser()
+            ]);
+        } elseif (isset($data['projectUserId'])) {
+            $projectUser = $this->puRepository->find($data['projectUserId']);
+        }
+
         if (!$projectUser) {
-            throw new NotFoundHttpException('Project-User relation does not exist.');
+            throw new NotFoundHttpException('Project-User relation does not exist or user is not assigned to this project.');
         }
 
         $timeEntry->setProjectUser($projectUser);
@@ -45,12 +71,16 @@ class TimeEntryManager
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function save(TimeEntry $timeEntry, array $data): TimeEntry
+    public function save(TimeEntry $timeEntry, array $data, bool $flush = true): TimeEntry
     {
         if (isset($data['date'])) {
-            $timeEntry->setDate(new \DateTime($data['date']));
+            try {
+                $timeEntry->setDate(new \DateTime($data['date']));
+            } catch (\Exception $e) {
+                throw new \InvalidArgumentException('Date format invalid. Use YYYY-MM-DD.');
+            }
         }
 
         $timeEntry->setHour($data['hour'] ?? $timeEntry->getHour());
@@ -62,7 +92,10 @@ class TimeEntryManager
         }
 
         $this->em->persist($timeEntry);
-        $this->em->flush();
+
+        if ($flush) {
+            $this->em->flush();
+        }
 
         return $timeEntry;
     }
