@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\TimeEntry;
+use App\Repository\ProjectUserRepository;
 use App\Repository\TimeEntryRepository;
 use App\Service\TimeEntryManager;
 use Exception;
@@ -22,7 +23,8 @@ final class ProjectTimeEntryController extends AbstractController
 {
     public function __construct(
         private TimeEntryManager $teManager,
-        private TimeEntryRepository $teRepository
+        private TimeEntryRepository $teRepository,
+        private ProjectUserRepository $puRepository
     ) {}
 
     #[Route('', name: 'project_time_entry_index', methods: ['GET'])]
@@ -42,22 +44,53 @@ final class ProjectTimeEntryController extends AbstractController
     public function create(Project $project, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $timeEntry = $this->teManager->create($data);
+
+        $timeEntry = $this->teManager->create($data, $project);
+
         return $this->json([], 201, [], ['groups' => 'time:read']);
     }
 
     /**
      * @throws Exception
      */
-    #[Route('{timeEntryId}', name: 'project_time_entry_update', methods: ['PUT'])]
+    #[Route('/{timeEntryId}', name: 'project_time_entry_update', methods: ['PUT'])]
     public function update(
         Project $project,
         #[MapEntity(mapping: ['id' => 'timeEntryId'])] TimeEntry $timeEntry,
         Request $request
     ): JsonResponse
     {
+        if ($timeEntry->getProjectUser()->getProject() !== $project) {
+            throw $this->createAccessDeniedException('This time entry does not belong to this project.');
+        }
+
+        if (!$this->isGranted('ROLE_ADMIN') && $timeEntry->getProjectUser()->getAppUser() !== $this->getUser()){
+            throw $this->createAccessDeniedException('You can only edit your own time entries.');
+        }
+
         $data = json_decode($request->getContent(), true);
         $timeEntry = $this->teManager->save($timeEntry, $data);
-        return $this->json([], 201, [], ['groups' => 'time:read']);
+        return $this->json([], 200, [], ['groups' => 'time:read']);
     }
+
+    #[Route('/{timeEntryId}', name: 'project_time_entry_delete', methods: ['DELETE'])]
+    public function delete(
+        Project $project,
+        #[MapEntity(mapping: ['id' => 'timeEntryId'])] TimeEntry $timeEntry,
+    ): JsonResponse
+    {
+        if ($timeEntry->getProjectUser()->getProject() !== $project) {
+            throw $this->createAccessDeniedException('This development does not belong to this project.');
+        }
+
+        if (!$this->isGranted('ROLE_ADMIN') && $timeEntry->getProjectUser()->getAppUser() !== $this->getUser()){
+            throw $this->createAccessDeniedException('You can only delete your own time entries.');
+        }
+
+        $this->teManager->delete($timeEntry);
+        return $this->json(null, 204, [], []);
+    }
+
+
+
 }
