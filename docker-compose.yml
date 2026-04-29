@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - project_480_db_data:/var/lib/postgresql
     networks:
       - symfony_net
 
@@ -37,7 +37,7 @@ services:
       - symfony_net
 
 volumes:
-  db-data:
+    project_480_db_data:
 
 networks:
   symfony_net:
