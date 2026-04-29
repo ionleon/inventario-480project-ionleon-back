@@ -79,7 +79,7 @@ class TimeEntryManager
             try {
                 $timeEntry->setDate(new \DateTime($data['date']));
             } catch (\Exception $e) {
-                throw new \InvalidArgumentException('Formato de fecha inválido. Use YYYY-MM-DD.');
+                throw new \InvalidArgumentException('Date format invalid. Use YYYY-MM-DD.');
             }
         }
 
