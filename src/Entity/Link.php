@@ -18,8 +18,6 @@ class Link
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     #[Groups('link:read')]
     private ?Uuid $id = null;
 

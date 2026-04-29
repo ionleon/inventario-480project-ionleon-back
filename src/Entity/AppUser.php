@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    //#[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
     #[Assert\Uuid]
     #[Groups(['user:read', 'user:write', 'project:read'])]

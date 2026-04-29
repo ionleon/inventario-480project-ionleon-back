@@ -17,8 +17,6 @@ use Symfony\Component\Uid\Uuid;
 class Development
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     #[ORM\Column(type: 'uuid')]
     #[Groups(['dev:read'])]
     private ?Uuid $id = null;

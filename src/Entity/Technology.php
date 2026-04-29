@@ -17,8 +17,6 @@ class Technology
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     #[Groups(['dev:read', 'tech:read'])]
     private ?Uuid $id = null;
 
