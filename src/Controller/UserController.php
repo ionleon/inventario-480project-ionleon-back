@@ -11,6 +11,7 @@ use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -30,6 +31,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[OA\Tag(name: 'Users')]
 final class UserController extends AbstractController
 {
+    public function __construct(
+        private AppUserRepository $repository,
+        private UserManager $um,
+        private UserPasswordHasherInterface $hasher
+    ) {}
+
     #[Route('', name: 'app_user_index', methods: ['GET'])]
     #[OA\Response(
         response: 200,
@@ -53,7 +60,6 @@ final class UserController extends AbstractController
         return $this->json($users, 200, [], ['groups' => 'user:read']);
     }
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-
     public function show(Uuid  $id, AppUserRepository $repository): JsonResponse
     {
         $user = $repository -> find($id);
@@ -135,6 +141,32 @@ final class UserController extends AbstractController
         return $this->json($user, 200, [], ['groups' => 'user:read']);
 
     }
+
+    #[Route('/{id}/password-change', name: 'user_password_change', methods: ['PUT'])]
+    public function changePassword(AppUser $user, Request $request ): JsonResponse
+    {
+
+        if ($user !== $this->getUser()) {
+            throw $this->createAccessDeniedException('No puedes cambiar la contraseña de otro usuario.');
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        // Lógica de validación de 'old_password' y 'new_password'
+        // ...
+
+        return $this->json(['message' => 'Contraseña actualizada con éxito']);
+    }
+
+    #[Route('/{id}/admin-password', name: 'user_admin_password_reset', methods: ['DELETE'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function adminPasswordChange(AppUser $user, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        return $this->json(['message' => 'Contraseña reseteada por el administrador']);
+    }
+
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
