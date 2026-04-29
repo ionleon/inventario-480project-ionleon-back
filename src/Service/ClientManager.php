@@ -10,6 +10,8 @@ use Symfony\Component\Uid\Uuid;
 
 class ClientManager
 {
+
+
     public function __construct(
         private EntityManagerInterface $em,
         private SectorRepository $sectorRepository
@@ -24,18 +26,16 @@ class ClientManager
         $id = Uuid::fromString($data['id']);
         $sector = $this->sectorRepository->find($data['sector_id']);
 
-        $client = new Client(
-            $id,
-            $data['name'],
-            $sector
-        );
+        $client = new Client();
+        $client->setId($id);
+        $client->setName($data['name']);
+        $client->setSector($sector);
 
         return $this->update($client, $data);
     }
 
     public function update(Client $client, array $data): Client
     {
-
 
         if (isset($data['name'])) {
             $client->setName($data['name']);

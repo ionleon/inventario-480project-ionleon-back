@@ -7,6 +7,11 @@ nelmio_cors:
         expose_headers: ['Link']
         max_age: 3600
     paths:
-        #'^/': ~ #Aplicar CORS a toda la app
-        '^/480project/': ~
+        '^/480project/':
+            allow_origin: [ '*' ] # En desarrollo permitimos, luego pon la URL de React
+            allow_headers: [ '*' ]
+            allow_methods: [ 'GET', 'POST', 'PUT', 'DELETE', 'OPTIONS' ]
+
         '^/api/': ~
+
+        '^/': ~

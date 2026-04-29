@@ -7,14 +7,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DevelopmentRepository::class)]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
+
 class Development
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
+    #[Groups(['dev:read'])]
     private ?Uuid $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'developments')]
@@ -23,21 +27,25 @@ class Development
 
     #[ORM\ManyToOne(inversedBy: 'developments')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['dev:read'])]
     private ?Technology $technology = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, unique: true)]
+    #[Groups(['dev:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['dev:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['dev:read'])]
     private ?string $urlRepository = null;
 
     /**
      * @var Collection<int, Link>
      */
-    #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'developmentId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'development', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $links;
 
     public function __construct()

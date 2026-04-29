@@ -6,23 +6,28 @@ use App\Repository\TechnologyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TechnologyRepository::class)]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
+#[UniqueEntity(fields: ['name'], message: 'This name already exists.')]
 class Technology
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'uuid')]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[Groups(['dev:read', 'tech:read'])]
     private ?Uuid $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
+    #[Groups(['dev:read', 'tech:read'])]
     private ?string $name = null;
 
     /**
      * @var Collection<int, Development>
      */
-    #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'technologyId')]
+    #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'technology')]
     private Collection $developments;
 
     public function __construct()

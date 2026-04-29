@@ -5,28 +5,35 @@ namespace App\Entity;
 use App\Repository\TimeEntryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TimeEntryRepository::class)]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 class TimeEntry
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
+    #[Groups(['time:read'])]
     private ?uuid $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'timeEntries')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?ProjectUser $projectUser = null;
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['time:read'])]
     private ?\DateTime $date = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2)]
+    #[Groups(['time:read'])]
     private ?string $hour = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
+    #[ORM\Column(length: 150, nullable: true)]
+    #[Groups(['time:read'])]
     private ?string $comment = null;
+
+    #[ORM\ManyToOne(inversedBy: 'timeEntries')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['time:read'])]
+    private ?ProjectUser $projectUser = null;
 
     public function getId(): ?uuid
     {

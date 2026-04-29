@@ -1,0 +1,26 @@
+<?php
+
+namespace App\DataFixtures;
+
+use App\Entity\Technology;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+
+class TechnologyFixtures extends Fixture
+{
+
+    public const TECH_REF = 'tech-';
+    private const TECHNOLOGIES = ['PHP', 'Symfony', 'React', 'Docker', 'MySQL'];
+
+    public function load(ObjectManager $manager): void
+    {
+        foreach (self::TECHNOLOGIES as $key => $name) {
+            $tech = new Technology();
+            $tech->setName($name);
+            $manager->persist($tech);
+
+            $this->addReference(self::TECH_REF . $key, $tech);
+        }
+        $manager->flush();
+    }
+}

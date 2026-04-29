@@ -13,24 +13,24 @@ use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AppUserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'Este email ya está registrado')]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
+#[UniqueEntity(fields: ['email'], message: 'This mail is already in use.')]
 class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    //#[ORM\GeneratedValue]
     #[ORM\Column(type: 'uuid')]
     #[Assert\Uuid]
     #[Groups(['user:read', 'user:write', 'project:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['user:read', 'user:write', 'user:update', 'project:read'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'project:read', 'time:read'])]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
     private ?string $name = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['user:read', 'user:write', 'user:update', 'project:read'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'project:read', 'time:read'])]
     #[Assert\NotBlank]
     private ?string $surname = null;
 

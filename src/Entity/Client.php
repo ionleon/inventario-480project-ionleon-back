@@ -6,10 +6,13 @@ use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
+
 class Client
 {
     #[ORM\Id]
@@ -35,7 +38,7 @@ class Client
     /**
      * @var Collection<int, Project>
      */
-    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'clientId')]
+    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'client')]
     #[Groups('client:write')]
     private Collection $projects;
 
@@ -46,11 +49,8 @@ class Client
     #[Groups('contact:read')]
     private Collection $contacts;
 
-    public function __construct(Uuid $id, string $name, Sector $sector)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->sector = $sector;
         $this->isActive = true;
         $this->projects = new ArrayCollection();
         $this->contacts = new ArrayCollection();

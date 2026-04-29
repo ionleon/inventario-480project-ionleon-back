@@ -6,17 +6,19 @@ use App\Repository\ProjectUserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ProjectUserRepository::class)]
+#[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 class ProjectUser
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    #[Groups('project:read')]
+    #[Groups(['project:read', 'time:read'])]
     private ?Uuid $id = null;
 
     #[ORM\ManyToOne(cascade: ['persist'])]
@@ -25,18 +27,18 @@ class ProjectUser
 
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('project:read')]
+    #[Groups(['project:read', 'time:read'])]
     private ?AppUser $appUser = null;
 
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('project:read')]
+    #[Groups(['project:read'])]
     private ?ProjectRole $projectRole = null;
 
     /**
      * @var Collection<int, TimeEntry>
      */
-    #[ORM\OneToMany(targetEntity: TimeEntry::class, mappedBy: 'projectUser', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: TimeEntry::class, mappedBy: 'projectUser', cascade: ['persist', 'remove'],orphanRemoval: true)]
     private Collection $timeEntries;
 
     public function __construct()
