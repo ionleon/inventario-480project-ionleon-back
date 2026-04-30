@@ -35,6 +35,17 @@ class TimeEntryRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByUser(AppUser $user): array
+    {
+        return $this->createQueryBuilder('te')
+            ->innerJoin('te.projectUser', 'pu')
+            ->where('pu.appUser = :user')
+            ->setParameter('user', $user)
+            ->orderBy('te.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return TimeEntry[] Returns an array of TimeEntry objects
     //     */
