@@ -18,14 +18,35 @@ git clone <url-del-repositorio>
 
 ````
 
+### Ejecutar script deploy.sh
+
+```Bash
+./deploy.sh
+```
+
+#### El script configura el resto de pasos necesarios
+
+
 ### 2. Configurar variables de entorno
 
-Crea una copia del archivo de ejemplo y configúralo (si es necesario):
+
+
+
+#### Crea una copia del archivo de ejemplo y configúralo (si es necesario):
 
 
 
 ```Bash
 cp .env .env.local
+```
+#### Una vez creado el .env.local sustituye las variables por las siguientes
+
+```
+DATABASE_URL="postgresql://user_admin:skibidiman123@database:5432/project_inventory_480_db?serverVersion=18&charset=utf8"
+
+JWT_PASSPHRASE=a35eab0d39a99076c5f8747bc553c0df86693e150a22e465987f288d610bdef3
+
+APP_SECRET=cf313f261c7cd660b5b066cb67962665
 ```
 
 _Nota: Por defecto, el archivo `.env` ya viene configurado para funcionar con los contenedores de Docker._
@@ -87,17 +108,27 @@ docker-compose exec php bin/console doctrine:fixtures:load
 
 - **Endpoint de Login:** `POST http://localhost:8000/480project/login`
 
-
 ### Ejemplo de petición de Login (POST)
 
-JSON
 
-```
+
+```JSON
 {
     "email": "usuario@ejemplo.com",
     "password": "tu_password"
 }
 ```
+
+```bash
+-------------------------------------------------------
+Prueba de autenticacion (Copia y pega):
+
+curl -X POST http://localhost:8000/480project/login \
+     -H "Content-Type: application/json" \
+     -d '{"email":"admin@example.com", "password":"password1234"}'
+-------------------------------------------------------
+```
+
 
 ##  Comandos útiles de Docker
 
