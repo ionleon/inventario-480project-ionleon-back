@@ -34,10 +34,6 @@ class Contact
 
     #[ORM\Column]
     #[Groups(['client:read', 'contact:read'])]
-    private ?bool $isActive = null;
-
-    #[ORM\Column]
-    #[Groups(['client:read', 'contact:read'])]
     private ?bool $isMain = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -92,18 +88,6 @@ class Contact
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function isActive(): ?bool
-    {
-        return $this->isActive;
-    }
-
-    public function setIsActive(bool $isActive): static
-    {
-        $this->isActive = $isActive;
 
         return $this;
     }
