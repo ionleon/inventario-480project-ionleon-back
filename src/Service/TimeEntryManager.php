@@ -7,6 +7,7 @@ use App\Entity\AppUser;
 use App\Entity\Project;
 use App\Entity\ProjectUser;
 use App\Entity\TimeEntry;
+use App\Repository\ProjectRepository;
 use App\Repository\ProjectUserRepository;
 use App\Repository\TimeEntryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,22 +24,23 @@ class TimeEntryManager
 
     public function __construct(
         private EntityManagerInterface $em,
-        private TimeEntryRepository $repository,
-        private ValidatorInterface $validator,
-        private ProjectUserRepository $puRepository,
-        private Security $security,
+        private TimeEntryRepository    $timeEntryRepository,
+        private ValidatorInterface     $validator,
+        private ProjectUserRepository  $puRepository,
+        private ProjectRepository      $projectRepository,
+        private Security               $security,
     ) {}
 
 
     public function getAllByProjects(Project $project, ?AppUser $user = null) : array
     {
-        return $this->repository->findByProjectAndUser($project, $user);
+        return $this->timeEntryRepository->findByProjectAndUser($project, $user);
     }
 
     /**
      * @throws Exception
      */
-    public function create(array $data, ?Project $project = null): TimeEntry
+    public function create(array $data, ?Project $project = null, ?AppUser $targetUser = null): TimeEntry
     {
         if (!isset($data['id'], $data['date'], $data['hour'])) {
             throw new \InvalidArgumentException('Missing mandatory fields (id, date, hour)');
@@ -52,17 +54,31 @@ class TimeEntryManager
         }
 
         $projectUser = null;
-        if ($project) {
-            $projectUser = $this->puRepository->findOneBy([
-                'project' => $project,
-                'user' => $this->security->getUser()
-            ]);
-        } elseif (isset($data['projectUserId'])) {
-            $projectUser = $this->puRepository->find($data['projectUserId']);
+        $user = $targetUser ?? $this->security->getUser();
+
+        if (isset($data['project_user_id'])) {
+            $projectUser = $this->puRepository->find($data['project_user_id']);
+        }
+
+        else {
+            if (!$project && isset($data['project_id'])) {
+                $project = $this->projectRepository->find($data['project_id']);
+            }
+
+            if ($project) {
+                $projectUser = $this->puRepository->findOneBy([
+                    'project' => $project,
+                    'appUser' => $user
+                ]);
+            }
         }
 
         if (!$projectUser) {
             throw new NotFoundHttpException('Project-User relation does not exist or user is not assigned to this project.');
+        }
+
+        if ($targetUser && $projectUser->getAppUser() !== $targetUser) {
+            throw new \LogicException('The assignment does not belong to the user specified in the URL.');
         }
 
         $timeEntry->setProjectUser($projectUser);
