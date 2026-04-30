@@ -27,13 +27,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * */
 
 
-#[Route('/users')]
 #[OA\Tag(name: 'Users')]
+#[Route('/users')]
 final class UserController extends AbstractController
 {
     public function __construct(
         private AppUserRepository $repository,
-        private UserManager $um
+        private UserManager $userManager
     ) {}
 
     #[Route('', name: 'app_user_index', methods: ['GET'])]
@@ -150,20 +150,33 @@ final class UserController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
+        $oldPwd = $data['old_password'] ?? '';
+        $newPwd = $data['new_password'] ?? '';
 
-        // Lógica de validación de 'old_password' y 'new_password'
-        // ...
+        try {
+            $this->userManager->changePassword($user, $oldPwd, $newPwd);
+            return $this->json(['message' => 'Successful password update.'], 200);
+        } catch (\InvalidArgumentException $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
 
-        return $this->json(['message' => 'Contraseña actualizada con éxito']);
+
     }
 
-    #[Route('/{id}/admin-password', name: 'user_admin_password_reset', methods: ['DELETE'])]
+    #[Route('/{id}/admin-password', name: 'user_admin_password_reset', methods: ['PUT'])]
     #[IsGranted('ROLE_ADMIN')]
     public function adminPasswordChange(AppUser $user, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        $newPwd = $data['new_password'] ?? '';
 
-        return $this->json(['message' => 'Contraseña reseteada por el administrador']);
+        try {
+            $this->userManager->resetPassword($user, $newPwd);
+            return $this->json(['message' => 'Successful password reset.'], 200);
+        } catch (\InvalidArgumentException $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
+
     }
 
 
