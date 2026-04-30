@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Repository\ClientRepository;
+use App\Repository\ProjectRepository;
 use App\Service\ClientManager;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,29 +22,42 @@ final class ClientController extends AbstractController
 {
 
 
-    public function __construct(private readonly ClientManager $clientManager)
+    public function __construct(
+        private readonly ClientManager $clientManager,
+        private readonly ClientRepository $clientRepository,
+        private readonly ProjectRepository $projectRepository,
+    )
     {}
 
-    #[Route('', name: 'client_index', methods:['GET'])]
+    #[Route('', name: 'index', methods:['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(Request $request, ClientRepository $clientRepository): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $term = $request->query->get('term');
         $isActive = $request->query->has('isActive')
                     ? $request->query->getBoolean('isActive')
                     : null;
 
-        $clients = $clientRepository->findWithSectorsByFilters($term, $isActive);
+        $clients = $this->clientRepository->findWithSectorsByFilters($term, $isActive);
 
         return $this->json($clients, 200, [], ['groups' => ['client:read']]);
     }
 
-    #[Route('/{id}', name:'client_show', methods: ['GET'])]
+    #[Route('/{id}', name:'show', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function show(Client $client): JsonResponse
     {
 
         return $this->json($client, 200, [], ['groups' => ['client:read']]);
+    }
+
+    #[Route('/{id}/projects', name:'show_projects', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function showProjects(Client $client): JsonResponse
+    {
+
+        $projects = $this->projectRepository->findByClient($client);
+        return $this->json($projects, 200, [], ['groups' => ['project:read']]);
     }
 
     #[Route('/{id}/contacts', name:'client_show_contacts', methods: ['GET'])]
