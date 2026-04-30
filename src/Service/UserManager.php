@@ -47,4 +47,24 @@ class UserManager
         $user->setIsActive(false);
         $this->entityManager->flush();
     }
+
+    public function changePassword(AppUser $user, string $oldPassword, string $newPassword):void
+    {
+        if (!$this->passwordHasher->isPasswordValid($user, $oldPassword)) {
+            throw new \InvalidArgumentException('La constraseña actual no es correct.');
+        }
+
+        $this->resetPassword($user, $newPassword);
+    }
+
+    public function resetPassword(AppUser $user, string $newPassword): void
+    {
+        if (strlen($newPassword) < 8) {
+            throw new \InvalidArgumentException('New password must be at lest 8 characters long.');
+        }
+
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $newPassword);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+    }
 }
