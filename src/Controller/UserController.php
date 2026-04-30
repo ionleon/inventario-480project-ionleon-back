@@ -11,6 +11,7 @@ use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -26,10 +27,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * */
 
 
-#[Route('/users')]
 #[OA\Tag(name: 'Users')]
+#[Route('/users')]
 final class UserController extends AbstractController
 {
+    public function __construct(
+        private AppUserRepository $repository,
+        private UserManager $userManager
+    ) {}
+
     #[Route('', name: 'app_user_index', methods: ['GET'])]
     #[OA\Response(
         response: 200,
@@ -53,7 +59,6 @@ final class UserController extends AbstractController
         return $this->json($users, 200, [], ['groups' => 'user:read']);
     }
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-
     public function show(Uuid  $id, AppUserRepository $repository): JsonResponse
     {
         $user = $repository -> find($id);
@@ -135,6 +140,45 @@ final class UserController extends AbstractController
         return $this->json($user, 200, [], ['groups' => 'user:read']);
 
     }
+
+    #[Route('/{id}/password-change', name: 'user_password_change', methods: ['PUT'])]
+    public function changePassword(AppUser $user, Request $request ): JsonResponse
+    {
+
+        if ($user !== $this->getUser()) {
+            throw $this->createAccessDeniedException('No puedes cambiar la contraseña de otro usuario.');
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $oldPwd = $data['old_password'] ?? '';
+        $newPwd = $data['new_password'] ?? '';
+
+        try {
+            $this->userManager->changePassword($user, $oldPwd, $newPwd);
+            return $this->json(['message' => 'Successful password update.'], 200);
+        } catch (\InvalidArgumentException $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
+
+
+    }
+
+    #[Route('/{id}/admin-password', name: 'user_admin_password_reset', methods: ['PUT'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function adminPasswordChange(AppUser $user, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $newPwd = $data['new_password'] ?? '';
+
+        try {
+            $this->userManager->resetPassword($user, $newPwd);
+            return $this->json(['message' => 'Successful password reset.'], 200);
+        } catch (\InvalidArgumentException $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
+
+    }
+
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
