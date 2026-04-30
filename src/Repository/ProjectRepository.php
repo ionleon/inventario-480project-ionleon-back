@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\AppUser;
+use App\Entity\Client;
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -42,14 +44,24 @@ class ProjectRepository extends ServiceEntityRepository
 
     }
 
-    public function findByClientId(string $clientId): array
+    public function findByClient(Client $client): array
     {
-     return $this->createQueryBuilder('p')
-         ->innerJoin('p.client', 'c')
-         ->andWhere('c.id = :clientId')
-         ->setParameter('clientId', $clientId)
-         ->getQuery()
-         ->getResult();
+         return $this->createQueryBuilder('p')
+             ->where('p.client = :client')
+             ->setParameter('client', $client)
+             ->getQuery()
+             ->getResult();
+    }
+
+    public function findByUser(AppUser $user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.projectUsers', 'pu')
+            ->where('pu.appUser = :user')
+            ->setParameter('user', $user)
+            ->orderBy('p.name', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
