@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\AppUser;
 use App\Entity\Project;
 use App\Entity\ProjectUser;
 use App\Repository\AppUserRepository;
@@ -10,6 +11,7 @@ use App\Service\ProjectAssignmentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +24,12 @@ use Symfony\Component\Uid\Uuid;
 #[OA\Tag(name: 'Project Assignments')]
 final class ProjectAssignmentController extends AbstractController
 {
+    public function __construct(
+        private readonly ProjectUserRepository $projectUserRepository,
+        private readonly ProjectAssignmentManager $assignmentManager
+    )
+    {}
+
     #[Route('', name: 'project_users_index', methods: ['GET'])]
     #[OA\Response(
         response: 200,
@@ -33,7 +41,8 @@ final class ProjectAssignmentController extends AbstractController
     )]
     public function index(Project $project): JsonResponse
     {
-        return $this->json($project->getProjectUsers(), 200, [], ['groups' => 'project:read']);
+        $assignments = $this->projectUserRepository->findAllByProjects($project);
+        return $this->json($assignments, 200, [], ['groups' => 'project:read']);
     }
 
 
@@ -52,28 +61,23 @@ final class ProjectAssignmentController extends AbstractController
     #[OA\Response(response: 400, description: 'Datos inválidos')]
     public function addUser(
         Project $project,
-        Request $request,
-        ProjectAssignmentManager $assignmentManager
+        Request $request
     ): JsonResponse {
 
         $data = json_decode($request->getContent(), true);
 
-        $userId = $data['user_id'];
-        $roleId = $data['role_id'];
+        $userId = $data['user_id'] ?? null;
+        $roleId = $data['role_id'] ?? null;
 
-        if(!$userId || !$roleId) {
+        if (!$userId || !$roleId) {
             return $this->json(['error' => 'user_id and role_id are required'], 400);
         }
 
         try {
-            $assignment = $assignmentManager->assignUser($project, $userId, $roleId);
+            $assignment = $this->assignmentManager->assignUser($project, $userId, $roleId);
             return $this->json($assignment, 201, [], ['groups' => 'project:read']);
         } catch (\Exception $e) {
-            $code = $e->getCode();
-            if (!is_int($code) || $code < 100 || $code >= 600) {
-                $code = 500;
-            }
-            return $this->json(['error' => $e->getMessage()], $code);
+            return $this->json(['error' => $e->getMessage()], 400);
         }
 
     }
@@ -95,12 +99,12 @@ final class ProjectAssignmentController extends AbstractController
     #[OA\Response(response: 403, description: 'Solo administradores')]
     public function update(
         Project $project,
-        Request $request,
-        ProjectAssignmentManager $assignmentManager
+        Request $request
+
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
-        $assignmentManager->syncProjectUsers($project, $data['users'] ?? []);
+        $this->assignmentManager->syncProjectUsers($project, $data['users'] ?? []);
 
         return $this->json($project->getProjectUsers(), 200, [], ['groups' => 'project:read']);
     }
@@ -110,13 +114,12 @@ final class ProjectAssignmentController extends AbstractController
     #[OA\Parameter(name: 'userId', in: 'path', description: 'ID del Usuario a quitar')]
     public function removeUser(
         Project $project,
-        Uuid $userId,
-        ProjectAssignmentManager $assignmentManager
+        #[MapEntity(mapping: ['id' => 'userId'])] AppUser $user
     ): JsonResponse
     {
 
         try {
-            $assignmentManager->removeAssignment($project,$userId);
+            $this->assignmentManager->removeAssignment($project,$user);
             return $this->json(null, 204);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
