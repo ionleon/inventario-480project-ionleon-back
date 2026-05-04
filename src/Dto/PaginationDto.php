@@ -4,6 +4,7 @@ namespace App\Dto;
 
 use Symfony\Component\Serializer\Attribute\Groups;
 
+#Not used, might use in the future
 class PaginationDto
 {
     public function __construct(
