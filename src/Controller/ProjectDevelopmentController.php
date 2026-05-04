@@ -31,6 +31,8 @@ final class ProjectDevelopmentController extends AbstractController
     #[Route('', name: 'project_development_create', methods: ['POST'])]
     public function create(Project $project, Request $request): JsonResponse
     {
+        $this->denyAccessUnlessGranted('PROJECT_EDIT', $project);
+
         $data = json_decode($request->getContent(), true);
         $dev = $this->devManager->create($project, $data);
         return $this->json([], 201, [], ['groups' => 'dev:read']);
@@ -43,6 +45,8 @@ final class ProjectDevelopmentController extends AbstractController
         Request $request
     ): JsonResponse
     {
+        $this->denyAccessUnlessGranted('PROJECT_EDIT', $project);
+
         if ($development->getProject() !== $project) {
             throw $this->createAccessDeniedException('This development does not belong to this project.');
         }
@@ -57,6 +61,9 @@ final class ProjectDevelopmentController extends AbstractController
         #[MapEntity(mapping: ['id' => 'developmentId'])] Development $development,
     ): JsonResponse
     {
+        $project = $development->getProject();
+        $this->denyAccessUnlessGranted('PROJECT_EDIT', $project );
+
         $this->devManager->delete($development);
         return $this->json(null, 204, [], []);
 
