@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Project;
+use App\Repository\ProjectRepository;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations;
@@ -32,8 +34,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class UserController extends AbstractController
 {
     public function __construct(
-        private AppUserRepository $repository,
-        private UserManager $userManager
+        private AppUserRepository $userRepository,
+        private ProjectRepository $projectRepository,
+        private UserManager       $userManager
     ) {}
 
     #[Route('', name: 'app_user_index', methods: ['GET'])]
@@ -68,6 +71,13 @@ final class UserController extends AbstractController
         }
 
         return $this->json($user, 200, [], ['groups' => 'user:read']);
+    }
+
+    #[Route('/{id}/projects', name: 'show_projects', methods: ['GET'])]
+    public function showProjects(AppUser $user) : JsonResponse
+    {
+        $projects = $this->projectRepository->findByUser($user);
+        return $this->json($projects, 200, [], ['groups' => 'project:read']);
     }
 
     /**
