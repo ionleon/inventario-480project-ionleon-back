@@ -6,6 +6,7 @@ use App\Entity\AppUser;
 use App\Entity\Project;
 use App\Entity\ProjectUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,16 +19,15 @@ class ProjectUserRepository extends ServiceEntityRepository
         parent::__construct($registry, ProjectUser::class);
     }
 
-    public function findAllByProjects(Project $project): array
+    public function qbAllByProjects(Project $project): QueryBuilder
     {
         return $this->createQueryBuilder('pu')
             ->innerJoin('pu.appUser', 'u')->addSelect('u')
             ->innerJoin('pu.projectRole', 'r')->addSelect('r')
             ->where('pu.project = :project')
-            ->setParameter('project', $project)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('project', $project);
     }
+
 
     public function findOneByProjectAndUser(Project $project, AppUser $user): array
     {

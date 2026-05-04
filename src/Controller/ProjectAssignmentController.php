@@ -7,6 +7,7 @@ use App\Entity\Project;
 use App\Entity\ProjectUser;
 use App\Repository\AppUserRepository;
 use App\Repository\ProjectUserRepository;
+use App\Service\PaginationService;
 use App\Service\ProjectAssignmentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Attribute\Model;
@@ -26,10 +27,15 @@ final class ProjectAssignmentController extends AbstractController
 {
     public function __construct(
         private readonly ProjectUserRepository $projectUserRepository,
-        private readonly ProjectAssignmentManager $assignmentManager
+        private readonly ProjectAssignmentManager $assignmentManager,
+        private readonly PaginationService $paginationService
+
     )
     {}
 
+    /**
+     * @throws \Exception
+     */
     #[Route('', name: 'project_users_index', methods: ['GET'])]
     #[OA\Response(
         response: 200,
@@ -39,9 +45,14 @@ final class ProjectAssignmentController extends AbstractController
             items: new OA\Items(ref: new Model(type: ProjectUser::class, groups: ['project:read']))
         )
     )]
-    public function index(Project $project): JsonResponse
+    public function index(Project $project, Request $request): JsonResponse
     {
-        $assignments = $this->projectUserRepository->findAllByProjects($project);
+        $qb = $this->projectUserRepository->qbAllByProjects($project);
+
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10);
+
+        $assignments = $this->paginationService->paginate($qb, $page, $limit);
         return $this->json($assignments, 200, [], ['groups' => 'project:read']);
     }
 
