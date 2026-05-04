@@ -41,6 +41,9 @@ final class UserController extends AbstractController
         private readonly PaginationService $paginationService,
     ) {}
 
+    /**
+     * @throws \Exception
+     */
     #[Route('', name: 'app_user_index', methods: ['GET'])]
     #[OA\Response(
         response: 200,
