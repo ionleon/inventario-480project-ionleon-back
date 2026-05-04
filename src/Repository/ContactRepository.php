@@ -46,6 +46,15 @@ class ContactRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    public function findByClient(Client $client): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.client = :client')
+            ->setParameter('client', $client)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Contact[] Returns an array of Contact objects
     //     */
