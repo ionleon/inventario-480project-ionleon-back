@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Service\PaginationService;
 use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
@@ -27,7 +28,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class ProjectController extends AbstractController
 {
 
+    public function __construct(
+        private readonly ProjectRepository $projectRepository,
+        private readonly PaginationService $paginationService,
+    )
+    {}
 
+    /**
+     * @throws Exception
+     */
     #[Route('', name: 'project_index', methods: ['GET'])]
     #[OA\Get(
         summary: 'Listar todos los proyectos',
@@ -42,10 +51,19 @@ final class ProjectController extends AbstractController
             )
         ]
     )]
-    public function index(ProjectRepository $repository): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $term = $request->query->get('term');
+        $isActive = $request->query->has('isActive')
+            ? $request->query->getBoolean('isActive')
+            : null;
 
-        $projects = $repository->findAll();
+        $qb = $this->projectRepository->qbByFilters($term, null, $isActive);
+
+        $page = $request->query->get('page', 1);
+        $limit = $request->query->get('limit', 10);
+
+        $projects = $this->paginationService->paginate($qb, $page,$limit);
 
         return $this->json($projects, 200, [], ['groups' => ['project:read']]);
     }
