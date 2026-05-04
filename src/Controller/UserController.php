@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
+use App\Service\PaginationService;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations;
@@ -34,9 +35,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class UserController extends AbstractController
 {
     public function __construct(
-        private AppUserRepository $userRepository,
-        private ProjectRepository $projectRepository,
-        private UserManager       $userManager
+        private readonly AppUserRepository $userRepository,
+        private readonly ProjectRepository $projectRepository,
+        private readonly UserManager       $userManager,
+        private readonly PaginationService $paginationService,
     ) {}
 
     #[Route('', name: 'app_user_index', methods: ['GET'])]
@@ -49,7 +51,7 @@ final class UserController extends AbstractController
         )
     )]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(Request $request, AppUserRepository $repository): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $term = $request->query->get('term');
         $role = $request->query->get('role');
@@ -57,14 +59,19 @@ final class UserController extends AbstractController
                     ? $request->query->getBoolean('isActive')
                     : null;
 
-        $users = $repository->findByFilters($term, $role, $isActive);
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10);
+
+        $qb = $this->userRepository->qbByFilters($term, $role, $isActive);
+        $users = $this->paginationService->paginate($qb, $page, $limit);
+
 
         return $this->json($users, 200, [], ['groups' => 'user:read']);
     }
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(Uuid  $id, AppUserRepository $repository): JsonResponse
+    public function show(Uuid  $id): JsonResponse
     {
-        $user = $repository -> find($id);
+        $user = $this->userRepository->find($id);
 
         if (!$user) {
             return $this->json(['error' => 'User not found'], 404);
@@ -74,9 +81,15 @@ final class UserController extends AbstractController
     }
 
     #[Route('/{id}/projects', name: 'show_projects', methods: ['GET'])]
-    public function showProjects(AppUser $user) : JsonResponse
+    public function showProjects(AppUser $user, Request $request) : JsonResponse
     {
-        $projects = $this->projectRepository->findByUser($user);
+        $qb = $this->projectRepository->findByUser($user);
+
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10);
+
+        $projects = $this->paginationService->paginate($qb);
+
         return $this->json($projects, 200, [], ['groups' => 'project:read']);
     }
 
