@@ -24,7 +24,6 @@ class TimeEntryManager
 
     public function __construct(
         private EntityManagerInterface $em,
-        private TimeEntryRepository    $timeEntryRepository,
         private ValidatorInterface     $validator,
         private ProjectUserRepository  $puRepository,
         private ProjectRepository      $projectRepository,
@@ -32,10 +31,6 @@ class TimeEntryManager
     ) {}
 
 
-    public function getAllByProjects(Project $project, ?AppUser $user = null) : array
-    {
-        return $this->timeEntryRepository->findByProjectAndUser($project, $user);
-    }
 
     /**
      * @throws Exception
