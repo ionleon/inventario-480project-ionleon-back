@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use ApiPlatform\State\Pagination\Pagination;
 use App\Dto\PaginationDto;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -12,7 +13,7 @@ class PaginationService
     /**
      * @throws Exception
      */
-    public function paginate(QueryBuilder $qb, int $page = 1, int $limit = 10): PaginationDto
+    public function paginate(QueryBuilder $qb, int $page = 1, int $limit = 10): Paginator
     {
 
         $page = max(1, $page);
@@ -21,17 +22,8 @@ class PaginationService
         $qb->setFirstResult(($page -1) * $limit)
             ->setMaxResults($limit);
 
-        $paginator = new Paginator($qb);
-        $totalItems = count($paginator);
-        $totalPages = (int) ceil($totalItems / $limit);
+        return new Paginator($qb);
 
-        return new PaginationDto(
-            $paginator->getIterator(),
-            $totalItems,
-            $page,
-            $limit,
-            $totalPages
-        );
     }
 
 }
