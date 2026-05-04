@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\AppUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,7 +17,7 @@ class AppUserRepository extends ServiceEntityRepository
         parent::__construct($registry, AppUser::class);
     }
 
-    public function findByFilters(?string $term, ?string $role, ?bool $isActive)
+    public function qbByFilters(?string $term, ?string $role, ?bool $isActive) : QueryBuilder
     {
         $qb = $this->createQueryBuilder('u');
 
@@ -38,7 +39,7 @@ class AppUserRepository extends ServiceEntityRepository
         $qb->orderBy('u.surname' , 'ASC')
             ->addOrderBy('u.name' , 'ASC');
 
-        return $qb->getQuery()->getResult();
+        return $qb;
     }
 
     #Revisar esto para mas adelante
