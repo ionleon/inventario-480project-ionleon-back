@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Client;
 use App\Entity\Contact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -46,13 +47,11 @@ class ContactRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
-    public function findByClient(Client $client): array
+    public function findByClient(Client $client): QueryBuilder
     {
         return $this->createQueryBuilder('c')
             ->where('c.client = :client')
-            ->setParameter('client', $client)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('client', $client);
     }
 
     //    /**
