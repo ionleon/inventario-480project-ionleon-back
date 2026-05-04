@@ -6,6 +6,7 @@ use App\Entity\AppUser;
 use App\Entity\TimeEntry;
 use App\Repository\TimeEntryRepository;
 
+use App\Service\PaginationService;
 use App\Service\TimeEntryManager;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,18 +19,24 @@ final class UserTimeEntryController extends AbstractController
 {
 
     public function __construct(
-      private TimeEntryManager $teManager,
-      private TimeEntryRepository $teRepostory
+      private readonly TimeEntryManager $teManager,
+      private readonly TimeEntryRepository $teRepostory,
+      private readonly PaginationService $paginationService
     ) {}
 
     #[Route('', name: 'index', methods: ['GET'])]
-    public function index(AppUser $user): Response
+    public function index(AppUser $user, Request $request): Response
     {
         if(!$this->isGranted('ROLE_ADMIN') && $user !== $this->getUser()){
             throw $this->createAccessDeniedException('Cannot see hours of other users.');
         }
 
-        $entries = $this->teRepostory->findByUser($user);
+        $qb = $this->teRepostory->qbByUser($user);
+
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10);
+
+        $entries = $this->paginationService->paginate($qb, $page, $limit);
         return $this->json($entries, 200, [], ['groups' => ['time:read']]);
     }
 

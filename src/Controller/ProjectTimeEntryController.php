@@ -6,6 +6,7 @@ use App\Entity\Project;
 use App\Entity\TimeEntry;
 use App\Repository\ProjectUserRepository;
 use App\Repository\TimeEntryRepository;
+use App\Service\PaginationService;
 use App\Service\TimeEntryManager;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -24,15 +25,25 @@ final class ProjectTimeEntryController extends AbstractController
     public function __construct(
         private TimeEntryManager $teManager,
         private TimeEntryRepository $teRepository,
-        private ProjectUserRepository $puRepository
+        private ProjectUserRepository $puRepository,
+        private readonly PaginationService $paginationService
+
     ) {}
 
+    /**
+     * @throws Exception
+     */
     #[Route('', name: 'project_time_entry_index', methods: ['GET'])]
-    public function index(Project $project): JsonResponse
+    public function index(Project $project, Request $request): JsonResponse
     {
         $user = $this->isGranted('ROLE_ADMIN') ? null : $this->getUser();
 
-        $timeEntries = $this->teManager->getAllByProjects($project, $user);
+        $qb = $this->teRepository->qbByProjectAndUser($project, $user);
+
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10);
+
+        $timeEntries = $this->paginationService->paginate($qb, $page, $limit);
 
         return $this->json($timeEntries, 200, [], ['groups' => 'time:read']);
     }
