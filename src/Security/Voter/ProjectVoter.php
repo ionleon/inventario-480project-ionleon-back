@@ -11,11 +11,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 final class ProjectVoter extends Voter
 {
     public const MANAGE_USER = 'PROJECT_MANAGE_USERS';
+    public const EDIT = 'PROJECT_EDIT';
 
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return $attribute === self::MANAGE_USER && $subject instanceof Project;
+        return in_array($attribute,  [self::MANAGE_USER, self::EDIT])
+               && $subject instanceof Project;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
