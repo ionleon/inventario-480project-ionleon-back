@@ -48,11 +48,11 @@ class Project
      * @var Collection<int, Development>
      */
     #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'project', orphanRemoval: true)]
-    #[Groups(['project:read', 'project:write'])]
+    #[Groups(['project:write'])]
     private Collection $developments;
 
     #[ORM\OneToMany(targetEntity: ProjectUser::class, mappedBy: 'project', orphanRemoval: true)]
-    #[Groups(['project:read', 'project:write'])]
+    #[Groups(['project:write'])]
     private  Collection $projectUsers;
 
     #[ORM\Column]
