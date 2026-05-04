@@ -22,7 +22,7 @@ class AppUserRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('u');
 
         if($term) {
-            $qb->andWhere('u.name LIKE :term OR u.surname LIKE :term OR u.email LIKE :term')
+            $qb->andWhere('LOWER(u.name) LIKE LOWER(:term) OR LOWER(u.surname) LIKE LOWER(:term) OR LOWER(u.email) LIKE LOWER(:term)')
                 ->setParameter('term', '%' . $term . '%');
         }
 

@@ -25,7 +25,7 @@ class ProjectRepository extends ServiceEntityRepository
                     ->innerJoin('p.client', 'c');
 
         if($term) {
-            $qb->andWhere('p.name LIKE :term OR p.description LIKE :term OR c.name LIKE :term')
+            $qb->andWhere('LOWER(p.name) LIKE LOWER(:term) OR LOWER(p.description) LIKE LOWER(:term) OR LOWER(c.name) LIKE LOWER(:term)')
                 ->setParameter('term', '%'.$term.'%');
         }
 
