@@ -84,10 +84,6 @@ class ContactManager
             $contact->setNote($data['note']);
         }
 
-        if (isset($data['isActive'])) {
-            $contact->setIsActive((bool)$data['isActive']);
-        }
-
         $totalContacts = $this->contactRepository->countContactsForClient($contact->getClient());
         $wantsToBeMain = $data['isMain'] ?? $contact->isMain();
 
