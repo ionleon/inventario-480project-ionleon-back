@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Repository\ClientRepository;
+use App\Repository\ContactRepository;
 use App\Repository\ProjectRepository;
 use App\Service\ClientManager;
+use App\Service\ContactManager;
+use App\Service\ProjectManager;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,6 +29,8 @@ final class ClientController extends AbstractController
         private readonly ClientManager $clientManager,
         private readonly ClientRepository $clientRepository,
         private readonly ProjectRepository $projectRepository,
+        private readonly ContactRepository $contactRepository,
+        private readonly ContactManager $contactManager,
     )
     {}
 
@@ -64,9 +69,20 @@ final class ClientController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function showContacts(Client $client): JsonResponse
     {
-        $contacts = $client->getContacts();
+        $contacts = $this->contactRepository->findByClient($client);
 
         return $this->json($contacts, 200, [], ['groups' => ['contact:read']]);
+    }
+
+    #[Route('/{id}/contacts', name:'create_contacts', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function createContacts(Client $client, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $this->contactManager->create($data, $client);
+
+        return $this->json([], 201, [], ['groups' => ['contact:read']]);
     }
 
     #[Route('', name: 'create_client', methods: ['POST'])]
