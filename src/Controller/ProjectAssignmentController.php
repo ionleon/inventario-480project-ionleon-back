@@ -64,6 +64,8 @@ final class ProjectAssignmentController extends AbstractController
         Request $request
     ): JsonResponse {
 
+        $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
+
         $data = json_decode($request->getContent(), true);
 
         $userId = $data['user_id'] ?? null;
@@ -75,7 +77,7 @@ final class ProjectAssignmentController extends AbstractController
 
         try {
             $assignment = $this->assignmentManager->assignUser($project, $userId, $roleId);
-            return $this->json($assignment, 201, [], ['groups' => 'project:read']);
+            return $this->json([], 201, [], ['groups' => 'project:read']);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
         }
@@ -83,7 +85,6 @@ final class ProjectAssignmentController extends AbstractController
     }
 
     #[Route('', name: 'project_users_update', methods: ['PUT'])]
-    #[IsGranted('ROLE_ADMIN')]
     #[OA\RequestBody(
         content: new OA\JsonContent(
             properties: [
@@ -96,12 +97,14 @@ final class ProjectAssignmentController extends AbstractController
         )
     )]
     #[OA\Response(response: 200, description: 'Usuarios sincronizados')]
-    #[OA\Response(response: 403, description: 'Solo administradores')]
+    #[OA\Response(response: 403, description: 'Solo administradores o project managers')]
     public function update(
         Project $project,
         Request $request
 
     ): JsonResponse {
+
+        $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
         $data = json_decode($request->getContent(), true);
 
         $this->assignmentManager->syncProjectUsers($project, $data['users'] ?? []);
@@ -117,7 +120,7 @@ final class ProjectAssignmentController extends AbstractController
         #[MapEntity(mapping: ['id' => 'userId'])] AppUser $user
     ): JsonResponse
     {
-
+        $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
         try {
             $this->assignmentManager->removeAssignment($project,$user);
             return $this->json(null, 204);
