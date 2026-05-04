@@ -41,7 +41,7 @@ class Project
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['project:read', 'project:write'])]
-    #[SerializedName('client_id')]
+
     private ?Client $client = null;
 
     /**
