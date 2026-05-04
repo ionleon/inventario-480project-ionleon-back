@@ -21,7 +21,7 @@ class ProjectUserFixtures extends Fixture implements DependentFixtureInterface
         $devUser = $this->getReference(UserFixtures::DEV_REFERENCE, AppUser::class);
 
         $roleManager = $this->getReference('role-project-manager', ProjectRole::class);
-        $roleDev = $this->getReference('role-backend-developer', ProjectRole::class);
+        $roleDev = $this->getReference('role-developer', ProjectRole::class);
 
         for ($i = 0; $i < 5; $i++) {
             $project = $this->getReference(ProjectFixtures::PROJECT_REF . $i, Project::class);
