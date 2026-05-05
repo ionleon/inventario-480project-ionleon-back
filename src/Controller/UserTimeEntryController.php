@@ -37,7 +37,15 @@ final class UserTimeEntryController extends AbstractController
         $limit = $request->query->getInt('limit', 10);
 
         $entries = $this->paginationService->paginate($qb, $page, $limit);
-        return $this->json($entries, 200, [], ['groups' => ['time:read']]);
+
+        #Provisional method, might change in the future
+
+        $totalHours = $this->teRepostory->getTotalHoursByUser($user);
+
+        return $this->json([
+            'total_hours' => $totalHours,
+            'data' => $entries
+        ], 200, [], ['groups' => ['time:read']]);
     }
 
     /**
