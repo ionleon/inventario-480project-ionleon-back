@@ -42,15 +42,19 @@ class ContactManager
 //        return $contact;
 //    }
 
-    public function create(array $data): Contact
+    public function create(array $data, ?Client $client = null): Contact
     {
-        if (!isset($data['id'], $data['client_id'], $data['fullName'])) {
-            throw new \InvalidArgumentException('El cliente y el nombre completo son obligatorios.');
+        if (!isset($data['id'], $data['fullName'])) {
+            throw new \InvalidArgumentException('ID and name cannot be empty.');
         }
 
-        $client = $this->em->getRepository(Client::class)->find($data['client_id']);
+
+        if (!$client && isset($data['client_id'])) {
+            $client = $this->em->getRepository(Client::class)->find($data['client_id']);
+        }
+
         if (!$client) {
-            throw new NotFoundHttpException('Cliente no encontrado.');
+            throw new NotFoundHttpException('Client not found.');
         }
 
         $contact = new Contact();
@@ -82,10 +86,6 @@ class ContactManager
 
         if (isset($data['note'])) {
             $contact->setNote($data['note']);
-        }
-
-        if (isset($data['isActive'])) {
-            $contact->setIsActive((bool)$data['isActive']);
         }
 
         $totalContacts = $this->contactRepository->countContactsForClient($contact->getClient());

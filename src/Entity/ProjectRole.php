@@ -20,7 +20,7 @@ class ProjectRole
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['project:read ','project_role:read'])]
+    #[Groups(['project:read','project_role:read'])]
     private ?string $name = null;
 
 

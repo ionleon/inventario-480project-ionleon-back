@@ -41,18 +41,18 @@ class Project
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['project:read', 'project:write'])]
-    #[SerializedName('client_id')]
+
     private ?Client $client = null;
 
     /**
      * @var Collection<int, Development>
      */
     #[ORM\OneToMany(targetEntity: Development::class, mappedBy: 'project', orphanRemoval: true)]
-    #[Groups(['project:read', 'project:write'])]
+    #[Groups(['project:write'])]
     private Collection $developments;
 
     #[ORM\OneToMany(targetEntity: ProjectUser::class, mappedBy: 'project', orphanRemoval: true)]
-    #[Groups(['project:read', 'project:write'])]
+    #[Groups(['project:write'])]
     private  Collection $projectUsers;
 
     #[ORM\Column]

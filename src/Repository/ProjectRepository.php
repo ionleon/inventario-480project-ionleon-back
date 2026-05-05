@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\AppUser;
+use App\Entity\Client;
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,18 +19,19 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
-    public function findByFilters(?string $term, ?string $clientId, ?bool $isActive)
+    public function qbByFilters(?string $term, ?Client $client, ?bool $isActive) : QueryBuilder
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('p')
+                    ->innerJoin('p.client', 'c');
 
         if($term) {
-            $qb->andWhere('p.name LIKE :term OR p.description LIKE :term')
+            $qb->andWhere('LOWER(p.name) LIKE LOWER(:term) OR LOWER(p.description) LIKE LOWER(:term) OR LOWER(c.name) LIKE LOWER(:term)')
                 ->setParameter('term', '%'.$term.'%');
         }
 
-        if($clientId) {
-            $qb->andWhere('p.client = :clientId')
-                ->setParameter('clientId', $clientId);
+        if($client) {
+            $qb->andWhere('p.client = :client')
+                ->setParameter('client', $client);
         }
 
         if($isActive !== null) {
@@ -38,18 +42,24 @@ class ProjectRepository extends ServiceEntityRepository
         $qb->orderBy('p.startDate', 'DESC')
             ->addOrderBy('p.name', 'ASC');
 
-        return $qb->getQuery()->getResult();
+        return $qb;
 
     }
 
-    public function findByClientId(string $clientId): array
+    public function qbByClient(Client $client): QueryBuilder
     {
-     return $this->createQueryBuilder('p')
-         ->innerJoin('p.client', 'c')
-         ->andWhere('c.id = :clientId')
-         ->setParameter('clientId', $clientId)
-         ->getQuery()
-         ->getResult();
+         return $this->createQueryBuilder('p')
+             ->where('p.client = :client')
+             ->setParameter('client', $client);
+    }
+
+    public function findByUser(AppUser $user): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.projectUsers', 'pu')
+            ->where('pu.appUser = :user')
+            ->setParameter('user', $user)
+            ->orderBy('p.name', 'ASC');
     }
 
     //    /**

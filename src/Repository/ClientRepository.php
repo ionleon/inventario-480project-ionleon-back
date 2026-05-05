@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,7 +17,7 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
-    public function findWithSectorsByFilters(?string $term,?bool $isActive  ): array
+    public function qbWithSectorsByFilters(?string $term, ?bool $isActive = true ): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
                     ->addSelect('s')
@@ -34,7 +35,7 @@ class ClientRepository extends ServiceEntityRepository
 
         $qb->orderBy('c.name' , 'ASC');
 
-        return $qb->getQuery()->getResult();
+        return $qb;
 
     }
 

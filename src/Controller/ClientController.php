@@ -4,7 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Repository\ClientRepository;
+use App\Repository\ContactRepository;
+use App\Repository\ProjectRepository;
 use App\Service\ClientManager;
+use App\Service\ContactManager;
+use App\Service\PaginationService;
+use App\Service\ProjectManager;
+use Exception;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,24 +27,41 @@ final class ClientController extends AbstractController
 {
 
 
-    public function __construct(private readonly ClientManager $clientManager)
+    public function __construct(
+        private readonly ClientManager $clientManager,
+        private readonly ClientRepository $clientRepository,
+        private readonly ProjectRepository $projectRepository,
+        private readonly ContactRepository $contactRepository,
+        private readonly ContactManager $contactManager,
+        private readonly PaginationService $paginationService,
+    )
     {}
 
-    #[Route('', name: 'client_index', methods:['GET'])]
+    /**
+     * @throws Exception
+     */
+    #[Route('', name: 'index', methods:['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(Request $request, ClientRepository $clientRepository): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+
         $term = $request->query->get('term');
         $isActive = $request->query->has('isActive')
-                    ? $request->query->getBoolean('isActive')
-                    : null;
+            ? $request->query->getBoolean('isActive')
+            : null;
 
-        $clients = $clientRepository->findWithSectorsByFilters($term, $isActive);
+
+        $qb = $this->clientRepository->qbWithSectorsByFilters($term, $isActive);
+
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10);
+
+        $clients = $this->paginationService->paginate($qb, $page, $limit);
 
         return $this->json($clients, 200, [], ['groups' => ['client:read']]);
     }
 
-    #[Route('/{id}', name:'client_show', methods: ['GET'])]
+    #[Route('/{id}', name:'show', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function show(Client $client): JsonResponse
     {
@@ -46,13 +69,48 @@ final class ClientController extends AbstractController
         return $this->json($client, 200, [], ['groups' => ['client:read']]);
     }
 
+    /**
+     * @throws Exception
+     */
+    #[Route('/{id}/projects', name:'show_projects', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function showProjects(Client $client, Request $request): JsonResponse
+    {
+
+        $qb = $this->projectRepository->qbByClient($client);
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10);
+
+        $projects = $this->paginationService->paginate($qb, $page, $limit);
+
+        return $this->json($projects, 200, [], ['groups' => ['project:read']]);
+    }
+
+    /**
+     * @throws Exception
+     */
     #[Route('/{id}/contacts', name:'client_show_contacts', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function showContacts(Client $client): JsonResponse
+    public function showContacts(Client $client, Request $request): JsonResponse
     {
-        $contacts = $client->getContacts();
+        $qb = $this->contactRepository->findByClient($client);
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10);
+
+        $contacts = $this->paginationService->paginate($qb, $page, $limit);
 
         return $this->json($contacts, 200, [], ['groups' => ['contact:read']]);
+    }
+
+    #[Route('/{id}/contacts', name:'create_contacts', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function createContacts(Client $client, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $this->contactManager->create($data, $client);
+
+        return $this->json([], 201, [], ['groups' => ['contact:read']]);
     }
 
     #[Route('', name: 'create_client', methods: ['POST'])]
@@ -64,7 +122,7 @@ final class ClientController extends AbstractController
         try {
             $client = $this->clientManager->create($data);
             return $this->json([], 201);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
         }
     }

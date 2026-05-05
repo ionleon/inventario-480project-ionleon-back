@@ -30,7 +30,7 @@ class ContactFixtures extends Fixture implements DependentFixtureInterface
                 $contact->setFullName($faker->name());
                 $contact->setPhoneNumber($faker->phoneNumber());
                 $contact->setEmail($faker->safeEmail());
-                $contact->setIsActive(true);
+
 
                 // El primer contacto del bucle será el principal (isMain)
                 $contact->setIsMain($j === 0);

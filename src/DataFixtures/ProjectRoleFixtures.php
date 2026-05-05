@@ -16,12 +16,10 @@ class ProjectRoleFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $roles = [
-            ['id' => '019dd397-475d-74cc-8b26-65e2324090d9','name' => 'Project Manager'],
-            ['id' => '019dd397-475d-7a48-b120-7b70b9bac7b5', 'name' => 'Tech Lead'],
-            ['id' => '019dd397-475d-7522-b2e1-82ccff8d50c4', 'name' => 'Backend Developer'],
-            ['id' => '019dd397-475d-784f-acee-1fd7d93fbd27', 'name' => 'Frontend Developer'],
-            ['id' => '019dd397-475d-7fe1-b1d7-cf7ee9cae922', 'name' => 'UI/UX Designer'],
-            ['id' => '019dd397-475d-797c-bfec-c9f9e688c7b7', 'name' => 'QA Engineer'],
+            ['id' => '019dd397-475d-74cc-8b26-65e2324090d9','name' => 'PROJECT_MANAGER'],
+            ['id' => '019dd397-475d-7a48-b120-7b70b9bac7b5', 'name' => 'TECH_LEAD'],
+            ['id' => '019dd397-475d-7522-b2e1-82ccff8d50c4', 'name' => 'KAM'],
+            ['id' => '019dd397-475d-784f-acee-1fd7d93fbd27', 'name' => 'DEVELOPER'],
         ];
 
         foreach ($roles as $data) {
@@ -31,7 +29,7 @@ class ProjectRoleFixtures extends Fixture
 
             $manager->persist($role);
 
-            $this->addReference('role-' . strtolower(str_replace(' ', '-', $data['name'])), $role);
+            $this->addReference('role-' . strtolower(str_replace([' ', '_'], '-', $data['name'])), $role);
         }
 
         $manager->flush();

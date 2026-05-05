@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\Client;
 use App\Entity\Project;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class ProjectManager
 {
@@ -20,21 +23,57 @@ class ProjectManager
     /**
      * @throws Exception
      */
-    public function create(Project $project, ?string $clientId) : Project
+    public function create(array $data, ?Client $client = null) : Project
     {
-
-
-        if (!$clientId) {
-            throw new \InvalidArgumentException("Client ID is required", 400);
+        if (!isset($data['name'])) {
+            throw new \InvalidArgumentException('Project name cannot be empty.');
         }
 
-        $client = $this->clientRepository->find($clientId);
-        if(!$client){
-            throw new Exception("Client not found with ID: $clientId", 404);
+        $id = Uuid::fromString($data['id']);
+
+        if (!$client && isset($data['client_id'])){
+            $client = $this->clientRepository->find($data['client_id']);
         }
+
+        if (!$client) {
+            throw new NotFoundHttpException('Client not found.');
+        }
+
+        $project = new Project();
+        $project->setId($id);
         $project->setClient($client);
 
-        if ($project->isActive() === null){
+        return $this->save($project, $data);
+    }
+
+    public function save(Project $project, array $data) : Project
+    {
+
+        if (isset($data['name'])) {
+            $project->setName($data['name']);
+        }
+
+        if (isset($data['description'])) {
+            $project->setDescription($data['description']);
+        }
+
+        if (isset($data['start_date'])) {
+            $project->setStartedAt($data['start_date']);
+        }
+
+        $client = null;
+
+        if (isset($data['client_id'])){
+            $client = $this->clientRepository->find($data['client_id']);
+        }
+
+        if ($client) {
+            $project->setClient($client);
+        }
+
+        if (isset($data['is_active'])) {
+            $project->setIsActive($data['is_active']);
+        } elseif ($project->isActive() === null) {
             $project->setIsActive(true);
         }
 
@@ -44,12 +83,7 @@ class ProjectManager
         return $project;
     }
 
-    public function update(Project $project) : void
-    {
-        $this->entityManager->flush();
-    }
-
-    public function remove(Project $project) : void
+    public function delete(Project $project) : void
     {
         $this->entityManager->remove($project);
         $this->entityManager->flush();

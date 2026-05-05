@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Service\PaginationService;
 use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
@@ -27,7 +28,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class ProjectController extends AbstractController
 {
 
+    public function __construct(
+        private readonly ProjectRepository $projectRepository,
+        private readonly PaginationService $paginationService,
+        private readonly ProjectManager $projectManager,
+        private readonly SerializerInterface $serializer,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ValidatorInterface $validator
+    )
+    {}
 
+    /**
+     * @throws Exception
+     */
     #[Route('', name: 'project_index', methods: ['GET'])]
     #[OA\Get(
         summary: 'Listar todos los proyectos',
@@ -42,10 +55,19 @@ final class ProjectController extends AbstractController
             )
         ]
     )]
-    public function index(ProjectRepository $repository): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $term = $request->query->get('term');
+        $isActive = $request->query->has('isActive')
+            ? $request->query->getBoolean('isActive')
+            : null;
 
-        $projects = $repository->findAll();
+        $qb = $this->projectRepository->qbByFilters($term, null, $isActive);
+
+        $page = $request->query->get('page', 1);
+        $limit = $request->query->get('limit', 10);
+
+        $projects = $this->paginationService->paginate($qb, $page,$limit);
 
         return $this->json($projects, 200, [], ['groups' => ['project:read']]);
     }
@@ -64,118 +86,60 @@ final class ProjectController extends AbstractController
             new OA\Response(response: 404, description: 'Proyecto no encontrado')
         ]
     )]
-    public function show(Uuid $id, ProjectRepository $repository): JsonResponse
+    public function show(Project $project): JsonResponse
     {
-        $project = $repository -> find($id);
-
-        if (!$project) {
-            return $this->json(['error' => 'Project not found'], status: 404);
-        }
 
         return $this->json($project, 200, [], ['groups' => ['project:read']]);
+
     }
 
     /**
-     * @throws ExceptionInterface
      * @throws Exception
      */
     #[Route('',name: 'project_create', methods: ['POST'])]
-    public function create(
-        Request $request,
-        SerializerInterface $serializer,
-        ProjectManager $projectManager
-    ):JsonResponse
+    public function create( Request $request ): JsonResponse
     {
-        try {
-            $project = $serializer->deserialize($request->getContent(), Project::class, 'json', [
-                'groups' => ['project:write'],
-            ]);
 
-            $data = json_decode($request->getContent(), true);
 
-            $projectManager->create($project, $data['client_id'] ?? null);
+        $data = json_decode($request->getContent(), true);
 
-            return $this->json($project, 201, [], ['groups' => 'project:read']);
-        } catch(\Exception $e) {
-            return $this->json(
-                ['error' => $e->getMessage()],
-                $e->getCode() ?: 500
-            );
-        }
+        $project = $this->projectManager->create($data);
+
+        return $this->json([], 201, [], ['groups' => 'project:read']);
+
+
 
     }
 
-    /**
-     * @throws ExceptionInterface
-     */
     #[Route('/{id}', name: 'project_edit', methods: ['PUT'])]
-    public function edit(
-        Uuid $id,
-        ProjectRepository $repository,
-        Request $request,
-        SerializerInterface $serializer,
-        ProjectManager $projectManager,
-        ValidatorInterface $validator
-    ):JsonResponse
+    public function edit(Project $project,Request $request) : JsonResponse
     {
-        $project = $repository -> find($id);
 
-        if (!$project) {
-            return $this->json(['error' => 'Project not found'], 404);
-        }
+        $data = json_decode($request->getContent(), true);
 
-        $serializer->deserialize(
-            $request->getContent(),
-            Project::class,
-            'json',
-            [
-                AbstractNormalizer::OBJECT_TO_POPULATE => $project,
-                'groups' => ['project:write']
-            ]
-        );
+        $this->projectManager->save($project, $data);
 
-        $errors = $validator->validate($project);
-        if (count($errors) > 0) {
-            return $this->json($errors, 400);
-        }
-
-        $projectManager->update($project);
-
-        return $this->json($project, 200, [], ['groups' => 'project:read']);
+        return $this->json([], 200, [], ['groups' => 'project:read']);
 
     }
 
     #[Route('/{id}', name: 'project_delete', methods: ['DELETE'])]
-    public function delete(Uuid $id, ProjectRepository $repository, EntityManagerInterface $em): JsonResponse
+    public function delete(Project $project): JsonResponse
     {
-        $project = $repository->find($id);
-        if (!$project) return $this->json(['error' => 'Project not found'], 404);
 
-        $em->remove($project);
-        $em->flush();
+
+        $this->projectManager->delete($project);
 
         return $this->json(null, 204);
     }
 
     #[Route('/{id}', name: 'project_deactivate', methods: ['PATCH'])]
-    public function deactivate(
-        Uuid $id,
-        ProjectRepository $repository,
-        ProjectManager$projectManager
-    ): JsonResponse
+    public function deactivate(Project $project): JsonResponse
     {
 
-        $project = $repository -> find($id);
 
-        if(!$project){
-            return $this->json(['error' => 'Project not found'], 404);
-        }
+        $this->projectManager->deactivate($project);
 
-        $projectManager->deactivate($project);
-
-        return $this->json([
-            'message' => 'Project has been deactivated',
-            'id' => $project->getId()
-        ], 200);
+        return $this->json([], 200);
     }
 }

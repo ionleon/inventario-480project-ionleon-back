@@ -6,6 +6,7 @@ use App\Entity\AppUser;
 use App\Entity\Project;
 use App\Entity\TimeEntry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,7 +19,7 @@ class TimeEntryRepository extends ServiceEntityRepository
         parent::__construct($registry, TimeEntry::class);
     }
 
-    public function findByProjectAndUser(Project $project, ?AppUser $user = null): array
+    public function qbByProjectAndUser(Project $project, ?AppUser $user = null): QueryBuilder
     {
         $qb = $this->createQueryBuilder('te')
             ->innerJoin('te.projectUser', 'pu')
@@ -30,9 +31,18 @@ class TimeEntryRepository extends ServiceEntityRepository
                 ->setParameter('user', $user);
         }
 
-        return $qb->orderBy('te.date', 'DESC')
-            ->getQuery()
-            ->getResult();
+        $qb->orderBy('te.date', 'DESC');
+
+        return $qb;
+    }
+
+    public function qbByUser(AppUser $user): QueryBuilder
+    {
+        return $this->createQueryBuilder('te')
+            ->innerJoin('te.projectUser', 'pu')
+            ->where('pu.appUser = :user')
+            ->setParameter('user', $user)
+            ->orderBy('te.date', 'DESC');
     }
 
     //    /**
