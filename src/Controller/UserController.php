@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
 use App\Service\PaginationService;
+use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations;
@@ -42,7 +43,7 @@ final class UserController extends AbstractController
     ) {}
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('', name: 'app_user_index', methods: ['GET'])]
     #[OA\Response(
@@ -58,8 +59,8 @@ final class UserController extends AbstractController
     {
         $term = $request->query->get('term');
         $role = $request->query->get('role');
-        $isActive = $request->query->has('isActive')
-                    ? $request->query->getBoolean('isActive')
+        $isActive = $request->query->has('is_active')
+                    ? $request->query->getBoolean('is_active')
                     : null;
 
         $page = $request->query->getInt('page', 1);
@@ -83,6 +84,9 @@ final class UserController extends AbstractController
         return $this->json($user, 200, [], ['groups' => 'user:read']);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/{id}/projects', name: 'show_projects', methods: ['GET'])]
     public function showProjects(AppUser $user, Request $request) : JsonResponse
     {
@@ -101,67 +105,23 @@ final class UserController extends AbstractController
      */
     #[Route('',name: 'app_user_create', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function create(
-        Request $request,
-        SerializerInterface $serializer,
-        UserManager $userManager,
-        ValidatorInterface $validator
-    ): JsonResponse
+    public function create(Request $request): JsonResponse
     {
-        $user = $serializer->deserialize(
-            $request->getContent(),
-            AppUser::class,
-            'json',
-            ['groups' => ['user:write']]
-        );
 
-        $errors = $validator->validate($user);
-        if (count($errors) > 0) {
-            return $this->json($errors, 400);
-        }
+        $data = json_decode($request->getContent(), true);
 
+        $user = $this->userManager->create($data);
 
-        $userManager->create($user);
-
-        return $this->json($user, 201, [], ['groups' => 'user:read']);
+        return $this->json([], 201, [], ['groups' => 'user:read']);
     }
 
-    /**
-     * @throws ExceptionInterface
-     */
     #[Route('/{id}', name: 'app_user_edit', methods: ['PUT'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function edit(
-        Uuid  $id,
-        AppUserRepository $repository,
-        Request $request,
-        SerializerInterface $serializer,
-        UserManager $userManager,
-        ValidatorInterface $validator
-    ): JsonResponse
+    public function edit(AppUser $user,Request $request): JsonResponse
     {
-        $user = $repository -> find($id);
+        $data = json_decode($request->getContent(), true);
 
-        if (!$user) {
-            return $this->json(['error' => 'User not found'], 404);
-        }
-
-        $serializer->deserialize(
-            $request->getContent(),
-            AppUser::class,
-            'json',
-            [
-                AbstractNormalizer::OBJECT_TO_POPULATE => $user,
-                'groups' => ['user:update']
-            ]
-        );
-
-        $errors = $validator->validate($user);
-        if (count($errors) > 0) {
-            return $this->json($errors, 400);
-        }
-
-        $userManager->update($user);
+        $user = $this->userManager->save($user, $data);
 
         return $this->json($user, 200, [], ['groups' => 'user:read']);
 
@@ -208,36 +168,19 @@ final class UserController extends AbstractController
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Uuid $id, AppUserRepository $repository, UserManager $um): JsonResponse
+    public function delete(AppUser $user): JsonResponse
     {
-        $user = $repository->find($id);
-        if (!$user) return $this->json(['error' => 'User not found'], 404);
-
-        $um->remove($user);
+        $this->userManager->remove($user);
 
         return $this->json(null, 204);
     }
     #[Route('/{id}', name: 'app_user_deactivate', methods: ['PATCH'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function deactivate(
-        Uuid $id,
-        AppUserRepository $repository,
-        UserManager $userManager
-    ) : JsonResponse
+    public function deactivate(AppUser $user) : JsonResponse
     {
+        $this->userManager->deactivate($user);
 
-        $user = $repository -> find($id);
-
-        if(!$user) {
-            return $this->json(['error' => 'User not found'], 404);
-        }
-
-        $userManager->deactivate($user);
-
-        return $this->json([
-            'message' => 'User has been deactivated',
-            'id' => $user->getId()
-        ], 200);
+        return $this->json([], 200);
     }
 
 }
