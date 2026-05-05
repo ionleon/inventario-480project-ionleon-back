@@ -14,3 +14,6 @@ controllers:
 
 api_login_check:
     path: /480project/login
+
+api_refresh_token:
+    path: /480project/token/refresh
