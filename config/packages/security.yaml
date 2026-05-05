@@ -29,9 +29,10 @@ security:
         refresh:
             pattern: ^/480project/token/refresh
             stateless: true
-            refresh_jwt: ~
+            refresh_jwt:
+                check_path: /480project/token/refresh
         api:
-            pattern: ^/480project
+            pattern: ^/480project(?!token/refresh)
             stateless: true
             jwt: ~
 
