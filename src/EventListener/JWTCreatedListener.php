@@ -28,8 +28,8 @@ class JWTCreatedListener
         $payload['jti'] = Uuid::v7()->toRfc4122();
 
         #Cambiar fecha de caducidad más adelante
-        $expiration = new \DateTime();
-        $expiration->setTime(0,15,0);
+        $expiration = new \DateTime('+15 minutes');
+
 
         $payload['exp'] = $expiration->getTimestamp();
 
