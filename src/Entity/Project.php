@@ -170,6 +170,7 @@ class Project
     }
 
     #[Groups(['project:read'])]
+    #[SerializedName('team_members')]
     public function getCountProjectUsers() : int
     {
         return $this->projectUsers->count();
