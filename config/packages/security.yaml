@@ -26,6 +26,10 @@ security:
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        refresh:
+            pattern: ^/480project/token/refresh
+            stateless: true
+            refresh_jwt: ~
         api:
             pattern: ^/480project
             stateless: true
@@ -45,6 +49,7 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/480project/login,   roles: PUBLIC_ACCESS }
+        - { path: ^/480project/token/refresh,   roles: PUBLIC_ACCESS }
         - { path: ^/480project,         roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
