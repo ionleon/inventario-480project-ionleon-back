@@ -45,6 +45,18 @@ class TimeEntryRepository extends ServiceEntityRepository
             ->orderBy('te.date', 'DESC');
     }
 
+    public function getTotalHoursByUser(AppUser $user): float
+    {
+        $qb = $this->createQueryBuilder('te')
+            ->select('SUM(te.hour)') // Sumamos la columna 'hour'
+            ->innerJoin('te.projectUser', 'pu')
+            ->where('pu.appUser = :user')
+            ->setParameter('user', $user);
+
+
+        return (float) $qb->getQuery()->getSingleScalarResult();
+    }
+
     //    /**
     //     * @return TimeEntry[] Returns an array of TimeEntry objects
     //     */
