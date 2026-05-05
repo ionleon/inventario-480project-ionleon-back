@@ -4,11 +4,13 @@ namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class AuthManager
 {
     public function __construct(
         private readonly RefreshTokenManagerInterface $refreshTokenManager,
+        private readonly TagAwareCacheInterface $blacklistCache,
         private readonly EntityManagerInterface $em
     ) {}
 
