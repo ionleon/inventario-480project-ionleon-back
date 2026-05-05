@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 
 class AuthManager
