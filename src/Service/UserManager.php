@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\AppUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Uid\Uuid;
 
 class UserManager
 {
@@ -14,38 +15,48 @@ class UserManager
     )
     {}
 
-    public function create(AppUser $user): AppUser
+    public function create(array $data): AppUser
     {
-        $plainPassword = $user->getPassword();
 
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
-        $user->setPassword($hashedPassword);
+        if (!isset($data['email'], $data['password'])) {
+            throw new \InvalidArgumentException('Email and password are required.');
+        }
+
+        $user = new AppUser();
+
+        $user->setId(Uuid::fromString($data['id']));
+
+        $hashed = $this->passwordHasher->hashPassword($user, $data['password']);
+        $user->setPassword($hashed);
 
         $user->setFirstTime(true);
         $user->setIsActive(true);
+
+        return $this->save($user, $data);
+    }
+
+    public function save(AppUser $user, array $data): AppUser
+    {
+        if (isset($data['name'])) {
+            $user->setName($data['name']);
+        }
+
+        if (isset($data['surname'])) {
+            $user->setSurname($data['surname']);
+        }
+
+        if (isset($data['role'])) {
+            $user->setRole($data['role']);
+        }
+
+        if (isset($data['is_active'])) {
+            $user->setIsActive($data['is_active']);
+        }
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         return $user;
-    }
-
-    public function update(AppUser $user): void
-    {
-        $this->entityManager->flush();
-    }
-
-    public function remove(AppUser $user) : void
-    {
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
-
-    }
-
-    public function deactivate(AppUser $user): void
-    {
-        $user->setIsActive(false);
-        $this->entityManager->flush();
     }
 
     public function changePassword(AppUser $user, string $oldPassword, string $newPassword):void
@@ -64,7 +75,23 @@ class UserManager
         }
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $newPassword);
+        $user->setPassword($hashedPassword);
+
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
+
+    public function remove(AppUser $user) : void
+    {
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+
+    }
+
+    public function deactivate(AppUser $user): void
+    {
+        $user->setIsActive(false);
+        $this->entityManager->flush();
+    }
+
 }
