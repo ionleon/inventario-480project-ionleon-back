@@ -5,7 +5,9 @@ namespace App\EventListener;
 
 use App\Entity\AppUser;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
+use Random\RandomException;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Uid\Uuid;
 
 class JWTCreatedListener
 {
@@ -13,16 +15,22 @@ class JWTCreatedListener
         private readonly RequestStack $requestStack
     ){}
 
+    /**
+     * @throws RandomException
+     */
     public function onJWTCreated(JWTCreatedEvent $event): void
     {
-        #Cambiar fecha de caducidad más adelante
-        $expiration = new \DateTime('+1 day');
-        $expiration->setTime(3,0,0);
-
         /** @var AppUser $user */
         $user = $event->getUser();
 
         $payload = $event->getData();
+
+        $payload['jti'] = Uuid::v7()->toRfc4122();
+
+        #Cambiar fecha de caducidad más adelante
+        $expiration = new \DateTime('+15 minutes');
+
+
         $payload['exp'] = $expiration->getTimestamp();
 
         $payload['id'] = $user->getId();
@@ -33,7 +41,5 @@ class JWTCreatedListener
 
         $event->setData($payload);
     }
-
-
 
 }

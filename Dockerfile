@@ -17,3 +17,5 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash \
 RUN git config --global --add safe.directory /var/www/html
 
 WORKDIR /var/www/html
+
+RUN pecl install redis && docker-php-ext-enable redis
