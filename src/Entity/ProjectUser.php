@@ -49,6 +49,7 @@ class ProjectUser
     #[ORM\Column]
     #[Assert\NotBlank]
     #[SerializedName('is_active')]
+    #[Groups(['project:read'])]
     private ?bool $isActive = null;
 
     public function __construct()
