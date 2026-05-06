@@ -31,6 +31,7 @@ class ProjectUserFixtures extends Fixture implements DependentFixtureInterface
             $projectUserAdmin->setId(Uuid::v7());
             $projectUserAdmin->setProject($project);
             $projectUserAdmin->setAppUser($adminUser);
+            $projectUserAdmin->setIsActive(true);
             $projectUserAdmin->setProjectRole($roleManager);
 
             $manager->persist($projectUserAdmin);
@@ -41,6 +42,7 @@ class ProjectUserFixtures extends Fixture implements DependentFixtureInterface
                 $projectUserDev->setId(Uuid::v7());
                 $projectUserDev->setProject($project);
                 $projectUserDev->setAppUser($devUser);
+                $projectUserDev->setIsActive(true);
                 $projectUserDev->setProjectRole($roleDev);
 
                 $manager->persist($projectUserDev);
