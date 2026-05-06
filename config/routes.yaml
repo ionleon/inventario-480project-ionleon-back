@@ -14,3 +14,7 @@ controllers:
 
 api_login_check:
     path: /480project/login
+
+gesdinet_jwt_refresh_token:
+    path: /480project/token/refresh
+    controller: gesdinet.jwtrefreshtoken:refresh

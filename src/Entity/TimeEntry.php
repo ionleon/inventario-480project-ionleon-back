@@ -34,7 +34,7 @@ class TimeEntry
     #[ORM\ManyToOne(inversedBy: 'timeEntries')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['time:read'])]
-    #[SerializedName('project_user_id')]
+    #[SerializedName('project_user')]
     private ?ProjectUser $projectUser = null;
 
     public function getId(): ?uuid

@@ -120,4 +120,24 @@ class ProjectAssignmentManager
 
     }
 
+    /**
+     * @throws Exception
+     */
+    public function deactivateAssignment(Project $project, AppUser $user): void
+    {
+
+        $assignment = $this->puRepository->findOneByProjectAndUser($project, $user);
+
+        if (!$assignment) {
+            throw new Exception('Assignemt not found', 404);
+        }
+
+        $assignment->setIsActive(false);
+        $this->em->persist($assignment);
+        $this->em->flush();
+
+    }
+
+
+
 }

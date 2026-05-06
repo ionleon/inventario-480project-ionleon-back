@@ -29,7 +29,6 @@ final class ProjectAssignmentController extends AbstractController
         private readonly ProjectUserRepository $projectUserRepository,
         private readonly ProjectAssignmentManager $assignmentManager,
         private readonly PaginationService $paginationService
-
     )
     {}
 
@@ -139,4 +138,24 @@ final class ProjectAssignmentController extends AbstractController
             return $this->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
         }
     }
+
+    #[Route('/{userId}', name: 'project_users_deactivate_user', methods: ['PATCH'])]
+    #[OA\Response(response: 204, description: 'Usuario desactivado del proyecto')]
+    #[OA\Parameter(name: 'id', in: 'path', description: 'ID del Proyecto')]
+    #[OA\Parameter(name: 'userId', in: 'path', description: 'ID del Usuario a desactivar')]
+    public function deactivateUserAssignment(
+        Project $project,
+        #[MapEntity(mapping: ['id' => 'userId'])] AppUser $user
+    ): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
+        try {
+            $this->assignmentManager->deactivateAssignment($project,$user);
+            return $this->json([], 200);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
+        }
+    }
+
+
 }

@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,10 +48,12 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     #[Groups(['user:read', 'user:write'])]
+    #[SerializedName('first_time')]
     private ?bool $firstTime = null;
 
     #[ORM\Column]
     #[Groups(['user:read', 'project:read'])]
+    #[SerializedName('is_active')]
     private ?bool $isActive = null;
 
     #[ORM\Column(type: 'string', enumType: SystemRole::class)]

@@ -16,12 +16,14 @@ if [ ! -f .env.local ]; then
     DB_URL="postgresql://user_admin:skibidiman123@database:5432/project_inventory_480_db?serverVersion=18&charset=utf8"
     JWT_PASS="a35eab0d39a99076c5f8747bc553c0df86693e150a22e465987f288d610bdef3"
     SECRET="cf313f261c7cd660b5b066cb67962665"
+    REDIS_URL="redis://redis:6379"
 
     # Inyectar variables usando sed (reemplaza o añade si no existen)
     # Usamos '|' como separador en sed porque la DB_URL contiene '/'
     sed -i "s|^#\?DATABASE_URL=.*|DATABASE_URL=\"$DB_URL\"|" .env.local
     sed -i "s|^#\?JWT_PASSPHRASE=.*|JWT_PASSPHRASE=$JWT_PASS|" .env.local
     sed -i "s|^#\?APP_SECRET=.*|APP_SECRET=$SECRET|" .env.local
+    sed -i "s|^#\?REDIS_URL=.*|REDIS_URL=$REDIS_URL|" .env.local
 else
     echo "Paso 2: El archivo .env.local ya existe, se omiten los cambios."
 fi

@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DevelopmentRepository::class)]
@@ -40,6 +41,7 @@ class Development
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['dev:read'])]
+    #[SerializedName('url_repository')]
     private ?string $urlRepository = null;
 
     /**

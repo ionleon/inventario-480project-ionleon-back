@@ -36,6 +36,7 @@ class Project
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     #[Groups(['project:read', 'project:write'])]
+    #[SerializedName('start_date')]
     private ?\DateTime $startDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'projects')]
@@ -53,10 +54,12 @@ class Project
 
     #[ORM\OneToMany(targetEntity: ProjectUser::class, mappedBy: 'project', orphanRemoval: true)]
     #[Groups(['project:write'])]
+    #[SerializedName('project_users')]
     private  Collection $projectUsers;
 
     #[ORM\Column]
     #[Groups(['project:read', 'project:write'])]
+    #[SerializedName('is_active')]
     private ?bool $isActive = null;
 
     public function __construct()

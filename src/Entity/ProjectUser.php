@@ -6,10 +6,12 @@ use App\Repository\ProjectUserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectUserRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
@@ -30,18 +32,27 @@ class ProjectUser
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['project:read', 'time:read'])]
+    #[SerializedName('app_user')]
     private ?AppUser $appUser = null;
 
     #[ORM\ManyToOne(cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     #[Groups(['project:read'])]
+    #[SerializedName('project_role')]
     private ?ProjectRole $projectRole = null;
 
     /**
      * @var Collection<int, TimeEntry>
      */
     #[ORM\OneToMany(targetEntity: TimeEntry::class, mappedBy: 'projectUser', cascade: ['persist', 'remove'],orphanRemoval: true)]
+    #[SerializedName('time_entries')]
     private Collection $timeEntries;
+
+    #[ORM\Column]
+    #[Assert\NotBlank]
+    #[SerializedName('is_active')]
+    #[Groups(['project:read'])]
+    private ?bool $isActive = null;
 
     public function __construct()
     {
@@ -122,6 +133,18 @@ class ProjectUser
                 $timeEntry->setProjectUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

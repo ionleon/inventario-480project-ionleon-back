@@ -3,13 +3,16 @@
 namespace App\Service;
 
 use App\Entity\AppUser;
+use App\Repository\AppUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Uid\Uuid;
 
 class UserManager
 {
     public function __construct(
+        private readonly AppUserRepository $userRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly UserPasswordHasherInterface $passwordHasher
     )
@@ -88,9 +91,12 @@ class UserManager
 
     }
 
-    public function deactivate(AppUser $user): void
+    /**
+     * @throws Exception
+     */
+    public function deactivateUser(AppUser $user): void
     {
-        $user->setIsActive(false);
+        $this->userRepository->deactivateUserWithRelation($user);
         $this->entityManager->flush();
     }
 
