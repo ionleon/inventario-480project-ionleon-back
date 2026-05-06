@@ -3,9 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\AppUser;
+use App\Entity\ProjectUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<AppUser>
@@ -53,6 +55,46 @@ class AppUserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @throws Exception
+     */
+    public function deactivateUserWithRelation(AppUser $user) {
+
+        $em = $this->getEntityManager();
+
+        $em->beginTransaction();
+
+        try{
+            $em->createQueryBuilder()
+                ->update(AppUser::class, 'u')
+                ->set('u.isActive', ':status')
+                ->where('u.id = :user')
+                ->setParameter('status',false)
+                ->setParameter('user',$user)
+                ->getQuery()
+                ->execute();
+
+            $em->createQueryBuilder()
+                ->update(ProjectUser::class, 'pu')
+                ->set('pu.isActive', ':status')
+                ->where('pu.appUser = :user')
+                ->setParameter('status',false)
+                ->setParameter('user',$user)
+                ->getQuery()
+                ->execute();
+
+            $em->commit();
+
+            $user->setIsActive(false);
+
+        } catch (Exception $e) {
+            $em->rollback();
+            throw $e;
+        }
+
+    }
+
 
     //    /**
     //     * @return AppUser[] Returns an array of AppUser objects
