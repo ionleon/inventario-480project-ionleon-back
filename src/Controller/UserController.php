@@ -73,14 +73,8 @@ final class UserController extends AbstractController
         return $this->json($users, 200, [], ['groups' => 'user:read']);
     }
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(Uuid  $id): JsonResponse
+    public function show(AppUser $user): JsonResponse
     {
-        $user = $this->userRepository->find($id);
-
-        if (!$user) {
-            return $this->json(['error' => 'User not found'], 404);
-        }
-
         return $this->json($user, 200, [], ['groups' => 'user:read']);
     }
 
@@ -174,11 +168,15 @@ final class UserController extends AbstractController
 
         return $this->json(null, 204);
     }
+
+    /**
+     * @throws Exception
+     */
     #[Route('/{id}', name: 'app_user_deactivate', methods: ['PATCH'])]
     #[IsGranted('ROLE_ADMIN')]
     public function deactivate(AppUser $user) : JsonResponse
     {
-        $this->userManager->deactivate($user);
+        $this->userManager->deactivateUser($user);
 
         return $this->json([], 200);
     }
