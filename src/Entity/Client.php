@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -26,6 +27,7 @@ class Client
 
     #[ORM\Column]
     #[Groups(['client:read', 'client:write'])]
+    #[SerializedName('is_active')]
     private ?bool $isActive = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]

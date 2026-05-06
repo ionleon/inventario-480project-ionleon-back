@@ -30,17 +30,20 @@ class ProjectUser
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['project:read', 'time:read'])]
+    #[SerializedName('app_user')]
     private ?AppUser $appUser = null;
 
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['project:read'])]
+    #[SerializedName('project_role')]
     private ?ProjectRole $projectRole = null;
 
     /**
      * @var Collection<int, TimeEntry>
      */
     #[ORM\OneToMany(targetEntity: TimeEntry::class, mappedBy: 'projectUser', cascade: ['persist', 'remove'],orphanRemoval: true)]
+    #[SerializedName('time_entries')]
     private Collection $timeEntries;
 
     public function __construct()

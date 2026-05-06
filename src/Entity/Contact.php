@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
@@ -21,10 +22,12 @@ class Contact
 
     #[ORM\Column(length: 255)]
     #[Groups(['client:read', 'contact:read'])]
+    #[SerializedName('full_name')]
     private ?string $fullName = null;
 
     #[ORM\Column(length: 30)]
     #[Groups(['client:read', 'contact:read'])]
+    #[SerializedName('phone_number')]
     private ?string $phoneNumber = null;
 
 
@@ -34,6 +37,7 @@ class Contact
 
     #[ORM\Column]
     #[Groups(['client:read', 'contact:read'])]
+    #[SerializedName('is_main')]
     private ?bool $isMain = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
