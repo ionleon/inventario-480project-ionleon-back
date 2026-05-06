@@ -20,6 +20,7 @@ services:
       - ./:/var/www/html
     depends_on:
       - database
+      - redis
     networks:
       - symfony_net
 
@@ -42,6 +43,8 @@ services:
     ports:
       - "6379:6379"
     restart: always
+    networks:
+        - symfony_net
 
 volumes:
     project_480_db_data:
