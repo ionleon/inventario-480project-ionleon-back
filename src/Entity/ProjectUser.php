@@ -32,6 +32,7 @@ class ProjectUser
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['project:read', 'time:read'])]
+    #[SerializedName('app_user')]
     private ?AppUser $appUser = null;
 
     #[ORM\ManyToOne(cascade: ['persist'])]
