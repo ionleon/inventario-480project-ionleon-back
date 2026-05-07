@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\AppUser;
 use App\Entity\Project;
+use App\Entity\ProjectRole;
 use App\Entity\ProjectUser;
 use App\Repository\AppUserRepository;
 use App\Repository\ProjectRoleRepository;
@@ -15,7 +16,7 @@ class ProjectAssignmentManager
 {
      public function __construct(
          private EntityManagerInterface $em,
-         private AppuserRepository $userRepository,
+         private AppUserRepository $userRepository,
          private ProjectRoleRepository $roleRepository,
          private ProjectUserRepository $puRepository,
      ) {}
@@ -23,35 +24,42 @@ class ProjectAssignmentManager
     /**
      * @throws Exception
      */
-    public function assignUser(Project $project, string $userId, string $roleId): ProjectUser
+    public function assignUser(Project $project, AppUser $user, ProjectRole $role): ProjectUser
     {
-        try {
-            $user = $this->userRepository->find($userId);
-            $role = $this->roleRepository->find($roleId);
-        } catch(\Exception $e) {
-            throw new \Exception("Invalid UUID format provided", 400, $e->getMessage());
+        if ($this->puRepository->findOneByProjectAndUser($project, $user)) {
+            throw new Exception('Project already assigned to user.');
         }
 
-        if (!$user || !$role) {
-            throw new Exception('User or Role not found', 404);
-        }
-
-        $exists = $this->puRepository->findOneByProjectAndUser($project, $user);
-
-        if ($exists) {
-            throw new Exception('User is already assigned', 409);
-        }
-
-        $assignment = new ProjectUser();
-        $assignment->setProject($project);
-        $assignment->setAppUser($user);
-        $assignment->setProjectRole($role);
+        $assignment = (new ProjectUser())
+                ->setProject($project)
+                ->setAppUser($user)
+                ->setProjectRole($role)
+                ->setProjectRole($role);
 
         $this->em->persist($assignment);
         $this->em->flush();
 
         return $assignment;
 
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function updateAssignment(ProjectUser $assignment, array $data): ProjectUser
+    {
+        if (isset($data['role_id'])) {
+            $role = $this->roleRepository->find($data['role_id']);
+            if (!$role) throw new Exception('Role not found', 404);
+            $assignment->setProjectRole($role);
+        }
+
+        if (isset($data['is_active'])) {
+            $assignment->setIsActive($data['is_active']);
+        }
+
+        $this->em->flush();
+        return $assignment;
     }
 
     public function syncProjectUsers(Project $project, array $userData): void
@@ -70,28 +78,22 @@ class ProjectAssignmentManager
 
                 if (isset($currentAssignments[$userId])) {
                     $role = $this->roleRepository->find($roleId);
-                    if ($role) {
-                        $currentAssignments[$userId]->setProjectRole($role);
-                    }
+                    if ($role) $currentAssignments[$userId]->setProjectRole($role);
                     unset($currentAssignments[$userId]);
                 } else {
                     $newUser = $this->userRepository->find($userId);
                     $role = $this->roleRepository->find($roleId);
 
-                    if (!$role) {
-                        throw new Exception("Role with ID $roleId not found", 404);
-                    }
-
                     if($newUser && $role) {
-                        $assignment = new ProjectUser();
-                        $assignment->setProject($project);
-                        $assignment->setAppUser($newUser);
-                        $assignment->setProjectRole($role);
+                        $assignment = ( new ProjectUser())
+                            ->setProject($project)
+                            ->setAppUser($newUser)
+                            ->setProjectRole($role);
                         $this->em->persist($assignment);
                     }
                 }
             }
-
+            #Ask if wanted to be removed or disabled
             foreach ($currentAssignments as $oldAssignment) {
                 $this->em->remove($oldAssignment);
             }
@@ -106,14 +108,8 @@ class ProjectAssignmentManager
     /**
      * @throws Exception
      */
-    public function removeAssignment(Project $project, AppUser $user): void
+    public function removeAssignment(ProjectUser $assignment): void
     {
-
-        $assignment = $this->puRepository->findOneByProjectAndUser($project, $user);
-
-        if (!$assignment) {
-            throw new Exception('Assignemt not found', 404);
-        }
 
         $this->em->remove($assignment);
         $this->em->flush();
@@ -123,19 +119,26 @@ class ProjectAssignmentManager
     /**
      * @throws Exception
      */
-    public function deactivateAssignment(Project $project, AppUser $user): void
+    public function deactivateAssignment(ProjectUser $assignment): void
     {
 
+        $assignment->setIsActive(false);
+        $this->em->flush();
+
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function findAssignment(Project $project, AppUser $user): ProjectUser
+    {
         $assignment = $this->puRepository->findOneByProjectAndUser($project, $user);
 
         if (!$assignment) {
-            throw new Exception('Assignemt not found', 404);
+            throw new Exception('Project assignment not found for this user', 404);
         }
 
-        $assignment->setIsActive(false);
-        $this->em->persist($assignment);
-        $this->em->flush();
-
+        return $assignment;
     }
 
 
