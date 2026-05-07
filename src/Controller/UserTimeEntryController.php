@@ -45,7 +45,7 @@ final class UserTimeEntryController extends AbstractController
         return $this->json([
             'total_hours' => $totalHours,
             'data' => $entries
-        ], 200, [], ['groups' => ['time:read']]);
+        ], 200, [], ['groups' => ['dash:read']]);
     }
 
     /**

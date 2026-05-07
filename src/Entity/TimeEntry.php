@@ -6,6 +6,7 @@ use App\Repository\TimeEntryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\SerializedPath;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
@@ -16,27 +17,34 @@ class TimeEntry
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['time:read'])]
+    #[Groups(['time:read', 'dash:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['time:read'])]
+    #[Groups(['time:read', 'dash:read'])]
     private ?\DateTime $date = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2)]
-    #[Groups(['time:read'])]
+    #[Groups(['time:read', 'dash:read'])]
     private ?string $hour = null;
 
     #[ORM\Column(length: 150, nullable: true)]
-    #[Groups(['time:read'])]
+    #[Groups(['time:read', 'dash:read'])]
     private ?string $comment = null;
 
     #[ORM\ManyToOne(inversedBy: 'timeEntries')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['time:read'])]
-    #[SerializedName('project_user')]
+    #[SerializedPath('[project]')]
     private ?ProjectUser $projectUser = null;
 
+
+    #[Groups(['dash:read'])]
+    #[SerializedName('project')]
+    public function getProjectForDash(): ?Project
+    {
+        return $this->projectUser?->getProject();
+    }
     public function getId(): ?uuid
     {
         return $this->id;
