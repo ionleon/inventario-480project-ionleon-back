@@ -12,6 +12,8 @@ security:
                 class: App\Entity\AppUser
                 property: email # React enviará el email para loguearse
 
+    hide_user_not_found: false
+
     firewalls:
         dev:
             # Ensure dev tools and static assets are always allowed
@@ -20,6 +22,7 @@ security:
         login:
             pattern: ^/480project/login
             stateless: true
+            user_checker: App\Security\UserChecker
             json_login:
                 check_path: /480project/login
                 username_path: email
