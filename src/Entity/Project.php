@@ -20,11 +20,11 @@ class Project
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['project:read', 'project:write'])]
+    #[Groups(['project:read', 'project:write', 'dash:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 150)]
-    #[Groups(['project:read', 'project:write'])]
+    #[Groups(['project:read', 'project:write', 'dash:read'])]
     #[Assert\NotBlank]
     private ?string $name = null;
 

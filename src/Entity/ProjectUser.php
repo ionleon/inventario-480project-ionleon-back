@@ -21,7 +21,7 @@ class ProjectUser
     #[ORM\Column(type: 'uuid')]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    #[Groups(['project:read', 'time:read'])]
+    #[Groups(['project:read'])]
     private ?Uuid $id = null;
 
     #[ORM\ManyToOne(cascade: ['persist'])]
@@ -31,7 +31,7 @@ class ProjectUser
 
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['project:read', 'time:read'])]
+    #[Groups(['project:read'])]
     #[SerializedName('app_user')]
     private ?AppUser $appUser = null;
 
@@ -53,6 +53,12 @@ class ProjectUser
     #[SerializedName('is_active')]
     #[Groups(['project:read'])]
     private ?bool $isActive = null;
+
+
+    public function getProjectForSerializing(): ?Project
+    {
+        return $this->project;
+    }
 
     public function __construct()
     {
