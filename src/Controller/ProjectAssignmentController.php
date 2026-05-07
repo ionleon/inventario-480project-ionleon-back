@@ -144,6 +144,10 @@ final class ProjectAssignmentController extends AbstractController
 
         return $this->json($project->getProjectUsers(), 200, [], ['groups' => 'project:read']);
     }
+
+    /**
+     * @throws Exception
+     */
     #[Route('/{userId}', name: 'project_users_remove_user', methods: ['DELETE'])]
     #[OA\Response(response: 204, description: 'Usuario eliminado del proyecto')]
     #[OA\Parameter(name: 'id', in: 'path', description: 'ID del Proyecto')]
@@ -154,14 +158,17 @@ final class ProjectAssignmentController extends AbstractController
     ): JsonResponse
     {
         $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
-        try {
-            $this->assignmentManager->removeAssignment($project,$user);
-            return $this->json(null, 204);
-        } catch (Exception $e) {
-            return $this->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        }
+
+        $assignment = $this->assignmentManager->findAssignment($project,$user);
+        $this->assignmentManager->removeAssignment($assignment);
+
+        return $this->json(null, 204);
+
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/{userId}', name: 'project_users_deactivate_user', methods: ['PATCH'])]
     #[OA\Response(response: 204, description: 'Usuario desactivado del proyecto')]
     #[OA\Parameter(name: 'id', in: 'path', description: 'ID del Proyecto')]
@@ -172,13 +179,12 @@ final class ProjectAssignmentController extends AbstractController
     ): JsonResponse
     {
         $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
-        try {
 
-            $this->assignmentManager->deactivateAssignment($project,$user);
-            return $this->json([], 200);
-        } catch (Exception $e) {
-            return $this->json(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        }
+        $assignment = $this->assignmentManager->findAssignment($project,$user);
+        $this->assignmentManager->deactivateAssignment($assignment);
+
+        return $this->json([], 200);
+
     }
 
 
