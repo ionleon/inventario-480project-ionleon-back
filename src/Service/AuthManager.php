@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\AppUser;
 use Exception;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
@@ -49,6 +50,19 @@ class AuthManager
                     $this->blacklistCache->save($cacheItem);
                 }
             }
+    }
+
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function forceLogout(AppUser $user): void
+    {
+        $token = $this->requestStack->getCurrentRequest()->headers->get('Authorization');
+
+        if ($token) {
+            $this->blacklistCache->delete($token);
+        }
     }
 
     /**
