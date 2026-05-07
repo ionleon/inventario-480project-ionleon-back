@@ -12,29 +12,30 @@ use App\Repository\ProjectUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-class ProjectAssignmentManager
+readonly class ProjectAssignmentManager
 {
      public function __construct(
          private EntityManagerInterface $em,
-         private AppUserRepository $userRepository,
-         private ProjectRoleRepository $roleRepository,
-         private ProjectUserRepository $puRepository,
+         private AppUserRepository      $userRepository,
+         private ProjectRoleRepository  $roleRepository,
+         private ProjectUserRepository  $puRepository,
      ) {}
 
     /**
      * @throws Exception
      */
-    public function assignUser(Project $project, AppUser $user, ProjectRole $role): ProjectUser
+    public function assignUser(Project $project, AppUser $user, array $data): ProjectUser
     {
         if ($this->puRepository->findOneByProjectAndUser($project, $user)) {
-            throw new Exception('Project already assigned to user.');
+            throw new Exception('Project already assigned to user.', 409);
         }
 
         $assignment = (new ProjectUser())
                 ->setProject($project)
-                ->setAppUser($user)
-                ->setProjectRole($role)
-                ->setProjectRole($role);
+                ->setAppUser($user);
+
+        $data['is_active'] ??= true;
+        $this->hydrate($assignment, $data);
 
         $this->em->persist($assignment);
         $this->em->flush();
@@ -46,19 +47,30 @@ class ProjectAssignmentManager
     /**
      * @throws Exception
      */
-    public function updateAssignment(ProjectUser $assignment, array $data): ProjectUser
+    public function hydrate(ProjectUser $assignment, array $data): void
     {
         if (isset($data['role_id'])) {
             $role = $this->roleRepository->find($data['role_id']);
-            if (!$role) throw new Exception('Role not found', 404);
+            if (!$role) {
+                throw new Exception('Role not found', 404);
+            }
             $assignment->setProjectRole($role);
         }
 
         if (isset($data['is_active'])) {
-            $assignment->setIsActive($data['is_active']);
+            $assignment->setIsActive((bool)$data['is_active']);
         }
+    }
 
+    /**
+     * @throws Exception
+     */
+    public function updateAssignment(ProjectUser $assignment, array $data): ProjectUser
+    {
+
+        $this->hydrate($assignment, $data);
         $this->em->flush();
+
         return $assignment;
     }
 
@@ -72,33 +84,29 @@ class ProjectAssignmentManager
 
             foreach ($userData as $data) {
                 $userId = $data['user_id'] ?? null;
-                $roleId = $data['role_id'] ?? null;
 
-                if (!$userId || !$roleId) continue;
+                if (!$userId) continue;
 
                 if (isset($currentAssignments[$userId])) {
-                    $role = $this->roleRepository->find($roleId);
-                    if ($role) $currentAssignments[$userId]->setProjectRole($role);
+                    $this->hydrate($currentAssignments[$userId], $data);
                     unset($currentAssignments[$userId]);
                 } else {
                     $newUser = $this->userRepository->find($userId);
-                    $role = $this->roleRepository->find($roleId);
+                    $assignment = ( new ProjectUser())
+                        ->setProject($project)
+                        ->setAppUser($newUser);
 
-                    if($newUser && $role) {
-                        $assignment = ( new ProjectUser())
-                            ->setProject($project)
-                            ->setAppUser($newUser)
-                            ->setProjectRole($role);
-                        $this->em->persist($assignment);
-                    }
+                    $this->hydrate($assignment, $data);
+
+                    $this->em->persist($assignment);
                 }
             }
+
             #Ask if wanted to be removed or disabled
             foreach ($currentAssignments as $oldAssignment) {
                 $this->em->remove($oldAssignment);
             }
 
-            $this->em->flush();
         });
 
 
