@@ -2,11 +2,9 @@
 
 namespace App\Auth\Infrastructure\Persistence;
 
-use App\Auth\Domain\Entity\RefreshToken;
-use App\Auth\Domain\Repository\RefreshTokenRepositoryInterface;
-
+use App\Auth\Domain\RefreshToken\RefreshToken;
+use App\Auth\Domain\RefreshToken\RefreshTokenRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

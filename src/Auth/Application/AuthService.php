@@ -3,7 +3,7 @@
 namespace App\Auth\Application;
 
 
-use App\Auth\Domain\Repository\RefreshTokenRepositoryInterface;
+use App\Auth\Domain\RefreshToken\RefreshTokenRepositoryInterface;
 use App\Auth\Domain\Service\TokenBlacklistInterface;
 use App\Auth\Domain\Service\TokenPayloadExtractorInterface;
 use Exception;
