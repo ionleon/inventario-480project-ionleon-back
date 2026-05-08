@@ -29,10 +29,10 @@ services:
     App\Auth\:
         resource: '../src/Auth/'
         exclude:
-            - '..src/Auth/Domain/Entity/'
+            - '..src/Auth/Domain/RefreshToken/'
 
 
-    App\Auth\Domain\Repository\RefreshTokenRepositoryInterface: '@App\Auth\Infrastructure\Persistence\DoctrineRefreshTokenRepository'
+    App\Auth\Domain\RefreshToken\RefreshTokenRepositoryInterface: '@App\Auth\Infrastructure\Persistence\DoctrineRefreshTokenRepository'
     App\Auth\Domain\Service\TokenBlacklistInterface: '@App\Auth\Infrastructure\Service\SymfonyCacheBlacklist'
     App\Auth\Domain\Service\TokenPayloadExtractorInterface: '@App\Auth\Infrastructure\Service\LexikPayloadExtractor'
 
@@ -40,7 +40,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\EventListener\JWTCreatedListener:
+    App\Auth\Infrastructure\Security\JWTCreatedListener:
         tags:
             - { name: 'kernel.event_listener', event: 'lexik_jwt_authentication.on_jwt_created', method: 'onJWTCreated' }
 

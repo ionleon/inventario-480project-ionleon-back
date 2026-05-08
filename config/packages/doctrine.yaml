@@ -27,8 +27,8 @@ doctrine:
             Auth:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Auth/Domain/Entity'
-                prefix: 'App\Auth\Domain\Entity'
+                dir: '%kernel.project_dir%/src/Auth/Domain/RefreshToken'
+                prefix: 'App\Auth\Domain\RefreshToken'
                 alias: Auth
 
 
