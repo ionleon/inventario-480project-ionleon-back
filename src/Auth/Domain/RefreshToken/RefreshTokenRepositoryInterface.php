@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Domain\Repository;
+namespace App\Auth\Domain\RefreshToken;
 
 interface RefreshTokenRepositoryInterface
 {
