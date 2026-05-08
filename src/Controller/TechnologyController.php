@@ -45,7 +45,7 @@ final class TechnologyController extends AbstractController
         }
     }
 
-    #[Route('/{id}', name: 'technologies_update', methods: ['PUT'])]
+    #[Route('/{id}', name: 'technologies_update', methods: ['PATCH'])]
     public function update(Technology $technology, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
