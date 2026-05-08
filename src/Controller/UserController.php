@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * */
 
 
-#[OA\Tag(name: 'Users')]
+#[OA\Tag(name: 'User Management')]
 #[Route('/users')]
 final class UserController extends AbstractController
 {
