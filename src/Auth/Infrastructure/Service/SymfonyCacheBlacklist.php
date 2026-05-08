@@ -2,7 +2,7 @@
 
 namespace App\Auth\Infrastructure\Service;
 
-use App\Auth\Domain\TokenBlacklistInterface;
+use App\Auth\Domain\Service\TokenBlacklistInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class SymfonyCacheBlacklist implements TokenBlacklistInterface

@@ -2,7 +2,7 @@
 
 namespace App\Auth\Infrastructure\Service;
 
-use App\Auth\Domain\TokenPayloadExtractorInterface;
+use App\Auth\Domain\Service\TokenPayloadExtractorInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

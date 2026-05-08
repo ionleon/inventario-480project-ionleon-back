@@ -4,11 +4,9 @@ namespace App\Auth\Application;
 
 
 use App\Auth\Domain\Repository\RefreshTokenRepositoryInterface;
-use App\Auth\Domain\TokenBlacklistInterface;
-use App\Auth\Domain\TokenPayloadExtractorInterface;
+use App\Auth\Domain\Service\TokenBlacklistInterface;
+use App\Auth\Domain\Service\TokenPayloadExtractorInterface;
 use Exception;
-use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
-use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
