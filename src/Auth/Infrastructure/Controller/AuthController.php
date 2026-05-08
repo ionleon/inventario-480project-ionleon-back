@@ -20,8 +20,7 @@ final class AuthController extends AbstractController
     public function logout(Request $request): Response
     {
         try {
-            $data = json_decode($request->getContent(), true);
-            $refreshToken = $data['refresh_token'] ?? null;
+            $refreshToken = $request->getPayload()->get('refresh_token');
 
             if (!$refreshToken) {
                 return $this->json(['error' => 'Refresh token required'], 400);
