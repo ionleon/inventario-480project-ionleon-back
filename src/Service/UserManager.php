@@ -16,7 +16,8 @@ class UserManager
     public function __construct(
         private readonly AppUserRepository           $userRepository,
         private readonly EntityManagerInterface      $entityManager,
-        private readonly UserPasswordHasherInterface $passwordHasher, private readonly AuthManager $authManager
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly AuthManager                 $authManager
     )
     {}
 
