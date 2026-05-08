@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Infrastructure\Event;
+namespace App\Auth\Infrastructure\Security;
 
 use App\Auth\Application\AuthService;
 use App\Entity\AppUser;
