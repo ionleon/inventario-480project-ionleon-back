@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security;
+namespace App\Auth\Infrastructure\Security;
 
 use App\Entity\AppUser;
 use Symfony\Component\Security\Core\Exception\DisabledException;

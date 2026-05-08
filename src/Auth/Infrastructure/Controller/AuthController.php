@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Auth\Infrastructure\Controller;
 
-use App\Service\AuthManager;
+use App\Auth\Application\AuthService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -13,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AuthController extends AbstractController
 {
     public function __construct(
-        private readonly AuthManager $authManager
+        private readonly AuthService $authManager
     )
     {}
 

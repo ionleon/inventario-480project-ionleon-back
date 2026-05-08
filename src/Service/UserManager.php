@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Auth\Application\AuthService;
 use App\Entity\AppUser;
 use App\Repository\AppUserRepository;
 use App\Service\AuthManager;

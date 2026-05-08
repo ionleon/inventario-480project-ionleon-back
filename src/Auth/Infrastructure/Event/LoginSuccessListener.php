@@ -1,9 +1,9 @@
 <?php
 
-namespace App\EventListener;
+namespace App\Auth\Infrastructure\Event;
 
+use App\Auth\Application\AuthService;
 use App\Entity\AppUser;
-use App\Service\AuthManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Psr\Cache\InvalidArgumentException;
@@ -15,7 +15,7 @@ final class LoginSuccessListener
 
     #Needs further work, doesn't actually work
     public function __construct(
-        private readonly AuthManager $authManager,
+        private readonly AuthService $authManager,
     ) {}
 
     /**

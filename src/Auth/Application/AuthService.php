@@ -1,34 +1,28 @@
 <?php
 
-namespace App\Service;
+namespace App\Auth\Application;
 
 use App\Entity\AppUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Gesdinet\JWTRefreshTokenBundle\Doctrine\RefreshTokenRepositoryInterface;
-use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshTokenRepository;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
-
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 
-
-class AuthManager
+readonly class AuthService
 {
     public function __construct(
-        private readonly RefreshTokenManagerInterface $refreshTokenManager,
-        private readonly TokenStorageInterface        $tokenStorage,
-        private readonly CacheInterface               $blacklistCache,
-        private readonly JWTTokenManagerInterface     $jwtManager,
-        private readonly RequestStack                 $requestStack,
-        private readonly EntityManagerInterface       $em
+        private RefreshTokenManagerInterface $refreshTokenManager,
+        private TokenStorageInterface        $tokenStorage,
+        private CacheInterface               $blacklistCache,
+        private JWTTokenManagerInterface     $jwtManager,
+        private RequestStack                 $requestStack,
+        private EntityManagerInterface       $em
 
     ) {}
 
