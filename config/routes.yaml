@@ -12,6 +12,11 @@ controllers:
     type: attribute
     prefix: /480project
 
+auth_controllers:
+    resource: ../src/Auth/Infrastructure/Controller/
+    type: attribute
+    prefix: /480project
+
 api_login_check:
     path: /480project/login
 
