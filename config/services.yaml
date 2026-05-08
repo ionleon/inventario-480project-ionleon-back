@@ -31,14 +31,11 @@ services:
         exclude:
             - '..src/Auth/Domain/Entity/'
 
-    App\Auth\Domain\Repository\RefreshTokenRepositoryInterface:
-        alias: App\Auth\Infrastructure\Persistence\DoctrineRefreshTokenRepository
 
-    App\Auth\Domain\TokenBlacklistInterface:
-        alias: App\Auth\Infrastructure\Service\SymfonyCacheBlacklist
+    App\Auth\Domain\Repository\RefreshTokenRepositoryInterface: '@App\Auth\Infrastructure\Persistence\DoctrineRefreshTokenRepository'
+    App\Auth\Domain\Service\TokenBlacklistInterface: '@App\Auth\Infrastructure\Service\SymfonyCacheBlacklist'
+    App\Auth\Domain\Service\TokenPayloadExtractorInterface: '@App\Auth\Infrastructure\Service\LexikPayloadExtractor'
 
-    App\Auth\Domain\TokenPayloadExtractorInterface:
-        alias: App\Auth\Infrastructure\Service\LexikPayloadExtractor
 
 
     # add more service definitions when explicit configuration is needed
