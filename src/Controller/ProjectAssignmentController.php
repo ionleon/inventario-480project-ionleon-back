@@ -3,14 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\AppUser;
-use App\Entity\Project;
-use App\Entity\ProjectUser;
+use App\ProjectManagement\Application\ProjectUser\ProjectAssignmentService;
+use App\ProjectManagement\Domain\Project\Project;
+use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
 use App\Repository\AppUserRepository;
 use App\Repository\ProjectRoleRepository;
 use App\Repository\ProjectUserRepository;
 use App\Service\PaginationService;
-use App\Service\ProjectAssignmentManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
@@ -18,10 +17,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Uid\Uuid;
 
 #[Route('/projects/{id}/users')]
 #[OA\Tag(name: 'Project Assignments')]
@@ -31,7 +27,7 @@ final class ProjectAssignmentController extends AbstractController
         private readonly ProjectUserRepository    $puRepository,
         private readonly AppUserRepository        $userRepository,
         private readonly ProjectRoleRepository    $roleRepository,
-        private readonly ProjectAssignmentManager $assignmentManager,
+        private readonly ProjectAssignmentService $assignmentManager,
         private readonly PaginationService        $paginationService
     )
     {}

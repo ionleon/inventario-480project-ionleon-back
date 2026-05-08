@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Development;
+use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
 use App\Repository\DevelopmentRepository;
-use App\Repository\ProjectRepository;
 use App\Service\DevelopmentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/developments', name: 'app_development')]
 final class DevelopmentController extends AbstractController
@@ -17,7 +17,7 @@ final class DevelopmentController extends AbstractController
     public function __construct(
         private DevelopmentManager $manager,
         private DevelopmentRepository $devRepository,
-        private ProjectRepository $projectRepository
+        private DoctrineProjectRepository $projectRepository
     ) {}
 
     #[Route('' , name: 'development_index', methods: ['GET'])]

@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use ApiPlatform\State\Pagination\Pagination;
-use App\Dto\PaginationDto;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;

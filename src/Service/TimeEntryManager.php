@@ -4,18 +4,15 @@ namespace App\Service;
 
 
 use App\Entity\AppUser;
-use App\Entity\Project;
-use App\Entity\ProjectUser;
 use App\Entity\TimeEntry;
-use App\Repository\ProjectRepository;
+use App\ProjectManagement\Domain\Project\Project;
+use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
 use App\Repository\ProjectUserRepository;
-use App\Repository\TimeEntryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Validator\Constraints\Time;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TimeEntryManager
@@ -23,11 +20,11 @@ class TimeEntryManager
 
 
     public function __construct(
-        private EntityManagerInterface $em,
-        private ValidatorInterface     $validator,
-        private ProjectUserRepository  $puRepository,
-        private ProjectRepository      $projectRepository,
-        private Security               $security,
+        private EntityManagerInterface    $em,
+        private ValidatorInterface        $validator,
+        private ProjectUserRepository     $puRepository,
+        private DoctrineProjectRepository $projectRepository,
+        private Security                  $security,
     ) {}
 
 

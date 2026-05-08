@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Service;
+namespace App\ProjectManagement\Application\ProjectUser;
 
 use App\Entity\AppUser;
-use App\Entity\Project;
-use App\Entity\ProjectRole;
-use App\Entity\ProjectUser;
+use App\ProjectManagement\Domain\Project\Project;
+use App\ProjectManagement\Domain\ProjectRole\ProjectRoleRepositoryInterface;
+use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
+use App\ProjectManagement\Domain\ProjectUser\ProjectUserRepositoryInterface;
 use App\Repository\AppUserRepository;
 use App\Repository\ProjectRoleRepository;
 use App\Repository\ProjectUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-readonly class ProjectAssignmentManager
+readonly class ProjectAssignmentService
 {
      public function __construct(
-         private EntityManagerInterface $em,
-         private AppUserRepository      $userRepository,
-         private ProjectRoleRepository  $roleRepository,
-         private ProjectUserRepository  $puRepository,
+         private ProjectUserRepositoryInterface $puRepository,
+         private ProjectRoleRepositoryInterface $prRepository,
+         private AppUserRepositoryInterface $userRepository,
      ) {}
 
     /**
      * @throws Exception
      */
-    public function assignUser(Project $project, AppUser $user, array $data): ProjectUser
+    public function assignUser(Project $project, int $userId, string $roleId): ProjectUser
     {
         if ($this->puRepository->findOneByProjectAndUser($project, $user)) {
             throw new Exception('Project already assigned to user.', 409);

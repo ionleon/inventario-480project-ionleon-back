@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\AppUser;
-use App\Entity\Project;
-use App\Entity\ProjectUser;
+use App\ProjectManagement\Domain\Project\Project;
+use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;

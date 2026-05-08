@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Entity;
+namespace App\ProjectManagement\Domain\ProjectUser;
 
+use App\Entity\AppUser;
+use App\Entity\ProjectRole;
+use App\Entity\TimeEntry;
+use App\ProjectManagement\Domain\Project\Project;
 use App\Repository\ProjectUserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
@@ -58,6 +61,17 @@ class ProjectUser
     public function getProjectForSerializing(): ?Project
     {
         return $this->project;
+    }
+
+    public function update(ProjectRole $role, bool $isActive): void
+    {
+        $this->projectRole = $role;
+        $this->isActive = $isActive;
+    }
+
+    public function toggleActivation(): void
+    {
+        $this->isActive = !$this->isActive;
     }
 
     public function __construct()

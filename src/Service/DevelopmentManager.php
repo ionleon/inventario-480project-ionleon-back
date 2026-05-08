@@ -3,12 +3,9 @@
 namespace App\Service;
 
 use App\Entity\Development;
-use App\Entity\Link;
-use App\Entity\Project;
-use App\Entity\Technology;
-use App\Enum\Enviroment;
+use App\ProjectManagement\Domain\Project\Project;
+use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
 use App\Repository\DevelopmentRepository;
-use App\Repository\ProjectRepository;
 use App\Repository\TechnologyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,11 +14,11 @@ use Symfony\Component\Uid\Uuid;
 class DevelopmentManager
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private DevelopmentRepository $devRepository,
-        private TechnologyRepository $technologyRepository,
-        private ProjectRepository $projectRepository,
-        private LinkManager $linkManager
+        private EntityManagerInterface    $em,
+        private DevelopmentRepository     $devRepository,
+        private TechnologyRepository      $technologyRepository,
+        private DoctrineProjectRepository $projectRepository,
+        private LinkManager               $linkManager
     ) {}
 
     public function findAllByProject(Project $project): array

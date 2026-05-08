@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Development;
-use App\Entity\Project;
+use App\ProjectManagement\Domain\Project\Project;
 use App\Repository\DevelopmentRepository;
 use App\Service\DevelopmentManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;

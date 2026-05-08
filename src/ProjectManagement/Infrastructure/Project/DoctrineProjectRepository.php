@@ -100,5 +100,15 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
     }
 
 
+    public function save(Project $project): void
+    {
+        $this->getEntityManager()->persist($project);
+        $this->getEntityManager()->flush();
+    }
 
+    public function delete(Project $project): void
+    {
+        $this->getEntityManager()->remove($project);
+        $this->getEntityManager()->flush();
+    }
 }

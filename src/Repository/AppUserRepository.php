@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\AppUser;
-use App\Entity\ProjectUser;
+use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -48,7 +48,7 @@ class AppUserRepository extends ServiceEntityRepository
     public function findUserByProject(string $projectId): array
     {
         return $this->createQueryBuilder('u')
-            ->innerJoin('App\Entity\ProjectUser', 'pu', 'ON', 'pu.appUser = u')
+            ->innerJoin('App\ProjectManagement\Domain\ProjectUser\ProjectUser', 'pu', 'ON', 'pu.appUser = u')
             ->innerJoin('pu.project', 'p')
             ->andWhere('p.id = :projectId')
             ->setParameter('projectId', $projectId)

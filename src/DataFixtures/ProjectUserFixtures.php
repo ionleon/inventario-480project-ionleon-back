@@ -3,9 +3,9 @@
 namespace App\DataFixtures;
 
 use App\Entity\AppUser;
-use App\Entity\Project;
 use App\Entity\ProjectRole;
-use App\Entity\ProjectUser;
+use App\ProjectManagement\Domain\Project\Project;
+use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Security\Voter;
+namespace App\ProjectManagement\Infrastructure\Project\Security\Voter;
 
-use App\Entity\Project;
+use App\ProjectManagement\Domain\Project\Project;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 final class ProjectVoter extends Voter
 {

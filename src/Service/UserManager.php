@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Auth\Application\AuthService;
 use App\Entity\AppUser;
 use App\Repository\AppUserRepository;
-use App\Service\AuthManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
@@ -18,7 +17,7 @@ class UserManager
         private readonly AppUserRepository           $userRepository,
         private readonly EntityManagerInterface      $entityManager,
         private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly AuthManager                 $authManager
+        private readonly AuthService                 $authService
     )
     {}
 
@@ -66,7 +65,7 @@ class UserManager
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        $this->authManager->forceLogout($user);
+        $this->authService->forceLogout($user);
 
         return $user;
     }
@@ -98,7 +97,7 @@ class UserManager
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        $this->authManager->forceLogout($user);
+        $this->authService->forceLogout($user);
     }
 
     public function remove(AppUser $user) : void
@@ -117,7 +116,7 @@ class UserManager
         $this->userRepository->deactivateUserWithRelation($user);
         $this->entityManager->flush();
 
-        $this->authManager->forceLogout($user);
+        $this->authService->forceLogout($user);
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Client;
+use App\ClientManagement\Domain\Client;
 use App\Entity\Contact;
 use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;

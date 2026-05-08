@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\ProjectManagement\Domain\Project\Project;
+use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
 use App\Repository\TimeEntryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

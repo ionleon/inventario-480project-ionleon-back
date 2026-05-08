@@ -1,24 +1,21 @@
 <?php
 
-namespace App\Controller;
+namespace App\ClientManagement\Infrastructure\Client;
 
-use App\Entity\Client;
+use App\ClientManagement\Domain\Client;
+use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ContactRepository;
-use App\Repository\ProjectRepository;
 use App\Service\ClientManager;
 use App\Service\ContactManager;
 use App\Service\PaginationService;
-use App\Service\ProjectManager;
 use Exception;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Uid\Uuid;
 
 
 #[Route('/clients', name: 'app_client')]
@@ -28,12 +25,12 @@ final class ClientController extends AbstractController
 
 
     public function __construct(
-        private readonly ClientManager $clientManager,
-        private readonly ClientRepository $clientRepository,
-        private readonly ProjectRepository $projectRepository,
-        private readonly ContactRepository $contactRepository,
-        private readonly ContactManager $contactManager,
-        private readonly PaginationService $paginationService,
+        private readonly ClientManager             $clientManager,
+        private readonly ClientRepository          $clientRepository,
+        private readonly DoctrineProjectRepository $projectRepository,
+        private readonly ContactRepository         $contactRepository,
+        private readonly ContactManager            $contactManager,
+        private readonly PaginationService         $paginationService,
     )
     {}
 

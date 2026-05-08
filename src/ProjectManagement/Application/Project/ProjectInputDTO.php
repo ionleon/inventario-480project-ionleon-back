@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ProjectManagement\Application;
+namespace App\ProjectManagement\Application\Project;
 
 readonly class ProjectInputDTO
 {
@@ -8,7 +8,7 @@ readonly class ProjectInputDTO
         public string $id,
         public string $name,
         public string $description,
-        public int $clientId,
+        public string $clientId,
         public ?string $startDate,
         public bool $isActive,
     ) {}

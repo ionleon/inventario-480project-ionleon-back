@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Entity;
+namespace App\ProjectManagement\Domain\Project;
 
-use App\Repository\ProjectRepository;
+use App\ClientManagement\Domain\Client;
+use App\Entity\Development;
+use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
+use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -14,7 +17,7 @@ use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-#[ORM\Entity(repositoryClass: ProjectRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineProjectRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 class Project
 {
@@ -66,6 +69,44 @@ class Project
     {
         $this->developments = new ArrayCollection();
         $this->projectUsers = new ArrayCollection();
+    }
+
+    public static function create(
+        Uuid $id,
+        string $name,
+        string $description,
+        Client $client,
+        ?\DateTime $startDate = null
+    ): self {
+        $project = new self();
+        $project->id = $id;
+        $project->name = $name;
+        $project->description = $description;
+        $project->client = $client;
+        $project->startDate = $startDate;
+        $project->isActive = true; // Regla de negocio: por defecto activo
+
+        return $project;
+    }
+
+    public function updateDetails(
+        string $name,
+        string $description,
+        Client $client,
+        ?\DateTime $startDate,
+        bool $isActive
+    ): void
+    {
+        $this->name = $name;
+        $this->description = $description;
+        $this->client = $client;
+        $this->startDate = $startDate;
+        $this->isActive = $isActive;
+    }
+
+    public function toggleActivation(): void
+    {
+        $this->isActive = !$this->isActive;
     }
 
 
@@ -194,8 +235,6 @@ class Project
         $this->projectUsers->removeElement($projectUser);
         return $this;
     }
-
-
 
     public function isActive(): ?bool
     {

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\ClientManagement\Domain\Client;
 use App\Repository\ContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

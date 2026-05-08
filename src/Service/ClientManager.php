@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Client;
+use App\ClientManagement\Domain\Client;
 use App\Repository\SectorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

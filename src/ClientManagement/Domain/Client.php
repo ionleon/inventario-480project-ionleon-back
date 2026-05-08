@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Entity;
+namespace App\ClientManagement\Domain;
 
+use App\Entity\Contact;
+use App\Entity\Sector;
+use App\ProjectManagement\Domain\Project\Project;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

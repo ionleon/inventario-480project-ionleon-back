@@ -1,29 +1,20 @@
 <?php
 
 namespace App\Controller;
-use App\Entity\Project;
-use App\Repository\ProjectRepository;
+use App\Entity\AppUser;
+use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
+use App\Repository\AppUserRepository;
 use App\Service\PaginationService;
+use App\Service\UserManager;
 use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
-use Nelmio\ApiDocBundle\ModelDescriber\Annotations;
-
-use App\Entity\AppUser;
-use App\Repository\AppUserRepository;
-use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Uid\Uuid;
-
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 /*
@@ -36,10 +27,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class UserController extends AbstractController
 {
     public function __construct(
-        private readonly AppUserRepository $userRepository,
-        private readonly ProjectRepository $projectRepository,
-        private readonly UserManager       $userManager,
-        private readonly PaginationService $paginationService,
+        private readonly AppUserRepository         $userRepository,
+        private readonly DoctrineProjectRepository $projectRepository,
+        private readonly UserManager               $userManager,
+        private readonly PaginationService         $paginationService,
     ) {}
 
     /**

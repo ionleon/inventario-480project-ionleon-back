@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\ClientManagement\Domain\Client;
 use App\Repository\SectorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

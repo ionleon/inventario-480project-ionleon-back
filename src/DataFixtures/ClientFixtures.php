@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Client;
+use App\ClientManagement\Domain\Client;
 use App\Entity\Sector;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

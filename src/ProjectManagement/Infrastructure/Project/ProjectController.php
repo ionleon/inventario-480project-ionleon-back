@@ -1,23 +1,16 @@
 <?php
 
-namespace App\Controller;
+namespace App\ProjectManagement\Infrastructure\Project;
+use App\ProjectManagement\Application\Project\ProjectService;
+use App\ProjectManagement\Domain\Project\Project;
 use App\Service\PaginationService;
 use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
-use App\Entity\Project;
-use App\Repository\ProjectRepository;
-use App\Service\ProjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /*
  * Cambiar controllers para que utilizen servicios, adaptarlos a arquitectura hexagonal a futuro
@@ -29,12 +22,9 @@ final class ProjectController extends AbstractController
 {
 
     public function __construct(
-        private readonly ProjectRepository $projectRepository,
-        private readonly PaginationService $paginationService,
-        private readonly ProjectManager $projectManager,
-        private readonly SerializerInterface $serializer,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly ValidatorInterface $validator
+        private readonly DoctrineProjectRepository $projectRepository,
+        private readonly PaginationService         $paginationService,
+        private readonly ProjectService            $projectManager,
     )
     {}
 

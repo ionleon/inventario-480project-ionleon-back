@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Project;
 use App\Entity\TimeEntry;
+use App\ProjectManagement\Domain\Project\Project;
 use App\Repository\ProjectUserRepository;
 use App\Repository\TimeEntryRepository;
 use App\Service\PaginationService;
@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 

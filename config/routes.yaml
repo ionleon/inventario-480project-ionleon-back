@@ -17,6 +17,18 @@ auth_controllers:
     type: attribute
     prefix: /480project
 
+project_controllers:
+    resource: ../src/ProjectManagement/Infrastructure/Project/
+    type: attribute
+    prefix: /480project
+
+client_controllers:
+    resource: ../src/ClientManagement/Infrastructure/Client/
+    type: attribute
+    prefix: /480project
+
+
+
 api_login_check:
     path: /480project/login
 
