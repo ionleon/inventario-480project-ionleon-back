@@ -154,7 +154,7 @@ final class ProjectAssignmentController extends AbstractController
     #[OA\Parameter(name: 'userId', in: 'path', description: 'ID del Usuario a quitar')]
     public function removeUser(
         Project $project,
-        #[MapEntity(mapping: ['id' => 'userId'])] AppUser $user
+        #[MapEntity(mapping: ['userId' => 'id'])] AppUser $user
     ): JsonResponse
     {
         $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
@@ -175,7 +175,7 @@ final class ProjectAssignmentController extends AbstractController
     #[OA\Parameter(name: 'userId', in: 'path', description: 'ID del Usuario a desactivar')]
     public function deactivateUserAssignment(
         Project $project,
-        #[MapEntity(mapping: ['id' => 'userId'])] AppUser $user
+        #[MapEntity(mapping: ['userId' => 'id'])] AppUser $user
     ): JsonResponse
     {
         $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
