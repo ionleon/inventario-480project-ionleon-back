@@ -6,7 +6,7 @@ readonly class ProjectFilters
 {
      public function __construct(
          public ?string $term = null,
-         public ?int $clientId = null,
+         public ?string $clientId = null,
          public ?bool $isActive = null,
      )
      {}
