@@ -8,4 +8,6 @@ interface LinkRepositoryInterface
     public function save(Link $link): void;
     public function delete(Link $link): void;
 
+    public function remove(Link $existingLink);
+
 }
