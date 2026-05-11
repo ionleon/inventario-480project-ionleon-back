@@ -133,9 +133,9 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isActive(): ?bool
+    public function isActive(): bool
     {
-        return $this->isActive;
+        return $this->isActive ?? false;
     }
 
     public function setIsActive(bool $isActive): static

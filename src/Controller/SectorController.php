@@ -46,7 +46,7 @@ final class SectorController extends AbstractController
         }
     }
 
-    #[Route('/{id}', name: 'sector_update', methods: ['PUT'])]
+    #[Route('/{id}', name: 'sector_update', methods: ['PATCH'])]
     public function update(Sector $sector,Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);

@@ -16,32 +16,6 @@ class ContactManager
         private readonly EntityManagerInterface $em
     ) {}
 
-//    public function save(Contact $contact, array $data): Contact
-//    {
-//        $contact->setFullName($data['fullName'] ?? $contact->getFullName());
-//        $contact->setEmail($data['email'] ?? $contact->getEmail());
-//        $contact->setPhoneNumber($data['phoneNumber'] ?? $contact->getPhoneNumber());
-//        $contact->setNote($data['note'] ?? $contact->getNote());
-//        $contact->setIsActive($data['isActive'] ?? $contact->isActive() ?? true);
-//
-//        $isMain = $data['isMain'] ?? $contact->isMain() ?? false;
-//        $contact->setIsMain($isMain);
-//
-//        if($contact->isMain()) {
-//            $this->contactRepository->resetMainContactsForClient(
-//                $contact->getClient(),
-//                $contact
-//            );
-//        }
-//
-//        $this->em->persist($contact);
-//        $this->em->flush();
-//
-//        $this->em->refresh($contact);
-//
-//        return $contact;
-//    }
-
     public function create(array $data, ?Client $client = null): Contact
     {
         if (!isset($data['id'], $data['fullName'])) {

@@ -2,13 +2,20 @@
 
 namespace App\Service;
 
+use App\Entity\AppUser;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Gesdinet\JWTRefreshTokenBundle\Doctrine\RefreshTokenRepositoryInterface;
+use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshTokenRepository;
+use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
+
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 
@@ -17,10 +24,12 @@ class AuthManager
 {
     public function __construct(
         private readonly RefreshTokenManagerInterface $refreshTokenManager,
-        private readonly TokenStorageInterface $tokenStorage,
-        private readonly CacheInterface $blacklistCache,
-        private readonly JWTTokenManagerInterface $jwtManager,
-        private readonly RequestStack $requestStack,
+        private readonly TokenStorageInterface        $tokenStorage,
+        private readonly CacheInterface               $blacklistCache,
+        private readonly JWTTokenManagerInterface     $jwtManager,
+        private readonly RequestStack                 $requestStack,
+        private readonly EntityManagerInterface       $em
+
     ) {}
 
     /**
@@ -51,6 +60,37 @@ class AuthManager
             }
     }
 
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws JWTDecodeFailureException
+     * @throws Exception
+     */
+    public function forceLogout(AppUser $user): void
+    {
+        try {
+            $payload = $this->getPayloadFromCurrentRequest();
+            if ($payload && isset($payload['jti'], $payload['exp'])) {
+                $ttl = $payload['exp'] - time();
+                if ($ttl > 0) {
+                    $cacheItem = $this->blacklistCache->getItem('blacklist_' . $payload['jti']);
+                    $cacheItem->set(true);
+                    $cacheItem->expiresAfter($ttl);
+                    $this->blacklistCache->save($cacheItem);
+                }
+            }
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage());
+
+        }
+
+        $this->em->createQuery('DELETE FROM App\Entity\RefreshToken r WHERE r.username = :username')
+            ->setParameter('username', $user->getUserIdentifier())
+            ->execute();
+
+        $this->em->flush();
+    }
+
     /**
      * @throws JWTDecodeFailureException
      * @throws Exception
@@ -59,8 +99,9 @@ class AuthManager
     {
         $token = $this->tokenStorage->getToken();
 
-        if ($token) {
-            return $this->jwtManager->decode($token);
+
+        if ($token && method_exists($token, 'getPayload')) {
+            return $token->getPayload();
         }
 
         $request = $this->requestStack->getCurrentRequest();

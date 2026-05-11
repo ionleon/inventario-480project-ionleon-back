@@ -152,7 +152,7 @@ final class ClientController extends AbstractController
     public function deactivate(Client $client): JsonResponse
     {
         $this->clientManager->deactivate($client);
-        return $this->json(null, 204);
+        return $this->json([], 200);
     }
 
 
