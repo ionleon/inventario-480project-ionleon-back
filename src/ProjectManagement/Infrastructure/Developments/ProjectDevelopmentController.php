@@ -45,7 +45,7 @@ final class ProjectDevelopmentController extends AbstractController
     #[Route('/{developmentId}', name: 'project_development_update', methods: ['PUT'])]
     public function update(
         Project $project,
-        #[MapEntity(mapping: ['id' => 'developmentId'])] Development $development,
+        #[MapEntity(mapping: ['developmentId' => 'id'])] Development $development,
         Request $request
     ): JsonResponse
     {
@@ -63,7 +63,7 @@ final class ProjectDevelopmentController extends AbstractController
 
     #[Route('/{developmentId}', name: 'project_development_delete', methods: ['DELETE'])]
     public function delete(
-        #[MapEntity(mapping: ['id' => 'developmentId'])] Development $development,
+        #[MapEntity(mapping: ['developmentId' => 'id'])] Development $development,
     ): JsonResponse
     {
         $this->denyAccessUnlessGranted('PROJECT_EDIT', $development->getProject() );
