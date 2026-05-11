@@ -25,7 +25,9 @@ class DoctrineDevelopmentRepository extends ServiceEntityRepository implements D
 
     public function findByProject(Project $project): array
     {
-        // TODO: Implement findByProject() method.
+        return $this->getEntityManager()
+                    ->getRepository(Development::class)
+                    ->findByProject($project);
     }
 
     public function save(Development $development): void
