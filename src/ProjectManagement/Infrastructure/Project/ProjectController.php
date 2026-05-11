@@ -3,6 +3,8 @@
 namespace App\ProjectManagement\Infrastructure\Project;
 use App\ProjectManagement\Application\Project\ProjectService;
 use App\ProjectManagement\Domain\Project\Project;
+use App\ProjectManagement\Domain\Project\ProjectFilters;
+use App\ProjectManagement\Domain\Project\ProjectRepositoryInterface;
 use App\Service\PaginationService;
 use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
@@ -22,9 +24,8 @@ final class ProjectController extends AbstractController
 {
 
     public function __construct(
-        private readonly DoctrineProjectRepository $projectRepository,
-        private readonly PaginationService         $paginationService,
-        private readonly ProjectService            $projectManager,
+        private readonly ProjectRepositoryInterface $projectRepository,
+        private readonly ProjectService             $projectService,
     )
     {}
 
@@ -47,17 +48,17 @@ final class ProjectController extends AbstractController
     )]
     public function index(Request $request): JsonResponse
     {
-        $term = $request->query->get('term');
-        $isActive = $request->query->has('isActive')
-            ? $request->query->getBoolean('isActive')
-            : null;
+        $filters = new ProjectFilters(
+            term: $request->query->get('term'),
+            clientId: $request->query->get('client_id'),
+            isActive: $request->query->get('is_active')
+        );
 
-        $qb = $this->projectRepository->qbByFilters($term, null, $isActive);
 
         $page = $request->query->get('page', 1);
         $limit = $request->query->get('limit', 10);
 
-        $projects = $this->paginationService->paginate($qb, $page,$limit);
+        $projects = $this->projectRepository->findByFiltersPaginated($filters, $page, $limit);
 
         return $this->json($projects, 200, [], ['groups' => ['project:read']]);
     }
@@ -93,7 +94,7 @@ final class ProjectController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        $project = $this->projectManager->create($data);
+        $project = $this->projectService->create($data);
 
         return $this->json([], 201, [], ['groups' => 'project:read']);
 
@@ -107,7 +108,7 @@ final class ProjectController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        $this->projectManager->save($project, $data);
+        $this->projectService->save($project, $data);
 
         return $this->json([], 200, [], ['groups' => 'project:read']);
 
@@ -118,7 +119,7 @@ final class ProjectController extends AbstractController
     {
 
 
-        $this->projectManager->delete($project);
+        $this->projectService->delete($project);
 
         return $this->json(null, 204);
     }
@@ -128,7 +129,7 @@ final class ProjectController extends AbstractController
     {
 
 
-        $this->projectManager->deactivate($project);
+        $this->projectService->deactivate($project);
 
         return $this->json([], 200);
     }

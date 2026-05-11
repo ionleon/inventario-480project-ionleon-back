@@ -2,11 +2,11 @@
 
 namespace App\ProjectManagement\Domain\ProjectUser;
 
-use App\Entity\AppUser;
-use App\Entity\ProjectRole;
 use App\Entity\TimeEntry;
 use App\ProjectManagement\Domain\Project\Project;
-use App\Repository\ProjectUserRepository;
+use App\ProjectManagement\Domain\ProjectRole\ProjectRole;
+use App\ProjectManagement\Infrastructure\ProjectUser\DoctrineProjectUserRepository;
+use App\UserManagement\Domain\AppUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: ProjectUserRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineProjectUserRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 class ProjectUser
 {
@@ -57,7 +57,6 @@ class ProjectUser
     #[Groups(['project:read'])]
     private ?bool $isActive = null;
 
-
     public function getProjectForSerializing(): ?Project
     {
         return $this->project;
@@ -77,6 +76,18 @@ class ProjectUser
     public function __construct()
     {
         $this->timeEntries = new ArrayCollection();
+    }
+
+    public static function create(Project $project, AppUser $appUser, ProjectRole $projectRole, bool $isActive): self
+    {
+        $projectUser = new self();
+
+        $projectUser->project = $project;
+        $projectUser->appUser = $appUser;
+        $projectUser->projectRole = $projectRole;
+        $projectUser->isActive = $isActive;
+
+        return $projectUser;
     }
 
     public function getId(): ?Uuid

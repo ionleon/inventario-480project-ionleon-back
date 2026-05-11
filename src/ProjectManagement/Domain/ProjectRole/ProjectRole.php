@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace App\ProjectManagement\Domain\ProjectRole;
 
-use App\Repository\ProjectRoleRepository;
-use Doctrine\DBAL\Types\Types;
+use App\ProjectManagement\Infrastructure\ProjectRole\DoctrineProjectRoleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: ProjectRoleRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineProjectRoleRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 #[UniqueEntity(fields: ['name'], message: 'This name already exists.')]
 class ProjectRole

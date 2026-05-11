@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Technology;
+use App\ProjectManagement\Domain\Developments\Technology\Technology;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Uid\Uuid;

@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Development;
-use App\Entity\Link;
 use App\Enum\Enviroment;
+use App\ProjectManagement\Domain\Developments\Development;
+use App\ProjectManagement\Domain\Developments\Link\Link;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

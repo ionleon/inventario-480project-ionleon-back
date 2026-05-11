@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace App\ProjectManagement\Domain\Developments\Technology;
 
+use App\ProjectManagement\Domain\Developments\Development;
 use App\Repository\TechnologyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

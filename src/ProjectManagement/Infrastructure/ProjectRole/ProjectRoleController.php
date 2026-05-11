@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace App\ProjectManagement\Infrastructure\ProjectRole;
 
-use App\Entity\ProjectRole;
-use App\Repository\ProjectRoleRepository;
-use App\Service\ProjectRoleManager;
+use App\ProjectManagement\Application\ProjectRole\ProjectRoleService;
+use App\ProjectManagement\Domain\ProjectRole\ProjectRole;
+use App\ProjectManagement\Domain\ProjectRole\ProjectRoleRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/project-roles', name: 'project_role')]
@@ -16,8 +15,8 @@ final class ProjectRoleController extends AbstractController
 {
 
     public function __construct(
-        private ProjectRoleManager $manager,
-        private ProjectRoleRepository $repository
+        private ProjectRoleService             $manager,
+        private ProjectRoleRepositoryInterface $repository
     )
     {}
 
@@ -52,7 +51,7 @@ final class ProjectRoleController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         try {
-            $role = $this->manager->save($projectRole, $data);
+            $this->manager->update($projectRole, $data);
             return $this->json([], 200,  [], []);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);

@@ -3,7 +3,7 @@
 namespace App\Auth\Infrastructure\Security;
 
 use App\Auth\Application\AuthService;
-use App\Entity\AppUser;
+use App\UserManagement\Domain\AppUser;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Psr\Cache\InvalidArgumentException;

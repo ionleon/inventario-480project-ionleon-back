@@ -1,55 +1,49 @@
 <?php
 
-namespace App\Service;
+namespace App\ProjectManagement\Application\Developments;
 
-use App\Entity\Development;
+use App\ProjectManagement\Application\Developments\Link\LinkService;
+use App\ProjectManagement\Domain\Developments\Development;
+use App\ProjectManagement\Domain\Developments\DevelopmentRepositoryInterface;
+use App\ProjectManagement\Domain\Developments\Technology\TechnologyRepositoryInterface;
 use App\ProjectManagement\Domain\Project\Project;
-use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
-use App\Repository\DevelopmentRepository;
+use App\ProjectManagement\Infrastructure\Developments\DoctrineDevelopmentRepository;
 use App\Repository\TechnologyRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
-class DevelopmentManager
+class DevelopmentService
 {
     public function __construct(
-        private EntityManagerInterface    $em,
-        private DevelopmentRepository     $devRepository,
-        private TechnologyRepository      $technologyRepository,
-        private DoctrineProjectRepository $projectRepository,
-        private LinkManager               $linkManager
+        private DevelopmentRepositoryInterface         $devRepository,
+        private TechnologyRepositoryInterface          $technologyRepository,
+        private LinkService                            $linkService
     ) {}
-
-    public function findAllByProject(Project $project): array
-    {
-        return $this->devRepository->findBy(['project' => $project]);
-    }
 
     public function create(Project $project, array $data): Development
     {
-        if (!isset($data['id'], $data['technologyId'], $data['name'])) {
-            throw new \InvalidArgumentException('Faltan campos obligatorios (id, technologyId, name).');
+        if (!isset($data['id'], $data['technology_id'], $data['name'])) {
+            throw new \InvalidArgumentException('Mandatory fields missing (id, technology_id, name).');
         }
 
         $development = new Development();
         $development->setId(Uuid::fromString($data['id']));
         $development->setProject($project);
 
-        return $this->save($development, $data);
+        return $this->update($development, $data);
     }
 
-    public function save(Development $development, array $data): Development
+    public function update(Development $development, array $data): Development
     {
         $development->setName($data['name'] ?? $development->getName());
         $development->setDescription($data['description'] ?? $development->getDescription());
-        $development->setUrlRepository($data['urlRepository'] ?? $development->getUrlRepository());
+        $development->setUrlRepository($data['url_repository'] ?? $development->getUrlRepository());
 
 
         if (isset($data['technologyId'])) {
-            $technology = $this->technologyRepository->find($data['technologyId']);
+            $technology = $this->technologyRepository->findById($data['technology_id']);
             if (!$technology) {
-                throw new NotFoundHttpException('Proyecto o Tecnología no encontrados.');
+                throw new NotFoundHttpException('Technology not found.');
             }
             $development->setTechnology($technology);
         }
@@ -72,7 +66,7 @@ class DevelopmentManager
         }
 
         foreach ($linksData as $linkItem) {
-            $this->linkManager->create($linkItem, $development, false);
+            $this->linkService->create($linkItem, $development, false);
         }
     }
 

@@ -2,14 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Link;
+use App\ProjectManagement\Application\Developments\Link\LinkService;
+use App\ProjectManagement\Domain\Developments\Link\Link;
 use App\Repository\LinkRepository;
-
-use App\Service\LinkManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 
@@ -17,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class LinkController extends AbstractController
 {
     public function __construct(
-        private LinkManager $manager,
+        private LinkService    $manager,
         private LinkRepository $repository
     ) {}
 

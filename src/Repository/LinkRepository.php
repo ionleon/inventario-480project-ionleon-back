@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Link;
+use App\ProjectManagement\Domain\Developments\Link\Link;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

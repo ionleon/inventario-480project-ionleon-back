@@ -3,7 +3,7 @@
 namespace App\ProjectManagement\Domain\Project;
 
 use App\ClientManagement\Domain\Client;
-use App\Entity\Development;
+use App\ProjectManagement\Domain\Developments\Development;
 use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
 use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;

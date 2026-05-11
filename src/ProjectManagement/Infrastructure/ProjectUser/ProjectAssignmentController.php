@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\ProjectManagement\Infrastructure\ProjectUser;
 
-use App\Entity\AppUser;
 use App\ProjectManagement\Application\ProjectUser\ProjectAssignmentService;
 use App\ProjectManagement\Domain\Project\Project;
 use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
-use App\Repository\AppUserRepository;
-use App\Repository\ProjectRoleRepository;
-use App\Repository\ProjectUserRepository;
-use App\Service\PaginationService;
+use App\ProjectManagement\Domain\ProjectUser\ProjectUserRepositoryInterface;
+use App\UserManagement\Domain\AppUser;
 use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
@@ -24,11 +21,8 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ProjectAssignmentController extends AbstractController
 {
     public function __construct(
-        private readonly ProjectUserRepository    $puRepository,
-        private readonly AppUserRepository        $userRepository,
-        private readonly ProjectRoleRepository    $roleRepository,
-        private readonly ProjectAssignmentService $assignmentManager,
-        private readonly PaginationService        $paginationService
+        private readonly ProjectUserRepositoryInterface $puRepository,
+        private readonly ProjectAssignmentService       $assignmentService,
     )
     {}
 
@@ -46,12 +40,13 @@ final class ProjectAssignmentController extends AbstractController
     )]
     public function index(Project $project, Request $request): JsonResponse
     {
-        $qb = $this->puRepository->qbAllByProjects($project);
+
 
         $page = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 10);
 
-        $assignments = $this->paginationService->paginate($qb, $page, $limit);
+        $assignments = $this->puRepository->findByProjectPaginated($project->getId(), $page, $limit);
+
         return $this->json($assignments, 200, [], ['groups' => 'project:read']);
     }
 
@@ -78,18 +73,15 @@ final class ProjectAssignmentController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        $user = $this->userRepository->find($data['user_id'] ?? '');
-        $role = $this->roleRepository->find($data['role_id'] ?? '');
-
-        if (!$user || !$role) {
-            return $this->json(['error' => 'User or Role not found'], 404);
-        }
 
         try {
-            $assignment = $this->assignmentManager->assignUser($project, $user, $role);
-            return $this->json([], 201, [], ['groups' => 'project:read']);
+            $assignment = $this->assignmentService->assignUser(
+                $project,
+                $data['user_id'] ?? '',
+                $data['role_id'] ?? '');
+            return $this->json(['message' => 'User assigned'], 201);
         } catch (Exception $e) {
-            return $this->json(['error' => $e->getMessage()], 400);
+            return $this->json(['error' => $e->getMessage()], $e->getCode());
         }
 
     }
@@ -108,7 +100,7 @@ final class ProjectAssignmentController extends AbstractController
     )]
     #[OA\Response(response: 200, description: 'Usuarios sincronizados')]
     #[OA\Response(response: 403, description: 'Solo administradores o project managers')]
-    public function update(
+    public function syncUserAssignments(
         Project $project,
         Request $request
     ): JsonResponse {
@@ -116,7 +108,7 @@ final class ProjectAssignmentController extends AbstractController
         $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
         $data = json_decode($request->getContent(), true);
 
-        $this->assignmentManager->syncProjectUsers($project, $data['users'] ?? []);
+        $this->assignmentService->syncProjectUsers($project, $data['users'] ?? []);
 
         return $this->json($project->getProjectUsers(), 200, [], ['groups' => 'project:read']);
     }
@@ -134,11 +126,14 @@ final class ProjectAssignmentController extends AbstractController
         $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
         $data = json_decode($request->getContent(), true);
 
-        $assignment = $this->puRepository->findOneByProjectAndUser($project, $user);
+        $assignment = $this->puRepository->findOneByProjectAndUser($project->getId(), $user->getId());
+        if (!$assignment) {
+            return $this->json(['error' => 'Assignment not found'], 404);
+        }
 
-        $this->assignmentManager->updateAssignment($assignment, $data);
+        $assignment = $this->assignmentService->updateAssignment($assignment, $data);
 
-        return $this->json($project->getProjectUsers(), 200, [], ['groups' => 'project:read']);
+        return $this->json(['message' => 'Assignment was updated.'], 200);
     }
 
     /**
@@ -155,8 +150,12 @@ final class ProjectAssignmentController extends AbstractController
     {
         $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
 
-        $assignment = $this->assignmentManager->findAssignment($project,$user);
-        $this->assignmentManager->removeAssignment($assignment);
+        $assignment = $this->puRepository->findOneByProjectAndUser($project->getId(),$user->getId());
+        if (!$assignment) {
+            return $this->json(['error' => 'Assignment not found'], 404);
+        }
+
+        $this->puRepository->remove($assignment);
 
         return $this->json(null, 204);
 
@@ -171,13 +170,21 @@ final class ProjectAssignmentController extends AbstractController
     #[OA\Parameter(name: 'userId', in: 'path', description: 'ID del Usuario a desactivar')]
     public function deactivateUserAssignment(
         Project $project,
-        #[MapEntity(mapping: ['id' => 'userId'])] AppUser $user
+        #[MapEntity(mapping: ['id' => 'userId'])] AppUser $user,
+        Request $request
     ): JsonResponse
     {
         $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
 
-        $assignment = $this->assignmentManager->findAssignment($project,$user);
-        $this->assignmentManager->deactivateAssignment($assignment);
+        $assignment = $this->puRepository->findOneByProjectAndUser($project->getId(),$user->getId());
+
+        if (!$assignment) {
+            return $this->json(['error' => 'Assignment not found'], 404);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $this->assignmentService->deactivateAssignment($assignment, $data);
 
         return $this->json([], 200);
 

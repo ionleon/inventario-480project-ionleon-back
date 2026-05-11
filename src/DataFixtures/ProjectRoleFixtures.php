@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\ProjectRole;
+use App\ProjectManagement\Domain\ProjectRole\ProjectRole;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Uid\Uuid;

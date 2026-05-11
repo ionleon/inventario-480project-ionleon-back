@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Service;
+namespace App\ProjectManagement\Application\Developments\Link;
 
-use App\Entity\Development;
-use App\Entity\Link;
 use App\Enum\Enviroment;
-use App\Repository\DevelopmentRepository;
+use App\ProjectManagement\Domain\Developments\Development;
+use App\ProjectManagement\Domain\Developments\Link\Link;
+use App\ProjectManagement\Infrastructure\Developments\DoctrineDevelopmentRepository;
 use App\Repository\LinkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
-class LinkManager
+class LinkService
 {
     public function __construct(
       private EntityManagerInterface $em,
       private LinkRepository $repository,
-      private DevelopmentRepository $developmentRepository
+      private DoctrineDevelopmentRepository $developmentRepository
     ) {}
 
     public function create(array $data, ?Development $development = null, bool $flush = true): Link

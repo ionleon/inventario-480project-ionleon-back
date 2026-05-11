@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Entity;
+namespace App\ProjectManagement\Domain\Developments\Link;
 
 use App\Enum\Enviroment;
+use App\ProjectManagement\Domain\Developments\Development;
 use App\Repository\LinkRepository;
-
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

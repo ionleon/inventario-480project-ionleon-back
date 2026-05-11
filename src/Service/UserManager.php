@@ -3,8 +3,8 @@
 namespace App\Service;
 
 use App\Auth\Application\AuthService;
-use App\Entity\AppUser;
-use App\Repository\AppUserRepository;
+use App\UserManagement\Domain\AppUser;
+use App\UserManagement\Infrastructure\DoctrineUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
@@ -14,7 +14,7 @@ use Symfony\Component\Uid\Uuid;
 class UserManager
 {
     public function __construct(
-        private readonly AppUserRepository           $userRepository,
+        private readonly DoctrineUserRepository      $userRepository,
         private readonly EntityManagerInterface      $entityManager,
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly AuthService                 $authService

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Infrastructure\Security;
 
-use App\Entity\AppUser;
+use App\UserManagement\Domain\AppUser;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Random\RandomException;
 use Symfony\Component\HttpFoundation\RequestStack;

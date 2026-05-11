@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Controller;
-use App\Entity\AppUser;
 use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
-use App\Repository\AppUserRepository;
 use App\Service\PaginationService;
 use App\Service\UserManager;
+use App\UserManagement\Domain\AppUser;
+use App\UserManagement\Infrastructure\DoctrineUserRepository;
 use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 final class UserController extends AbstractController
 {
     public function __construct(
-        private readonly AppUserRepository         $userRepository,
+        private readonly DoctrineUserRepository    $userRepository,
         private readonly DoctrineProjectRepository $projectRepository,
         private readonly UserManager               $userManager,
         private readonly PaginationService         $paginationService,

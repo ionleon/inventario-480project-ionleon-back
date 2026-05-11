@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Technology;
+use App\ProjectManagement\Domain\Developments\Technology\Technology;
 use App\Repository\TechnologyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Uid\Uuid;

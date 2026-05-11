@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Entity;
+namespace App\ProjectManagement\Domain\Developments;
 
+use App\ProjectManagement\Domain\Developments\Link\Link;
+use App\ProjectManagement\Domain\Developments\Technology\Technology;
 use App\ProjectManagement\Domain\Project\Project;
-use App\Repository\DevelopmentRepository;
+use App\ProjectManagement\Infrastructure\Developments\DoctrineDevelopmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -13,7 +15,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: DevelopmentRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineDevelopmentRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 
 class Development

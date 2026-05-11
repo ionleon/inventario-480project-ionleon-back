@@ -2,11 +2,15 @@
 
 namespace App\ProjectManagement\Domain\ProjectRole;
 
-use App\Entity\ProjectRole;
-
 interface ProjectRoleRepositoryInterface
 {
-    public function findById(int $id): ProjectRole;
+    public function findById(string $id): ?ProjectRole;
 
+    /** @return ProjectRole[] */
+    public function findAll(): array;
+
+    public function save(ProjectRole $role): void;
+
+    public function delete(ProjectRole $role): void;
 
 }

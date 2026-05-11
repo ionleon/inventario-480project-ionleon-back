@@ -1,47 +1,62 @@
 <?php
 
-namespace App\Repository;
+namespace App\UserManagement\Infrastructure;
 
-use App\Entity\AppUser;
+
 use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
+use App\Shared\Domain\Pagination\PaginatedResult;
+use App\UserManagement\Domain\AppUser;
+use App\UserManagement\Domain\AppUserRepositoryInterface;
+use App\UserManagement\Domain\UserFilters;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 
 /**
  * @extends ServiceEntityRepository<AppUser>
  */
-class AppUserRepository extends ServiceEntityRepository
+class DoctrineUserRepository extends ServiceEntityRepository implements AppUserRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AppUser::class);
     }
 
-    public function qbByFilters(?string $term, ?string $role, ?bool $isActive) : QueryBuilder
+    public function findByFilters(UserFilters $filters) : array
     {
-        $qb = $this->createQueryBuilder('u');
+        return $this->createFilteredQueryBuilder($filters)
+            ->getQuery()
+            ->getResult();
+    }
 
-        if($term) {
-            $qb->andWhere('LOWER(u.name) LIKE LOWER(:term) OR LOWER(u.surname) LIKE LOWER(:term) OR LOWER(u.email) LIKE LOWER(:term)')
-                ->setParameter('term', '%' . $term . '%');
-        }
 
-        if($role) {
-            $qb->andWhere('u.role LIKE :role')
-                ->setParameter('role', '%'. $role .'%');
-        }
+    public function findById(string $id): ?AppUser
+    {
+        return $this->getEntityManager()->find(AppUser::class, $id);
+    }
 
-        if($isActive !== null) {
-            $qb->andWhere('u.isActive = :isActive')
-                ->setParameter('isActive', $isActive);
-        }
+    /**
+     * @throws Exception
+     */
+    public function findByFiltersPaginated(UserFilters $filters, int $page, int $limit): PaginatedResult
+    {
+        $qb = $this->createFilteredQueryBuilder($filters);
 
-        $qb->orderBy('u.surname' , 'ASC')
-            ->addOrderBy('u.name' , 'ASC');
+        $qb->setFirstResult(($page -1) * $limit)
+            ->setMaxResults($limit);
 
-        return $qb;
+        $paginator = new Paginator($qb);
+        $totalItems = count($paginator);
+        $items = iterator_to_array($paginator->getIterator());
+
+        return new PaginatedResult(
+            $items,
+            $totalItems,
+            $page,
+            $limit
+        );
     }
 
     #Revisar esto para mas adelante
@@ -59,7 +74,9 @@ class AppUserRepository extends ServiceEntityRepository
     /**
      * @throws Exception
      */
-    public function deactivateUserWithRelation(AppUser $user) {
+
+
+    public function deactivateUserWithRelation(AppUser $user) : void {
 
         $em = $this->getEntityManager();
 
@@ -69,18 +86,18 @@ class AppUserRepository extends ServiceEntityRepository
             $em->createQueryBuilder()
                 ->update(AppUser::class, 'u')
                 ->set('u.isActive', ':status')
-                ->where('u.id = :user')
+                ->where('u.id = :userId')
                 ->setParameter('status',false)
-                ->setParameter('user',$user)
+                ->setParameter('userId',$user)
                 ->getQuery()
                 ->execute();
 
             $em->createQueryBuilder()
                 ->update(ProjectUser::class, 'pu')
                 ->set('pu.isActive', ':status')
-                ->where('pu.appUser = :user')
+                ->where('pu.appUser = :userId')
                 ->setParameter('status',false)
-                ->setParameter('user',$user)
+                ->setParameter('userId',$user)
                 ->getQuery()
                 ->execute();
 
@@ -93,6 +110,31 @@ class AppUserRepository extends ServiceEntityRepository
             throw $e;
         }
 
+    }
+
+    public function createFilteredQueryBuilder(UserFilters $filters): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        if($filters->term) {
+            $qb->andWhere('LOWER(u.name) LIKE LOWER(:term) OR LOWER(u.surname) LIKE LOWER(:term) OR LOWER(u.email) LIKE LOWER(:term)')
+                ->setParameter('term', '%' . $filters->term . '%');
+        }
+
+        if($filters->role) {
+            $qb->andWhere('u.role LIKE :role')
+                ->setParameter('role', '%'. $filters->role .'%');
+        }
+
+        if($filters->isActive !== null) {
+            $qb->andWhere('u.isActive = :isActive')
+                ->setParameter('isActive', $filters->isActive);
+        }
+
+        $qb->orderBy('u.surname' , 'ASC')
+            ->addOrderBy('u.name' , 'ASC');
+
+        return $qb;
     }
 
 
@@ -120,4 +162,5 @@ class AppUserRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
 }

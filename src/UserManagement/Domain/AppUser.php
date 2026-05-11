@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\UserManagement\Domain;
 
 use App\Enum\SystemRole;
-use App\Repository\AppUserRepository;
+use App\UserManagement\Infrastructure\DoctrineUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: AppUserRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineUserRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 #[UniqueEntity(fields: ['email'], message: 'This mail is already in use.')]
 class AppUser implements UserInterface, PasswordAuthenticatedUserInterface

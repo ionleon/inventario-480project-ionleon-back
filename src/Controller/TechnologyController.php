@@ -2,13 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Technology;
+use App\ProjectManagement\Domain\Developments\Technology\Technology;
 use App\Repository\TechnologyRepository;
 use App\Service\TechnologyManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/technologies', name: 'app_technology')]

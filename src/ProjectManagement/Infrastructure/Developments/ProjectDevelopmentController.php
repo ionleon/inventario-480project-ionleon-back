@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\ProjectManagement\Infrastructure\Developments;
 
-use App\Entity\Development;
+use App\ProjectManagement\Application\Developments\DevelopmentService;
+use App\ProjectManagement\Domain\Developments\Development;
+use App\ProjectManagement\Domain\Developments\DevelopmentRepositoryInterface;
 use App\ProjectManagement\Domain\Project\Project;
-use App\Repository\DevelopmentRepository;
-use App\Service\DevelopmentManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,14 +17,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ProjectDevelopmentController extends AbstractController
 {
     public function __construct(
-        private DevelopmentManager $devManager,
-        private DevelopmentRepository $repository
+        private DevelopmentService             $devService,
+        private DevelopmentRepositoryInterface $repository
     ) {}
 
     #[Route('', name: 'project_development_index', methods: ['GET'])]
     public function index(Project $project): Response
     {
-        $developments = $this->devManager->findAllByProject($project);
+        $developments = $this->repository->findByProject($project);
         return $this->json($developments, 200, [], ['groups' => 'dev:read']);
     }
 
@@ -33,8 +33,12 @@ final class ProjectDevelopmentController extends AbstractController
     {
         $this->denyAccessUnlessGranted('PROJECT_EDIT', $project);
 
-        $data = json_decode($request->getContent(), true);
-        $dev = $this->devManager->create($project, $data);
+        try {
+            $data = json_decode($request->getContent(), true);
+            $dev = $this->devService->create($project, $data);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
         return $this->json([], 201, [], ['groups' => 'dev:read']);
     }
 
@@ -47,13 +51,14 @@ final class ProjectDevelopmentController extends AbstractController
     {
         $this->denyAccessUnlessGranted('PROJECT_EDIT', $project);
 
-        if ($development->getProject() !== $project) {
-            throw $this->createAccessDeniedException('This development does not belong to this project.');
-        }
 
-        $data = json_decode($request->getContent(), true);
-        $dev = $this->devManager->save($development, $data);
-        return $this->json([], 201, [], ['groups' => 'dev:read']);
+        try {
+            $data = json_decode($request->getContent(), true);
+            $this->devService->update($development, $data);
+            return $this->json([], 201, [], ['groups' => 'dev:read']);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 403);
+        }
     }
 
     #[Route('/{developmentId}', name: 'project_development_delete', methods: ['DELETE'])]
@@ -61,10 +66,9 @@ final class ProjectDevelopmentController extends AbstractController
         #[MapEntity(mapping: ['id' => 'developmentId'])] Development $development,
     ): JsonResponse
     {
-        $project = $development->getProject();
-        $this->denyAccessUnlessGranted('PROJECT_EDIT', $project );
+        $this->denyAccessUnlessGranted('PROJECT_EDIT', $development->getProject() );
 
-        $this->devManager->delete($development);
+        $this->devService->delete($development);
         return $this->json(null, 204, [], []);
 
     }

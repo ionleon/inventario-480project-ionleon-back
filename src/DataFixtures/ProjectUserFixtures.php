@@ -2,10 +2,10 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\AppUser;
-use App\Entity\ProjectRole;
 use App\ProjectManagement\Domain\Project\Project;
+use App\ProjectManagement\Domain\ProjectRole\ProjectRole;
 use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
+use App\UserManagement\Domain\AppUser;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

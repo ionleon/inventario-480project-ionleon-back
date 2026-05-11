@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\AppUser;
-use App\Entity\TimeEntry;
 use App\Repository\TimeEntryRepository;
-
 use App\Service\PaginationService;
 use App\Service\TimeEntryManager;
+use App\UserManagement\Domain\AppUser;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

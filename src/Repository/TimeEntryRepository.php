@@ -2,9 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\AppUser;
 use App\Entity\TimeEntry;
 use App\ProjectManagement\Domain\Project\Project;
+use App\UserManagement\Domain\AppUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,12 +23,12 @@ class TimeEntryRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('te')
             ->innerJoin('te.projectUser', 'pu')
-            ->andWhere('pu.project = :project')
-            ->setParameter('project', $project);
+            ->andWhere('pu.project = :projectd')
+            ->setParameter('projectd', $project);
 
         if ($user) {
-            $qb->andWhere('pu.user = :user')
-                ->setParameter('user', $user);
+            $qb->andWhere('pu.user = :userId')
+                ->setParameter('userId', $user);
         }
 
         $qb->orderBy('te.date', 'DESC');
@@ -40,8 +40,8 @@ class TimeEntryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('te')
             ->innerJoin('te.projectUser', 'pu')
-            ->where('pu.appUser = :user')
-            ->setParameter('user', $user)
+            ->where('pu.appUser = :userId')
+            ->setParameter('userId', $user)
             ->orderBy('te.date', 'DESC');
     }
 
@@ -50,8 +50,8 @@ class TimeEntryRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('te')
             ->select('SUM(te.hour)') // Sumamos la columna 'hour'
             ->innerJoin('te.projectUser', 'pu')
-            ->where('pu.appUser = :user')
-            ->setParameter('user', $user);
+            ->where('pu.appUser = :userId')
+            ->setParameter('userId', $user);
 
 
         return (float) $qb->getQuery()->getSingleScalarResult();

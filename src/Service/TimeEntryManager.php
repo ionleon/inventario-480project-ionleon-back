@@ -3,11 +3,11 @@
 namespace App\Service;
 
 
-use App\Entity\AppUser;
 use App\Entity\TimeEntry;
 use App\ProjectManagement\Domain\Project\Project;
 use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
-use App\Repository\ProjectUserRepository;
+use App\ProjectManagement\Infrastructure\ProjectUser\DoctrineProjectUserRepository;
+use App\UserManagement\Domain\AppUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -20,11 +20,11 @@ class TimeEntryManager
 
 
     public function __construct(
-        private EntityManagerInterface    $em,
-        private ValidatorInterface        $validator,
-        private ProjectUserRepository     $puRepository,
-        private DoctrineProjectRepository $projectRepository,
-        private Security                  $security,
+        private EntityManagerInterface        $em,
+        private ValidatorInterface            $validator,
+        private DoctrineProjectUserRepository $puRepository,
+        private DoctrineProjectRepository     $projectRepository,
+        private Security                      $security,
     ) {}
 
 
