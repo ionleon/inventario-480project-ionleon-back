@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\ProjectManagement\Infrastructure\Developments\Link;
 
 use App\ProjectManagement\Application\Developments\Link\LinkService;
 use App\ProjectManagement\Domain\Developments\Link\Link;
-use App\Repository\LinkRepository;
+use App\ProjectManagement\Domain\Developments\Link\LinkRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 final class LinkController extends AbstractController
 {
     public function __construct(
-        private LinkService    $manager,
-        private LinkRepository $repository
+        private LinkService             $manager,
+        private LinkRepositoryInterface $repository
     ) {}
 
     #[Route('', name: 'link_index', methods: ['GET'])]

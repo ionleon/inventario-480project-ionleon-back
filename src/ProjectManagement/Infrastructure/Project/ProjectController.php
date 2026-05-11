@@ -108,7 +108,7 @@ final class ProjectController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        $this->projectService->save($project, $data);
+        $this->projectService->updateProject($project, $data);
 
         return $this->json([], 200, [], ['groups' => 'project:read']);
 
@@ -118,18 +118,21 @@ final class ProjectController extends AbstractController
     public function delete(Project $project): JsonResponse
     {
 
-
-        $this->projectService->delete($project);
+        $this->projectService->deleteProject($project);
 
         return $this->json(null, 204);
     }
 
     #[Route('/{id}', name: 'project_deactivate', methods: ['PATCH'])]
-    public function deactivate(Project $project): JsonResponse
+    public function deactivate(Project $project, Request $request): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
 
+        if (!isset($data['is_active'])) {
+            return $this->json(['error' => 'Property "is_active" is required'], 400);
+        }
 
-        $this->projectService->deactivate($project);
+        $this->projectService->setProjectActivation($project, (bool) $data['is_active']);
 
         return $this->json([], 200);
     }

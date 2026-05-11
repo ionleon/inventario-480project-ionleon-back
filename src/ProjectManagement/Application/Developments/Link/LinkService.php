@@ -4,10 +4,9 @@ namespace App\ProjectManagement\Application\Developments\Link;
 
 use App\Enum\Enviroment;
 use App\ProjectManagement\Domain\Developments\Development;
+use App\ProjectManagement\Domain\Developments\DevelopmentRepositoryInterface;
 use App\ProjectManagement\Domain\Developments\Link\Link;
-use App\ProjectManagement\Infrastructure\Developments\DoctrineDevelopmentRepository;
-use App\Repository\LinkRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\ProjectManagement\Domain\Developments\Link\LinkRepositoryInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
@@ -15,11 +14,13 @@ use Symfony\Component\Uid\Uuid;
 class LinkService
 {
     public function __construct(
-      private EntityManagerInterface $em,
-      private LinkRepository $repository,
-      private DoctrineDevelopmentRepository $developmentRepository
+      private readonly LinkRepositoryInterface        $repository,
+      private readonly DevelopmentRepositoryInterface $developmentRepository
     ) {}
 
+    /**
+     * @throws \Exception
+     */
     public function create(array $data, ?Development $development = null, bool $flush = true): Link
     {
         if (!isset($data['id'], $data['url'], $data['enviroment'])){
@@ -28,23 +29,25 @@ class LinkService
 
         $link = new Link();
 
-        try{
+
+        try {
             $link->setId(Uuid::fromString($data['id']));
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException('Invalid UUID format.');
         }
 
-        if (!$development && isset($data['developmentId'])) {
-            $development = $this->developmentRepository->find($data['developmentId']);
+
+        if (!$development && isset($data['development_id'])) {
+            $development = $this->developmentRepository->find($data['development_id']);
         }
 
         if (!$development){
-            throw new NotFoundHttpException('Link must be assigned to a development.');
+            throw new \Exception('Link must be assigned to a development.');
         }
 
         $link->setDevelopment($development);
 
-        return $this->save($link, $data);
+        return $this->save($link, $data, $flush);
 
     }
 
@@ -56,17 +59,12 @@ class LinkService
 
         $link->setUrl($data['url'] ?? $link->getUrl());
 
-        $this->em->persist($link);
-
-        if ($flush) {
-            $this->em->flush();
-        }
+        $this->repository->save($link, $flush);
         return $link;
     }
 
     public function delete(Link $link): void
     {
-        $this->em->remove($link);
-        $this->em->flush();
+        $this->repository->delete($link);
     }
 }

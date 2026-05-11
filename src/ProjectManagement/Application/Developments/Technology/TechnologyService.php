@@ -3,7 +3,8 @@
 namespace App\ProjectManagement\Application\Developments\Technology;
 
 use App\ProjectManagement\Domain\Developments\Technology\Technology;
-use App\Repository\TechnologyRepository;
+use App\ProjectManagement\Domain\Developments\Technology\TechnologyRepositoryInterface;
+use App\ProjectManagement\Infrastructure\Developments\Technology\DoctrineTechnologyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -11,14 +12,13 @@ class TechnologyService
 {
 
     public function __construct(
-        private EntityManagerInterface $em,
-        private TechnologyRepository $repository
+        private TechnologyRepositoryInterface $repository
     ) {}
 
     public function create(array $data): Technology {
 
         if (!isset($data['id'], $data['name'])) {
-            throw new \InvalidArgumentException('Faltan campos obligatorios (name).');
+            throw new \InvalidArgumentException('Missing mandatory fields (id, name).');
         }
 
         $technology = new Technology();
@@ -35,8 +35,7 @@ class TechnologyService
     public function save(Technology $technology,array $data): Technology
     {
         $technology->setName($data['name'] ?? $technology->getName());
-        $this->em->persist($technology);
-        $this->em->flush();
+        $this->repository->save($technology);
 
         return $technology;
     }
@@ -46,8 +45,7 @@ class TechnologyService
             throw new \LogicException('Technology in use, cannot delete.');
         }
 
-        $this->em->remove($technology);
-        $this->em->flush();
+        $this->repository->delete($technology);
     }
 
 }

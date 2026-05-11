@@ -14,7 +14,7 @@ class ProjectService
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,
-        private ClientRepositoryInterface $clientRepository
+        private ClientRepositoryInterface  $clientRepository
     ) {}
 
     /**
@@ -71,9 +71,9 @@ class ProjectService
         $this->projectRepository->delete($project);
     }
 
-    public function toggleProjectActivation(Project $project): void
+    public function setProjectActivation(Project $project, bool $isActive): void
     {
-        $project->toggleActivation();
+        $project->setIsActive($isActive);
         $this->projectRepository->save($project);
     }
 }

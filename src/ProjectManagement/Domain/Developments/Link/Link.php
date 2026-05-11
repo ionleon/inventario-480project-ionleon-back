@@ -4,14 +4,14 @@ namespace App\ProjectManagement\Domain\Developments\Link;
 
 use App\Enum\Enviroment;
 use App\ProjectManagement\Domain\Developments\Development;
-use App\Repository\LinkRepository;
+use App\ProjectManagement\Infrastructure\Developments\Link\DoctrineLinkRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: LinkRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineLinkRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 
 class Link

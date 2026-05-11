@@ -3,7 +3,7 @@
 namespace App\ProjectManagement\Domain\Developments\Technology;
 
 use App\ProjectManagement\Domain\Developments\Development;
-use App\Repository\TechnologyRepository;
+use App\ProjectManagement\Infrastructure\Developments\Technology\DoctrineTechnologyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: TechnologyRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineTechnologyRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 #[UniqueEntity(fields: ['name'], message: 'This name already exists.')]
 class Technology

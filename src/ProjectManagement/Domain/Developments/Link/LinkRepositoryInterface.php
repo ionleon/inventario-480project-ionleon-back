@@ -5,9 +5,7 @@ namespace App\ProjectManagement\Domain\Developments\Link;
 interface LinkRepositoryInterface
 {
 
-    public function save(Link $link): void;
+    public function save(Link $link, bool $flush): void;
     public function delete(Link $link): void;
-
-    public function remove(Link $existingLink);
 
 }
