@@ -119,7 +119,7 @@ final class ProjectAssignmentController extends AbstractController
     #[Route('/{userId}', name: 'update_single', methods: ['PUT'])]
     public function updateSingle(
         Project $project,
-        #[MapEntity(mapping: ['id' => 'userId'])] AppUser $user,
+        #[MapEntity(mapping: ['userId' => 'id'])] AppUser $user,
         Request $request
     ): JsonResponse {
 
