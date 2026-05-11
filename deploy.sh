@@ -12,7 +12,7 @@ if [ ! -f .env.local ]; then
     echo "Paso 2: Creando .env.local..."
     cp .env .env.local
 
-# Definición de variables
+
     DB_URL="postgresql://user_admin:skibidiman123@database:5432/project_inventory_480_db?serverVersion=18&charset=utf8"
     JWT_PASS="a35eab0d39a99076c5f8747bc553c0df86693e150a22e465987f288d610bdef3"
     SECRET="cf313f261c7cd660b5b066cb67962665"
@@ -31,6 +31,12 @@ fi
 # 2. Levantar los contenedores (Paso 3)
 echo "Paso 3: Construyendo y levantando servicios (Postgres, PHP, Nginx)..."
 docker-compose up -d --build
+
+echo "Corrigiendo permisos de archivos..."
+
+docker-compose exec php chmod +x bin/console
+
+docker-compose exec php chmod -R 777 var/cache var/log
 
 # Espera de seguridad para asegurar que la base de datos acepta conexiones
 echo "Esperando a que la base de datos este lista..."
