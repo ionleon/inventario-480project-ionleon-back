@@ -26,7 +26,7 @@ git clone <url-del-repositorio>
 
 
 > [!NOTE]
-> ### __El script configura el resto de pasos necesarios
+> ### El script configura el resto de pasos necesarios
 >
 > - **No es obligatorio seguir los pasos posteriores**: Se mantienen para poder observar el flujo de ejecucion y 
 > despliegue del proyecto.
