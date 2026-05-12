@@ -57,8 +57,8 @@ class ProjectManager
             $project->setDescription($data['description']);
         }
 
-        if (isset($data['start_date'])) {
-            $project->setStartedAt($data['start_date']);
+        if (array_key_exists('start_date', $data)) {
+            $project->setStartedAt($this->normalizeStartDate($data['start_date']));
         }
 
         $client = null;
@@ -93,6 +93,31 @@ class ProjectManager
     {
         $project->setIsActive(false);
         $this->entityManager->flush();
+    }
+
+    private function normalizeStartDate(mixed $startDate): ?\DateTime
+    {
+        if ($startDate === null || $startDate === '') {
+            return null;
+        }
+
+        if ($startDate instanceof \DateTime) {
+            return $startDate;
+        }
+
+        if ($startDate instanceof \DateTimeInterface) {
+            return \DateTime::createFromInterface($startDate);
+        }
+
+        if (!is_string($startDate)) {
+            throw new \InvalidArgumentException('Invalid start_date value.');
+        }
+
+        try {
+            return new \DateTime($startDate);
+        } catch (\Exception $exception) {
+            throw new \InvalidArgumentException('Invalid start_date format.', 0, $exception);
+        }
     }
 
 }

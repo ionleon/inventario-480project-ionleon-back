@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\AppUser;
+use App\Enum\SystemRole;
 use App\Repository\AppUserRepository;
 use App\Service\AuthManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,7 +56,7 @@ class UserManager
         }
 
         if (isset($data['role'])) {
-            $user->setRole($data['role']);
+            $user->setRole($this->resolveRole($data['role']));
         }
 
         if (isset($data['is_active'])) {
@@ -117,6 +118,34 @@ class UserManager
         $this->entityManager->flush();
 
         $this->authManager->forceLogout($user);
+    }
+
+    private function resolveRole(mixed $role): SystemRole
+    {
+        if ($role instanceof SystemRole) {
+            return $role;
+        }
+
+        if (!is_string($role)) {
+            throw new \InvalidArgumentException('Invalid role value.');
+        }
+
+        $normalizedRole = strtoupper(trim($role));
+
+        if ($normalizedRole === 'ADMIN') {
+            return SystemRole::ADMIN;
+        }
+
+        if ($normalizedRole === 'EMPLOYEE') {
+            return SystemRole::EMPLOYEE;
+        }
+
+        $enumRole = SystemRole::tryFrom($normalizedRole);
+        if (!$enumRole) {
+            throw new \InvalidArgumentException('Invalid role value.');
+        }
+
+        return $enumRole;
     }
 
 }

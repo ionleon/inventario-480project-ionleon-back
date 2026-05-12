@@ -90,7 +90,9 @@ final class ProjectAssignmentController extends AbstractController
         }
 
         try {
-            $assignment = $this->assignmentManager->assignUser($project, $user, $role);
+            $assignment = $this->assignmentManager->assignUser($project, $user, [
+                'role_id' => $role->getId(),
+            ]);
             return $this->json([], 201, [], ['groups' => 'project:read']);
         } catch (Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
