@@ -70,14 +70,9 @@ readonly class ProjectAssignmentService
     /**
      * @throws Exception
      */
-    public function deactivateAssignment(ProjectUser $assignment, array $data): ProjectUser
+    public function deactivateAssignment(ProjectUser $assignment, bool $isActive): ProjectUser
     {
-
-        if (!isset($data['is_active'])) {
-            throw new Exception('Attribute "is_active" is required.');
-        }
-
-        $assignment->setIsActive((bool)$data['is_active']);
+        $assignment->setIsActive($isActive);
         $this->puRepository->save($assignment);
 
         return $assignment;

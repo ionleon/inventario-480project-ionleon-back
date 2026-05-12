@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Entity;
+namespace App\ClientManagement\Domain\Contact;
 
-use App\ClientManagement\Domain\Client;
-use App\Repository\ContactRepository;
+;
+
+use App\ClientManagement\Domain\Client\Client;
+use App\ClientManagement\Infrastructure\Contact\DoctrineContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -11,7 +13,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: ContactRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineContactRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 
 class Contact

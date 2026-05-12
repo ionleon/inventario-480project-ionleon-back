@@ -2,8 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\TimeEntry;
 use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
+use App\TimeManagement\Domain\TimeEntry;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Repository;
+namespace App\TimeManagement\Infrastructure;
 
-use App\Entity\TimeEntry;
 use App\ProjectManagement\Domain\Project\Project;
+use App\Shared\Domain\Pagination\PaginatedResult;
+use App\TimeManagement\Domain\TimeEntry;
+use App\TimeManagement\Domain\TimeEntryRepositoryInterface;
 use App\UserManagement\Domain\AppUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -12,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<TimeEntry>
  */
-class TimeEntryRepository extends ServiceEntityRepository
+class TimeEntryRepository extends ServiceEntityRepository implements TimeEntryRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -57,28 +59,29 @@ class TimeEntryRepository extends ServiceEntityRepository
         return (float) $qb->getQuery()->getSingleScalarResult();
     }
 
-    //    /**
-    //     * @return TimeEntry[] Returns an array of TimeEntry objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
 
-    //    public function findOneBySomeField($value): ?TimeEntry
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findById(string $id): ?TimeEntry
+    {
+        // TODO: Implement findById() method.
+    }
+
+    public function findByProjectAndUserPaginated(Project $project, ?AppUser $user, int $page, int $limit): PaginatedResult
+    {
+        // TODO: Implement findByProjectAndUserPaginated() method.
+    }
+
+    public function findByUserPaginated(AppUser $user, int $page, int $limit): PaginatedResult
+    {
+        // TODO: Implement findByUserPaginated() method.
+    }
+
+    public function save(TimeEntry $timeEntry): void
+    {
+        // TODO: Implement save() method.
+    }
+
+    public function remove(TimeEntry $timeEntry): void
+    {
+        // TODO: Implement remove() method.
+    }
 }

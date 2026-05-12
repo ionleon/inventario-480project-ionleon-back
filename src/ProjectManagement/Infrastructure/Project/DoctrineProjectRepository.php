@@ -31,24 +31,22 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
 
     }
 
-    public function findByClient(int $clientId): array
+    public function findByClientPaginated(string $clientId, int $page, int $limit): PaginatedResult
     {
-         return $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p')
              ->where('p.client = :clientId')
-             ->setParameter('clientId', $clientId)
-             ->getQuery()
-             ->getResult();
+             ->setParameter('clientId', $clientId);
     }
 
-    public function findByUser(int $userId): array
+    public function findByUserPaginated(string $userId, int $page, int $limit): PaginatedResult
     {
-        return $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p')
             ->innerJoin('p.projectUsers', 'pu')
             ->where('pu.appUser = :userId')
             ->setParameter('userId', $userId)
-            ->orderBy('p.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('p.name', 'ASC');
+
+        return $this->paginateQueryBuilder($qb);
     }
 
     /**
@@ -58,6 +56,11 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
     {
         $qb = $this->createFilteredQueryBuilder($filters);
 
+        return $this->paginateQueryBuilder($qb, $page, $limit);
+    }
+
+    private function paginateQueryBuilder(QueryBuilder $qb, int $page, int $limit): PaginatedResult
+    {
         $qb->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit);
 
@@ -71,6 +74,7 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
             $page,
             $limit
         );
+
     }
 
     private function createFilteredQueryBuilder(ProjectFilters $filters) : QueryBuilder

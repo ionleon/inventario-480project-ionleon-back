@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Entity;
+namespace App\ClientManagement\Domain\Sector;
 
-use App\ClientManagement\Domain\Client;
-use App\Repository\SectorRepository;
+
+use App\ClientManagement\Domain\Client\Client;
+use App\ClientManagement\Infrastructure\Sector\DoctrineSectorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +13,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: SectorRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineSectorRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 #[UniqueEntity(fields: ['name'], message: 'This name already exists.')]
 class Sector

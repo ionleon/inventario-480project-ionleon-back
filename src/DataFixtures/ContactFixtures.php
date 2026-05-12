@@ -2,8 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\ClientManagement\Domain\Client;
-use App\Entity\Contact;
+use App\ClientManagement\Domain\Client\Client;
+use App\ClientManagement\Domain\Contact\Contact;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

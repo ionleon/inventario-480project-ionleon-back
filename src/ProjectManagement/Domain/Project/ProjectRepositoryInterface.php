@@ -8,8 +8,8 @@ interface ProjectRepositoryInterface
 {
 
     public function findByFilters(ProjectFilters $filters) : array;
-    public function findByClient(int $clientId): array;
-    public function findByUser(int $userId): array;
+    public function findByClientPaginated(string $clientId, int $page, int $limit): PaginatedResult;
+    public function findByUserPaginated(string $userId, int $page, int $limit): PaginatedResult;
     public function save(Project $project): void;
 
     public function findByFiltersPaginated(

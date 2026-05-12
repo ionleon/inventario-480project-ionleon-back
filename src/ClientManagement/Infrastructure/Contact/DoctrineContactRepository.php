@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Repository;
+namespace App\ClientManagement\Infrastructure\Contact;
 
-use App\ClientManagement\Domain\Client;
-use App\Entity\Contact;
+use App\ClientManagement\Domain\Client\Client;
+use App\ClientManagement\Domain\Contact\Contact;
+use App\ClientManagement\Domain\Contact\ContactRepositoryInterface;
+use App\Shared\Domain\Pagination\PaginatedResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -11,11 +13,33 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Contact>
  */
-class ContactRepository extends ServiceEntityRepository
+class DoctrineContactRepository extends ServiceEntityRepository implements ContactRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Contact::class);
+    }
+
+    public function findById(string $id): ?Contact
+    {
+        return $this->find($id);
+    }
+
+    public function findAll() : array
+    {
+        return parent::findAll();
+    }
+
+    public function save(Contact $contact): void
+    {
+        $this->getEntityManager()->persist($contact);
+        $this->getEntityManager()->flush();
+    }
+
+    public function remove(Contact $contact): void
+    {
+        $this->getEntityManager()->remove($contact);
+        $this->getEntityManager()->flush();
     }
 
     public function resetMainContactsForClient(Client $client, ?Contact $excludeContact = null): void
@@ -37,12 +61,12 @@ class ContactRepository extends ServiceEntityRepository
         $qb->getQuery()->execute();
     }
 
-    public function countContactsForClient(Client $client): int
+    public function countContactsForClient(string $clientId): int
     {
         return $this->createQueryBuilder('c')
             ->select('count(c.id)')
             ->where('c.client = :client')
-            ->setParameter('client', $client)
+            ->setParameter('client', $clientId)
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -54,28 +78,11 @@ class ContactRepository extends ServiceEntityRepository
             ->setParameter('client', $client);
     }
 
-    //    /**
-    //     * @return Contact[] Returns an array of Contact objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
 
-    //    public function findOneBySomeField($value): ?Contact
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findByClientPaginated(string $clientId, int $page, int $limit): PaginatedResult
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.client = :client')
+            ->setParameter('client', $client);
+    }
 }

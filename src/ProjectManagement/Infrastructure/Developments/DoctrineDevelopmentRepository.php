@@ -20,7 +20,7 @@ class DoctrineDevelopmentRepository extends ServiceEntityRepository implements D
 
     public function findById(string $id): ?Development
     {
-        return $this->getEntityManager()->getRepository(Development::class)->find($id);
+        return $this->find($id);
     }
 
     public function findByProject(Project $project): array

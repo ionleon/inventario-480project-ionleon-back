@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Controller;
+namespace App\UserManagement\Infrastructure;
+use App\ProjectManagement\Domain\Project\ProjectRepositoryInterface;
 use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
 use App\Service\PaginationService;
-use App\Service\UserManager;
+use App\UserManagement\Application\UserService;
 use App\UserManagement\Domain\AppUser;
-use App\UserManagement\Infrastructure\DoctrineUserRepository;
+use App\UserManagement\Domain\AppUserRepositoryInterface;
+use App\UserManagement\Domain\UserFilters;
 use Exception;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,10 +30,9 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 final class UserController extends AbstractController
 {
     public function __construct(
-        private readonly DoctrineUserRepository    $userRepository,
-        private readonly DoctrineProjectRepository $projectRepository,
-        private readonly UserManager               $userManager,
-        private readonly PaginationService         $paginationService,
+        private readonly AppUserRepositoryInterface $userRepository,
+        private readonly ProjectRepositoryInterface $projectRepository,
+        private readonly UserService $userService
     ) {}
 
     /**
@@ -48,17 +50,19 @@ final class UserController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function index(Request $request): JsonResponse
     {
-        $term = $request->query->get('term');
-        $role = $request->query->get('role');
-        $isActive = $request->query->has('is_active')
-                    ? $request->query->getBoolean('is_active')
-                    : null;
+        $filters = new UserFilters(
+          term:     $request->query->get('term'),
+          role:     $request->query->get('role'),
+          isActive: $request->query->has('is_active')
+                ? $request->query->getBoolean('is_active')
+                : null
+        );
+
 
         $page = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 10);
 
-        $qb = $this->userRepository->qbByFilters($term, $role, $isActive);
-        $users = $this->paginationService->paginate($qb, $page, $limit);
+        $users = $this->userRepository->findByFiltersPaginated($filters, $page, $limit);
 
 
         return $this->json($users, 200, [], ['groups' => 'user:read']);
@@ -75,12 +79,10 @@ final class UserController extends AbstractController
     #[Route('/{id}/projects', name: 'show_projects', methods: ['GET'])]
     public function showProjects(AppUser $user, Request $request) : JsonResponse
     {
-        $qb = $this->projectRepository->findByUser($user);
-
         $page = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 10);
 
-        $projects = $this->paginationService->paginate($qb);
+        $projects = $this->projectRepository->findByUserPaginated($user->getId(), $page, $limit);
 
         return $this->json($projects, 200, [], ['groups' => 'project:read']);
     }
@@ -92,25 +94,29 @@ final class UserController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function create(Request $request): JsonResponse
     {
+        try {
+            $data = json_decode($request->getContent(), true);
+            $this->userService->create($data);
+            return $this->json(['message' => 'User created'], 201, [], ['groups' => 'user:read']);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
 
-        $data = json_decode($request->getContent(), true);
-
-        $user = $this->userManager->create($data);
-
-        return $this->json([], 201, [], ['groups' => 'user:read']);
     }
 
     #[Route('/{id}', name: 'app_user_edit', methods: ['PUT'])]
     #[IsGranted('ROLE_ADMIN')]
     public function edit(AppUser $user,Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        try {
+            $data = json_decode($request->getContent(), true);
+            $user = $this->userService->update($user, $data);
+            return $this->json($user, 200, ['message' => 'User updated'], ['groups' => 'user:read']);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
 
-        $user = $this->userManager->save($user, $data);
-
-        return $this->json($user, 200, [], ['groups' => 'user:read']);
-
-    }
+}
 
     #[Route('/{id}/password-change', name: 'user_password_change', methods: ['PUT'])]
     public function changePassword(AppUser $user, Request $request ): JsonResponse
@@ -125,7 +131,7 @@ final class UserController extends AbstractController
         $newPwd = $data['new_password'] ?? '';
 
         try {
-            $this->userManager->changePassword($user, $oldPwd, $newPwd);
+            $this->userService->changePassword($user, $oldPwd, $newPwd);
             return $this->json(['message' => 'Successful password update.'], 200);
         } catch (\InvalidArgumentException $e) {
             return $this->json(['error' => $e->getMessage()], 400);
@@ -142,7 +148,7 @@ final class UserController extends AbstractController
         $newPwd = $data['new_password'] ?? '';
 
         try {
-            $this->userManager->resetPassword($user, $newPwd);
+            $this->userService->resetPassword($user, $newPwd);
             return $this->json(['message' => 'Successful password reset.'], 200);
         } catch (\InvalidArgumentException $e) {
             return $this->json(['error' => $e->getMessage()], 400);
@@ -155,21 +161,28 @@ final class UserController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function delete(AppUser $user): JsonResponse
     {
-        $this->userManager->remove($user);
-
-        return $this->json(null, 204);
+        try {
+            $this->userService->delete($user);
+            return $this->json(['message' => 'User deleted'], 204);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
     }
 
     /**
      * @throws Exception
+     * @throws InvalidArgumentException
      */
     #[Route('/{id}', name: 'app_user_deactivate', methods: ['PATCH'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function deactivate(AppUser $user) : JsonResponse
+    public function toggleActivation(AppUser $user) : JsonResponse
     {
-        $this->userManager->deactivateUser($user);
-
-        return $this->json([], 200);
+        try {
+            $this->userService->toggleActivation($user);
+            return $this->json(['message' => 'User status updated'], 200);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
     }
 
 }

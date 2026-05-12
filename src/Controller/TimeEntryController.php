@@ -2,15 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\TimeEntry;
-use App\Repository\TimeEntryRepository;
-use App\Service\TimeEntryManager;
-
+use App\Service\TimeEntryService;
+use App\TimeManagement\Domain\TimeEntry;
+use App\TimeManagement\Infrastructure\TimeEntryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -21,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class TimeEntryController extends AbstractController
 {
     public function __construct(
-        private TimeEntryManager $manager,
+        private TimeEntryService    $manager,
         private TimeEntryRepository $repository
     ) {}
 

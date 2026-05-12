@@ -24,6 +24,9 @@ class DevelopmentService
         private LinkService                    $linkManager
     ) {}
 
+    /**
+     * @throws Exception
+     */
     public function create(Project $project, array $data): Development
 
     {
@@ -39,7 +42,7 @@ class DevelopmentService
         $development->setProject($project);
 
 
-        return $this->save($development, $data);
+        return $this->update($development, $data);
 
     }
 
@@ -47,7 +50,7 @@ class DevelopmentService
     /**
      * @throws Exception
      */
-    public function save(Development $development, array $data): Development
+    public function update(Development $development, array $data): Development
 
     {
         $development->setName($data['name'] ?? $development->getName());

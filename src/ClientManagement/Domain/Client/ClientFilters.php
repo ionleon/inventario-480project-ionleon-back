@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ClientManagement\Domain;
+namespace App\ClientManagement\Domain\Client;
 
 class ClientFilters
 {

@@ -171,7 +171,7 @@ final class ProjectAssignmentController extends AbstractController
     public function deactivateUserAssignment(
         Project $project,
         #[MapEntity(mapping: ['userId' => 'id'])] AppUser $user,
-        Request $request
+
     ): JsonResponse
     {
         $this->denyAccessUnlessGranted('PROJECT_MANAGE_USERS', $project);
@@ -182,9 +182,7 @@ final class ProjectAssignmentController extends AbstractController
             return $this->json(['error' => 'Assignment not found'], 404);
         }
 
-        $data = json_decode($request->getContent(), true);
-
-        $this->assignmentService->deactivateAssignment($assignment, $data);
+        $this->assignmentService->deactivateAssignment($assignment, !$assignment->isActive());
 
         return $this->json([], 200);
 

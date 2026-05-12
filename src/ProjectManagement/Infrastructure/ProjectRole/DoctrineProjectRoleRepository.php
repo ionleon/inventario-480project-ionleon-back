@@ -22,7 +22,7 @@ class DoctrineProjectRoleRepository extends ServiceEntityRepository implements P
 
     public function findById(string $id): ?ProjectRole
     {
-        return $this->getEntityManager()->find(ProjectRole::class, $id);
+        return $this->find($id);
     }
 
     /**

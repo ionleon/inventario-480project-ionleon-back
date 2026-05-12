@@ -34,7 +34,7 @@ class DoctrineUserRepository extends ServiceEntityRepository implements AppUserR
 
     public function findById(string $id): ?AppUser
     {
-        return $this->getEntityManager()->find(AppUser::class, $id);
+        return $this->find($id);
     }
 
     /**
@@ -76,7 +76,7 @@ class DoctrineUserRepository extends ServiceEntityRepository implements AppUserR
      */
 
 
-    public function deactivateUserWithRelation(AppUser $user) : void {
+    public function updateUserActivationWithRelation(AppUser $user, bool $isActive) : void {
 
         $em = $this->getEntityManager();
 
@@ -87,7 +87,7 @@ class DoctrineUserRepository extends ServiceEntityRepository implements AppUserR
                 ->update(AppUser::class, 'u')
                 ->set('u.isActive', ':status')
                 ->where('u.id = :userId')
-                ->setParameter('status',false)
+                ->setParameter('status',$isActive)
                 ->setParameter('userId',$user)
                 ->getQuery()
                 ->execute();
@@ -96,7 +96,7 @@ class DoctrineUserRepository extends ServiceEntityRepository implements AppUserR
                 ->update(ProjectUser::class, 'pu')
                 ->set('pu.isActive', ':status')
                 ->where('pu.appUser = :userId')
-                ->setParameter('status',false)
+                ->setParameter('status',$isActive)
                 ->setParameter('userId',$user)
                 ->getQuery()
                 ->execute();
@@ -137,7 +137,15 @@ class DoctrineUserRepository extends ServiceEntityRepository implements AppUserR
         return $qb;
     }
 
+    public function save(AppUser $user): void
+    {
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
 
-
-
+    public function delete(AppUser $user): void
+    {
+        $this->getEntityManager()->remove($user);
+        $this->getEntityManager()->flush();
+    }
 }

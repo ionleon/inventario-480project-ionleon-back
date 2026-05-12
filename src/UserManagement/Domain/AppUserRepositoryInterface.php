@@ -12,7 +12,11 @@ interface AppUserRepositoryInterface
 
     public function findById(string $id): ?AppUser;
 
-    public function deactivateUserWithRelation(AppUser $user) : void;
+    public function save(AppUser $user): void;
+
+    public function delete(AppUser $user): void;
+
+    public function updateUserActivationWithRelation(AppUser $user, bool $isActive) : void;
 
 
 }

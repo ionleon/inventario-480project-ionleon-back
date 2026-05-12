@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\ClientManagement\Infrastructure\Sector;
 
-use App\Entity\Sector;
-use App\Repository\SectorRepository;
-use App\Service\SectorManager;
+use App\ClientManagement\Application\Sector\SectorService;
+use App\ClientManagement\Domain\Sector\Sector;
+use App\ClientManagement\Domain\Sector\SectorRepositoryInterface;
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,8 +16,8 @@ use Symfony\Component\Routing\Attribute\Route;
 final class SectorController extends AbstractController
 {
     public function __construct(
-        private SectorManager $manager,
-        private SectorRepository $repository
+        private SectorService             $manager,
+        private SectorRepositoryInterface $repository
     ) {}
 
     #[Route('', name: 'sector_index', methods: ['GET'])]
@@ -40,8 +40,8 @@ final class SectorController extends AbstractController
 
         try {
             $this->manager->create($data);
-            return $this->json([], 201, [], ['groups' => 'sector:read']);
-        } catch (Exception $e){
+            return $this->json(['message' => 'Sector created'], 201, [], ['groups' => 'sector:read']);
+        } catch (\Exception $e){
             return $this->json(['error' => $e->getMessage(), 400]);
         }
     }
@@ -52,9 +52,9 @@ final class SectorController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         try {
-            $this->manager->save($sector, $data);
-            return $this->json([], 200, [], ['groups' => 'sector:read']);
-        } catch (Exception $e){
+            $this->manager->update($sector, $data);
+            return $this->json(['message' => 'Sector udpated'], 200, [], ['groups' => 'sector:read']);
+        } catch (\Exception $e){
             return $this->json(['error' => $e->getMessage(), 400]);
         }
     }
@@ -64,8 +64,8 @@ final class SectorController extends AbstractController
     {
         try {
             $this->manager->delete($sector);
-            return $this->json(null, 204);
-        } catch (Exception $e) {
+            return $this->json(['message' => 'Sector deleted'], 204);
+        } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage(), 400]);
         }
     }

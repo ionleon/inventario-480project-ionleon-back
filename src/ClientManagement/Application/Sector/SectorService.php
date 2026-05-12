@@ -1,42 +1,41 @@
 <?php
 
-namespace App\Service;
+namespace App\ClientManagement\Application\Sector;
 
-use App\Entity\Sector;
-use App\Repository\SectorRepository;
+use App\ClientManagement\Domain\Sector\Sector;
+use App\ClientManagement\Domain\Sector\SectorRepositoryInterface;
+use App\ClientManagement\Infrastructure\Sector\DoctrineSectorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Uid\Uuid;
 
 
-class SectorManager
+class SectorService
 {
     public function __construct(
-      private EntityManagerInterface $em,
-      private SectorRepository $repository
+      private readonly SectorRepositoryInterface $repository
     ) {}
 
     public function create(array $data) : Sector
     {
         if (!isset($data['id'], $data['name'])){
-            throw new \InvalidArgumentException('El ID y el nombre del sector son obligatorios.');
+            throw new \InvalidArgumentException('ID and name are mandatory.');
         }
 
         $sector = new Sector();
         try{
             $sector->setId(Uuid::fromString($data['id']));
         } catch (\InvalidArgumentException $e){
-            throw new \INvalidArgumentException('Invalid UUID format.');
+            throw new \InvalidArgumentException('Invalid UUID format.', $e->getCode(), $e);
         }
 
-        return $this->save($sector, $data);
+        return $this->update($sector, $data);
     }
 
-    public function save(Sector $sector, array $data): Sector
+    public function update(Sector $sector, array $data): Sector
     {
         $sector->setName($data['name'] ?? $sector->getName());
 
-        $this->em->persist($sector);
-        $this->em->flush();
+        $this->repository->save($sector);
 
         return $sector;
     }
@@ -47,7 +46,6 @@ class SectorManager
             throw new \LogicException('Can\'t delete sectors in use.');
         }
 
-        $this->em->remove($sector);
-        $this->em->flush();
+        $this->repository->delete($sector);
     }
 }

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Service;
+namespace App\UserManagement\Application;
 
 use App\Auth\Application\AuthService;
 use App\UserManagement\Domain\AppUser;
+use App\UserManagement\Domain\AppUserRepositoryInterface;
 use App\UserManagement\Infrastructure\DoctrineUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -11,11 +12,10 @@ use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Uid\Uuid;
 
-class UserManager
+class UserService
 {
     public function __construct(
-        private readonly DoctrineUserRepository      $userRepository,
-        private readonly EntityManagerInterface      $entityManager,
+        private readonly AppUserRepositoryInterface      $userRepository,
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly AuthService                 $authService
     )
@@ -38,32 +38,23 @@ class UserManager
         $user->setFirstTime(true);
         $user->setIsActive(true);
 
-        return $this->save($user, $data);
+        return $this->update($user, $data);
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    public function save(AppUser $user, array $data): AppUser
+    public function update(AppUser $user, array $data): AppUser
     {
-        if (isset($data['name'])) {
-            $user->setName($data['name']);
-        }
-
-        if (isset($data['surname'])) {
-            $user->setSurname($data['surname']);
-        }
-
-        if (isset($data['role'])) {
-            $user->setRole($data['role']);
-        }
+        if (isset($data['name'])) $user->setName($data['name']);
+        if (isset($data['surname'])) $user->setSurname($data['surname']);
+        if (isset($data['role'])) $user->setRole($data['role']);
 
         if (isset($data['is_active'])) {
             $user->setIsActive($data['is_active']);
         }
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->userRepository->save($user);
 
         $this->authService->forceLogout($user);
 
@@ -76,7 +67,7 @@ class UserManager
     public function changePassword(AppUser $user, string $oldPassword, string $newPassword):void
     {
         if (!$this->passwordHasher->isPasswordValid($user, $oldPassword)) {
-            throw new \InvalidArgumentException('La constraseña actual no es correct.');
+            throw new \InvalidArgumentException('Actual password is not correct.');
         }
 
         $this->resetPassword($user, $newPassword);
@@ -84,6 +75,7 @@ class UserManager
 
     /**
      * @throws InvalidArgumentException
+     * @throws Exception
      */
     public function resetPassword(AppUser $user, string $newPassword): void
     {
@@ -94,29 +86,28 @@ class UserManager
         $hashedPassword = $this->passwordHasher->hashPassword($user, $newPassword);
         $user->setPassword($hashedPassword);
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
 
+        $this->userRepository->save($user);
         $this->authService->forceLogout($user);
     }
 
-    public function remove(AppUser $user) : void
+    public function delete(AppUser $user) : void
     {
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
-
+        $this->userRepository->delete($user);
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
      */
-    public function deactivateUser(AppUser $user): void
+    public function toggleActivation(AppUser $user): void
     {
-        $this->userRepository->deactivateUserWithRelation($user);
-        $this->entityManager->flush();
+        $this->userRepository->updateUserActivationWithRelation($user, !$user->isActive());
+        $this->userRepository->save($user);
 
-        $this->authService->forceLogout($user);
+        if ($user->isActive() === false) {
+            $this->authService->forceLogout($user);
+        }
     }
 
 }

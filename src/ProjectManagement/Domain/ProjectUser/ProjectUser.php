@@ -2,10 +2,10 @@
 
 namespace App\ProjectManagement\Domain\ProjectUser;
 
-use App\Entity\TimeEntry;
 use App\ProjectManagement\Domain\Project\Project;
 use App\ProjectManagement\Domain\ProjectRole\ProjectRole;
 use App\ProjectManagement\Infrastructure\ProjectUser\DoctrineProjectUserRepository;
+use App\TimeManagement\Domain\TimeEntry;
 use App\UserManagement\Domain\AppUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

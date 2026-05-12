@@ -124,15 +124,10 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/{id}', name: 'project_deactivate', methods: ['PATCH'])]
-    public function deactivate(Project $project, Request $request): JsonResponse
+    public function deactivate(Project $project): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
 
-        if (!isset($data['is_active'])) {
-            return $this->json(['error' => 'Property "is_active" is required'], 400);
-        }
-
-        $this->projectService->setProjectActivation($project, (bool) $data['is_active']);
+        $this->projectService->setProjectActivation($project, !$project->isActive());
 
         return $this->json([], 200);
     }

@@ -3,31 +3,25 @@
 namespace App\Service;
 
 
-use App\Entity\TimeEntry;
 use App\ProjectManagement\Domain\Project\Project;
-use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
-use App\ProjectManagement\Infrastructure\ProjectUser\DoctrineProjectUserRepository;
+use App\ProjectManagement\Domain\Project\ProjectRepositoryInterface;
+use App\ProjectManagement\Domain\ProjectUser\ProjectUserRepositoryInterface;
+use App\TimeManagement\Domain\TimeEntry;
+use App\TimeManagement\Domain\TimeEntryRepositoryInterface;
 use App\UserManagement\Domain\AppUser;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class TimeEntryManager
+class TimeEntryService
 {
-
-
     public function __construct(
-        private EntityManagerInterface        $em,
-        private ValidatorInterface            $validator,
-        private DoctrineProjectUserRepository $puRepository,
-        private DoctrineProjectRepository     $projectRepository,
-        private Security                      $security,
+        private TimeEntryRepositoryInterface   $teRepository,
+        private ProjectUserRepositoryInterface $puRepository,
+        private ProjectRepositoryInterface     $projectRepository,
+        private Security                       $security,
     ) {}
-
-
 
     /**
      * @throws Exception

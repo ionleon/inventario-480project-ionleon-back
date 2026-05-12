@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\TimeEntry;
 use App\ProjectManagement\Domain\Project\Project;
 use App\ProjectManagement\Infrastructure\ProjectUser\DoctrineProjectUserRepository;
-use App\Repository\TimeEntryRepository;
 use App\Service\PaginationService;
-use App\Service\TimeEntryManager;
+use App\Service\TimeEntryService;
+use App\TimeManagement\Domain\TimeEntry;
+use App\TimeManagement\Infrastructure\TimeEntryRepository;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class ProjectTimeEntryController extends AbstractController
 {
     public function __construct(
-        private TimeEntryManager              $teManager,
+        private TimeEntryService              $teManager,
         private TimeEntryRepository           $teRepository,
         private DoctrineProjectUserRepository $puRepository,
         private readonly PaginationService    $paginationService

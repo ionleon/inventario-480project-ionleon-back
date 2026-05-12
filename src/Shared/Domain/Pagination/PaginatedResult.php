@@ -12,7 +12,6 @@ class PaginatedResult
         public int $totalItems,
         public int $currentPage,
         public int $itemsPerPage,
-
     ) {}
 
     public function getTotalPages(): int

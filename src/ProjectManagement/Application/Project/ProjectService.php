@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ProjectManagement\Application\Project;
 
-use App\ClientManagement\Domain\ClientRepositoryInterface;
+use App\ClientManagement\Domain\Client\ClientRepositoryInterface;
 use App\ProjectManagement\Domain\Project\Project;
 use App\ProjectManagement\Domain\Project\ProjectRepositoryInterface;
 use Exception;

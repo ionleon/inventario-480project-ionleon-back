@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Repository\TimeEntryRepository;
 use App\Service\PaginationService;
-use App\Service\TimeEntryManager;
+use App\Service\TimeEntryService;
+use App\TimeManagement\Infrastructure\TimeEntryRepository;
 use App\UserManagement\Domain\AppUser;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,9 +17,9 @@ final class UserTimeEntryController extends AbstractController
 {
 
     public function __construct(
-      private readonly TimeEntryManager $teManager,
+      private readonly TimeEntryService    $teManager,
       private readonly TimeEntryRepository $teRepostory,
-      private readonly PaginationService $paginationService
+      private readonly PaginationService   $paginationService
     ) {}
 
     #[Route('', name: 'index', methods: ['GET'])]

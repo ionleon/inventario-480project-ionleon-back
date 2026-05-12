@@ -1,11 +1,11 @@
 <?php
 
-namespace App\ClientManagement\Domain;
+namespace App\ClientManagement\Domain\Client;
 
-use App\Entity\Contact;
-use App\Entity\Sector;
+use App\ClientManagement\Domain\Contact\Contact;
+use App\ClientManagement\Domain\Sector\Sector;
+use App\ClientManagement\Infrastructure\Client\DoctrineClientRepository;
 use App\ProjectManagement\Domain\Project\Project;
-use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineClientRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 
 class Client
