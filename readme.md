@@ -18,13 +18,19 @@ git clone <url-del-repositorio>
 
 ````
 
-### Ejecutar script deploy.sh
 
+ ### Ejecutar script deploy.sh
 ```Bash
 ./deploy.sh
 ```
 
-#### El script configura el resto de pasos necesarios
+
+> [!NOTE]
+> ### El script configura el resto de pasos necesarios
+>
+> - **No es obligatorio seguir los pasos posteriores**: Se mantienen para poder observar el flujo de ejecucion y 
+> despliegue del proyecto.
+
 
 
 ### 2. Configurar variables de entorno

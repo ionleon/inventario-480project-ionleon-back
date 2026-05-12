@@ -67,7 +67,7 @@ final class ProjectTimeEntryController extends AbstractController
     #[Route('/{timeEntryId}', name: 'project_time_entry_update', methods: ['PUT'])]
     public function update(
         Project $project,
-        #[MapEntity(mapping: ['id' => 'timeEntryId'])] TimeEntry $timeEntry,
+        #[MapEntity(mapping: ['timeEntryId' => 'id'])] TimeEntry $timeEntry,
         Request $request
     ): JsonResponse
     {
@@ -87,7 +87,7 @@ final class ProjectTimeEntryController extends AbstractController
     #[Route('/{timeEntryId}', name: 'project_time_entry_delete', methods: ['DELETE'])]
     public function delete(
         Project $project,
-        #[MapEntity(mapping: ['id' => 'timeEntryId'])] TimeEntry $timeEntry,
+        #[MapEntity(mapping: ['timeEntryId' => 'id'])] TimeEntry $timeEntry,
     ): JsonResponse
     {
         if ($timeEntry->getProjectUser()->getProject() !== $project) {
