@@ -8,9 +8,8 @@ use App\UserManagement\Application\GetUser\GetUserQuery;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 #[OA\Tag(name: 'User Management')]
 #[Route('/users/{id}', name: 'app_user_show', methods: ['GET'])]
