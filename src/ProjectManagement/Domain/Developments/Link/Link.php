@@ -2,9 +2,9 @@
 
 namespace App\ProjectManagement\Domain\Developments\Link;
 
-use App\Enum\Enviroment;
 use App\ProjectManagement\Domain\Developments\Development;
 use App\ProjectManagement\Infrastructure\Developments\Link\DoctrineLinkRepository;
+use App\Shared\Domain\Enum\Enviroment;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

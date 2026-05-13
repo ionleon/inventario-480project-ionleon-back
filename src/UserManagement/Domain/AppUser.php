@@ -2,7 +2,7 @@
 
 namespace App\UserManagement\Domain;
 
-use App\Enum\SystemRole;
+use App\Shared\Domain\Enum\SystemRole;
 use App\UserManagement\Infrastructure\DoctrineUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

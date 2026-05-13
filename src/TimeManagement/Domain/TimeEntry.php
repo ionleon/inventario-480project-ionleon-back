@@ -4,7 +4,7 @@ namespace App\TimeManagement\Domain;
 
 use App\ProjectManagement\Domain\Project\Project;
 use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
-use App\TimeManagement\Infrastructure\TimeEntryRepository;
+use App\TimeManagement\Infrastructure\DoctrineTimeEntryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: TimeEntryRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineTimeEntryRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 class TimeEntry
 {
