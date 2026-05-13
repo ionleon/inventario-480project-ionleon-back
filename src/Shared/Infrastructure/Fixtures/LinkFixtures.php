@@ -2,8 +2,8 @@
 
 namespace App\Shared\Infrastructure\Fixtures;
 
-use App\ProjectManagement\Domain\Developments\Development;
-use App\ProjectManagement\Domain\Developments\Link\Link;
+use App\ProjectManagement\Domain\Development\Development;
+use App\ProjectManagement\Domain\Development\Link\Link;
 use App\Shared\Domain\Enum\Enviroment;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ProjectManagement\Domain\Developments\Link;
+namespace App\ProjectManagement\Domain\Development\Link;
 
 interface LinkRepositoryInterface
 {

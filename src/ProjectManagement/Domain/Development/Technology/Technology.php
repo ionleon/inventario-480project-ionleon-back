@@ -1,9 +1,9 @@
 <?php
 
-namespace App\ProjectManagement\Domain\Developments\Technology;
+namespace App\ProjectManagement\Domain\Development\Technology;
 
-use App\ProjectManagement\Domain\Developments\Development;
-use App\ProjectManagement\Infrastructure\Developments\Technology\DoctrineTechnologyRepository;
+use App\ProjectManagement\Domain\Development\Development;
+use App\ProjectManagement\Infrastructure\Development\Technology\DoctrineTechnologyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

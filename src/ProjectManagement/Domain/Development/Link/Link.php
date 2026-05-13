@@ -1,9 +1,9 @@
 <?php
 
-namespace App\ProjectManagement\Domain\Developments\Link;
+namespace App\ProjectManagement\Domain\Development\Link;
 
-use App\ProjectManagement\Domain\Developments\Development;
-use App\ProjectManagement\Infrastructure\Developments\Link\DoctrineLinkRepository;
+use App\ProjectManagement\Domain\Development\Development;
+use App\ProjectManagement\Infrastructure\Development\Link\DoctrineLinkRepository;
 use App\Shared\Domain\Enum\Enviroment;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\ProjectManagement\Application\Developments\Technology;
+namespace App\ProjectManagement\Application\Development\Technology;
 
-use App\ProjectManagement\Domain\Developments\Technology\Technology;
-use App\ProjectManagement\Domain\Developments\Technology\TechnologyRepositoryInterface;
-use App\ProjectManagement\Infrastructure\Developments\Technology\DoctrineTechnologyRepository;
+use App\ProjectManagement\Domain\Development\Technology\Technology;
+use App\ProjectManagement\Domain\Development\Technology\TechnologyRepositoryInterface;
+use App\ProjectManagement\Infrastructure\Development\Technology\DoctrineTechnologyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Uid\Uuid;
 

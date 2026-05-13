@@ -1,10 +1,10 @@
 <?php
 
-namespace App\ProjectManagement\Infrastructure\Developments\Link;
+namespace App\ProjectManagement\Infrastructure\Development\Link;
 
-use App\ProjectManagement\Application\Developments\Link\LinkService;
-use App\ProjectManagement\Domain\Developments\Link\Link;
-use App\ProjectManagement\Domain\Developments\Link\LinkRepositoryInterface;
+use App\ProjectManagement\Application\Development\Link\LinkService;
+use App\ProjectManagement\Domain\Development\Link\Link;
+use App\ProjectManagement\Domain\Development\Link\LinkRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\ProjectManagement\Infrastructure\Developments;
+namespace App\ProjectManagement\Infrastructure\Development;
 
-use App\ProjectManagement\Domain\Developments\Development;
-use App\ProjectManagement\Domain\Developments\DevelopmentRepositoryInterface;
+use App\ProjectManagement\Domain\Development\Development;
+use App\ProjectManagement\Domain\Development\DevelopmentRepositoryInterface;
 use App\ProjectManagement\Domain\Project\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

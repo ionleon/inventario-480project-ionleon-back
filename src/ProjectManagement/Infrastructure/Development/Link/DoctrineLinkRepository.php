@@ -1,10 +1,10 @@
 <?php
 
-namespace App\ProjectManagement\Infrastructure\Developments\Link;
+namespace App\ProjectManagement\Infrastructure\Development\Link;
 
-use App\ProjectManagement\Domain\Developments\Link\Link;
-use App\ProjectManagement\Domain\Developments\Link\LinkRepositoryInterface;
-use App\ProjectManagement\Domain\Developments\Technology\TechnologyRepositoryInterface;
+use App\ProjectManagement\Domain\Development\Link\Link;
+use App\ProjectManagement\Domain\Development\Link\LinkRepositoryInterface;
+use App\ProjectManagement\Domain\Development\Technology\TechnologyRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

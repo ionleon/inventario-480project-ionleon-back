@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ProjectManagement\Domain\Developments\Technology;
+namespace App\ProjectManagement\Domain\Development\Technology;
 
 interface TechnologyRepositoryInterface
 {

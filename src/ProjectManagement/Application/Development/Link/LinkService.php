@@ -1,11 +1,11 @@
 <?php
 
-namespace App\ProjectManagement\Application\Developments\Link;
+namespace App\ProjectManagement\Application\Development\Link;
 
-use App\ProjectManagement\Domain\Developments\Development;
-use App\ProjectManagement\Domain\Developments\DevelopmentRepositoryInterface;
-use App\ProjectManagement\Domain\Developments\Link\Link;
-use App\ProjectManagement\Domain\Developments\Link\LinkRepositoryInterface;
+use App\ProjectManagement\Domain\Development\Development;
+use App\ProjectManagement\Domain\Development\DevelopmentRepositoryInterface;
+use App\ProjectManagement\Domain\Development\Link\Link;
+use App\ProjectManagement\Domain\Development\Link\LinkRepositoryInterface;
 use App\Shared\Domain\Enum\Enviroment;
 use Symfony\Component\Uid\Uuid;
 

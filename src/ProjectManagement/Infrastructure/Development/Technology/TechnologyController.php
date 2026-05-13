@@ -1,10 +1,10 @@
 <?php
 
-namespace App\ProjectManagement\Infrastructure\Developments\Technology;
+namespace App\ProjectManagement\Infrastructure\Development\Technology;
 
-use App\ProjectManagement\Application\Developments\Technology\TechnologyService;
-use App\ProjectManagement\Domain\Developments\Technology\Technology;
-use App\ProjectManagement\Domain\Developments\Technology\TechnologyRepositoryInterface;
+use App\ProjectManagement\Application\Development\Technology\TechnologyService;
+use App\ProjectManagement\Domain\Development\Technology\Technology;
+use App\ProjectManagement\Domain\Development\Technology\TechnologyRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

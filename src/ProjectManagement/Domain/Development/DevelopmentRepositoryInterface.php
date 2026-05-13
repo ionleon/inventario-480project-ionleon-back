@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ProjectManagement\Domain\Developments;
+namespace App\ProjectManagement\Domain\Development;
 
 use App\ProjectManagement\Domain\Project\Project;
 

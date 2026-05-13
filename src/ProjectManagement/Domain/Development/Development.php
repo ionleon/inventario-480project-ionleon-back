@@ -1,11 +1,11 @@
 <?php
 
-namespace App\ProjectManagement\Domain\Developments;
+namespace App\ProjectManagement\Domain\Development;
 
-use App\ProjectManagement\Domain\Developments\Link\Link;
-use App\ProjectManagement\Domain\Developments\Technology\Technology;
+use App\ProjectManagement\Domain\Development\Link\Link;
+use App\ProjectManagement\Domain\Development\Technology\Technology;
 use App\ProjectManagement\Domain\Project\Project;
-use App\ProjectManagement\Infrastructure\Developments\DoctrineDevelopmentRepository;
+use App\ProjectManagement\Infrastructure\Development\DoctrineDevelopmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;

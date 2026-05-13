@@ -1,14 +1,14 @@
 <?php
 
-namespace App\ProjectManagement\Application\Developments;
+namespace App\ProjectManagement\Application\Development;
 
-use App\ProjectManagement\Application\Developments\Link\LinkService;
-use App\ProjectManagement\Domain\Developments\Development;
-use App\ProjectManagement\Domain\Developments\DevelopmentRepositoryInterface;
-use App\ProjectManagement\Domain\Developments\Link\LinkRepositoryInterface;
-use App\ProjectManagement\Domain\Developments\Technology\TechnologyRepositoryInterface;
+use App\ProjectManagement\Application\Development\Link\LinkService;
+use App\ProjectManagement\Domain\Development\Development;
+use App\ProjectManagement\Domain\Development\DevelopmentRepositoryInterface;
+use App\ProjectManagement\Domain\Development\Link\LinkRepositoryInterface;
+use App\ProjectManagement\Domain\Development\Technology\TechnologyRepositoryInterface;
 use App\ProjectManagement\Domain\Project\Project;
-use App\ProjectManagement\Infrastructure\Developments\Technology\DoctrineTechnologyRepository;
+use App\ProjectManagement\Infrastructure\Development\Technology\DoctrineTechnologyRepository;
 use Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
