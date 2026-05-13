@@ -18,5 +18,5 @@ interface TimeEntryRepositoryInterface
 
     public function save(TimeEntry $timeEntry): void;
 
-    public function remove(TimeEntry $timeEntry): void;
+    public function delete(TimeEntry $timeEntry): void;
 }
