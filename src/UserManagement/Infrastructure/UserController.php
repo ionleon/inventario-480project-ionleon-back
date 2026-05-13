@@ -2,8 +2,8 @@
 
 namespace App\UserManagement\Infrastructure;
 use App\ProjectManagement\Domain\Project\ProjectRepositoryInterface;
-use App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository;
-use App\Service\PaginationService;
+
+
 use App\UserManagement\Application\UserService;
 use App\UserManagement\Domain\AppUser;
 use App\UserManagement\Domain\AppUserRepositoryInterface;
