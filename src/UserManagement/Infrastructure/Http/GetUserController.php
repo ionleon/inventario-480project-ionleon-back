@@ -5,6 +5,7 @@ namespace App\UserManagement\Infrastructure\Http;
 use App\UserManagement\Application\GetUser\GetUserHandler;
 use App\UserManagement\Application\GetUser\GetUserQuery;
 
+use App\UserManagement\Infrastructure\Http\Response\GetUserResponse;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +24,7 @@ class GetUserController extends AbstractController
     {
         try{
             $user = $this->handler->handle(new GetUserQuery($id));
-            return $this->json($user, 200, [], ['groups' => 'user:read']);
+            return $this->json(GetUserResponse::fromEntity($user), 200, [], ['groups' => 'user:read']);
         } catch (\DomainException $exception) {
             return $this->json(['error' => $exception->getMessage()], 404, [], ['groups' => 'user:read']);
         }

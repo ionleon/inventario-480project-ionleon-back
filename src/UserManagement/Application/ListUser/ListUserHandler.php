@@ -2,6 +2,7 @@
 
 namespace App\UserManagement\Application\ListUser;
 
+use App\Shared\Domain\Pagination\PaginatedResult;
 use App\UserManagement\Domain\AppUserRepositoryInterface;
 use App\UserManagement\Domain\UserFilters;
 
@@ -11,7 +12,7 @@ class ListUserHandler
         private readonly AppUserRepositoryInterface $userRepository,
     ) {}
 
-    public function handle(ListUserQuery $query): array
+    public function handle(ListUserQuery $query): PaginatedResult
     {
         $filters = new UserFilters(
             term:     $query->term,

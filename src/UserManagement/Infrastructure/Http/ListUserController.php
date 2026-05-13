@@ -6,6 +6,7 @@ use App\UserManagement\Application\ListUser\ListUserHandler;
 use App\UserManagement\Application\ListUser\ListUserQuery;
 use App\UserManagement\Application\UserService;
 
+use App\UserManagement\Infrastructure\Http\Response\ListUserResponse;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,6 +38,6 @@ class ListUserController extends AbstractController
 
         $users = $this->handler->handle($query);
 
-        return $this->json($users, 200, [], ['groups' => 'user:read']);
+        return $this->json(ListUserResponse::fromPaginatedResult($users), 200, [], ['groups' => 'user:read']);
     }
 }
