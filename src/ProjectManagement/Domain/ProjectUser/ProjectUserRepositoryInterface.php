@@ -7,7 +7,7 @@ use App\Shared\Domain\Pagination\PaginatedResult;
 interface ProjectUserRepositoryInterface
 {
 
-    public function findById(string $id): ProjectUser;
+    public function findById(string $id): ?ProjectUser;
 
     public function findOneByProjectAndUser(string $projectId, string $userId): ?ProjectUser;
 
@@ -17,8 +17,7 @@ interface ProjectUserRepositoryInterface
 
     public function remove(ProjectUser $assignment): void;
 
-    // Para el proceso de sync, necesitamos persistir varios pero hacer el flush al final
     public function transaction(callable $operation): void;
 
-    public function updateActivationByUserId(string $userId, bool $isActive);
+    public function updateActivationByUserId(string $userId, bool $isActive): void;
 }

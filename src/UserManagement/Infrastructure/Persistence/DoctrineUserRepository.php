@@ -68,17 +68,6 @@ class DoctrineUserRepository extends ServiceEntityRepository implements AppUserR
         );
     }
 
-    #Revisar esto para mas adelante
-    public function findUserByProject(string $projectId): array
-    {
-        return $this->createQueryBuilder('u')
-            ->innerJoin('App\ProjectManagement\Domain\ProjectUser\ProjectUser', 'pu', 'ON', 'pu.appUser = u')
-            ->innerJoin('pu.project', 'p')
-            ->andWhere('p.id = :projectId')
-            ->setParameter('projectId', $projectId)
-            ->getQuery()
-            ->getResult();
-    }
 
     /**
      * @throws Exception

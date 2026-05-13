@@ -19,13 +19,13 @@ class DoctrineProjectUserRepository extends ServiceEntityRepository implements P
         parent::__construct($registry, ProjectUser::class);
     }
 
-    public function findById(string $id): ProjectUser
+    public function findById(string $id): ?ProjectUser
     {
         return $this->find($id);
     }
 
 
-    public function findOneByProjectAndUser(string $projectId, string $userId): ProjectUser
+    public function findOneByProjectAndUser(string $projectId, string $userId): ?ProjectUser
     {
         return $this->createQueryBuilder('pu')
             ->innerJoin('pu.appUser', 'u')->addSelect('u')
@@ -81,4 +81,16 @@ class DoctrineProjectUserRepository extends ServiceEntityRepository implements P
     }
 
 
+    public function updateActivationByUserId(string $userId, bool $isActive)
+    {
+        $this->getEntityManager()
+            ->createQueryBuilder()
+            ->update(ProjectUser::class, 'pu')
+            ->set('pu.isActive', ':status')
+            ->where('pu.appUser = :userId')
+            ->setParameter('status', $isActive)
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->execute();
+    }
 }
