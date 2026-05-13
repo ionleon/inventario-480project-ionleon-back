@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'User Management')]
-#[Route('/{id}', name: 'app_user_delete', methods: ['DELETE'])]
+#[Route('/users/{id}', name: 'app_user_delete', methods: ['DELETE'])]
 #[IsGranted('ROLE_ADMIN')]
 class DeleteUserController extends AbstractController
 {
