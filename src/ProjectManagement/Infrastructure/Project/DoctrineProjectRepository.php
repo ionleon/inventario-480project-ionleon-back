@@ -41,6 +41,8 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         $qb = $this->createQueryBuilder('p')
              ->where('p.client = :clientId')
              ->setParameter('clientId', $clientId);
+
+        return $this->paginateQueryBuilder($qb, $page, $limit);
     }
 
     public function findByUserPaginated(string $userId, int $page, int $limit): PaginatedResult
@@ -51,7 +53,7 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
             ->setParameter('userId', $userId)
             ->orderBy('p.name', 'ASC');
 
-        return $this->paginateQueryBuilder($qb);
+        return $this->paginateQueryBuilder($qb, $page, $limit);
     }
 
     /**
