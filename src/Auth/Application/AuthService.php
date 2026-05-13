@@ -14,9 +14,7 @@ readonly class AuthService
 {
     public function __construct(
         private RefreshTokenRepositoryInterface $refreshTokenRepository,
-        private TokenBlacklistInterface $blacklist,
-        private TokenPayloadExtractorInterface $payloadExtractor
-
+        private TokenBlacklistInterface         $blacklist
     ) {}
 
     /**
@@ -24,14 +22,10 @@ readonly class AuthService
      * @throws Exception
      *
      */
-    public function logout(string $refreshTokenString): void
+    public function logout(string $refreshTokenString, string $jti, int $ttl): void
     {
        $this->refreshTokenRepository->delete($refreshTokenString);
-
-        $payload = $this->payloadExtractor->extractFromCurrentRequest();
-        if ($payload) {
-            $this->blacklist->add($payload['jti'], $payload['ttl']);
-        }
+       $this->blacklist->add($jti, $ttl);
     }
 
 
@@ -41,11 +35,6 @@ readonly class AuthService
      */
     public function forceLogout(UserInterface $user): void
     {
-        $payload = $this->payloadExtractor->extractFromCurrentRequest();
-        if ($payload) {
-            $this->blacklist->add($payload['jti'], $payload['ttl']);
-        }
-
         $this->refreshTokenRepository->revokeAllForUser($user->getUserIdentifier());
     }
 
