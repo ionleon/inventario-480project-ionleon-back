@@ -19,6 +19,11 @@ class DoctrineProjectUserRepository extends ServiceEntityRepository implements P
         parent::__construct($registry, ProjectUser::class);
     }
 
+    public function findById(string $id): ProjectUser
+    {
+        return $this->find($id);
+    }
+
 
     public function findOneByProjectAndUser(string $projectId, string $userId): ProjectUser
     {
@@ -75,29 +80,5 @@ class DoctrineProjectUserRepository extends ServiceEntityRepository implements P
        $this->getEntityManager()->wrapInTransaction($operation);
     }
 
-    //    /**
-    //     * @return ProjectUser[] Returns an array of ProjectUser objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?ProjectUser
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 
 }

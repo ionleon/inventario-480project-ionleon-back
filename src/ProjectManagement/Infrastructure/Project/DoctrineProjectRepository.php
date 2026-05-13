@@ -22,6 +22,11 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         parent::__construct($registry, Project::class);
     }
 
+    public function findById(string $id): Project
+    {
+        return $this->find($id);
+    }
+
     public function findByFilters(ProjectFilters $filters) : array
     {
         $qb = $this->createFilteredQueryBuilder($filters);
@@ -115,4 +120,6 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         $this->getEntityManager()->remove($project);
         $this->getEntityManager()->flush();
     }
+
+
 }

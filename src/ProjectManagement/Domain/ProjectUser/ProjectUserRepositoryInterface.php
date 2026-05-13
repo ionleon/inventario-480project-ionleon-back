@@ -6,6 +6,9 @@ use App\Shared\Domain\Pagination\PaginatedResult;
 
 interface ProjectUserRepositoryInterface
 {
+
+    public function findById(string $id): ProjectUser;
+
     public function findOneByProjectAndUser(string $projectId, string $userId): ?ProjectUser;
 
     public function findByProjectPaginated(string $projectId, int $page, int $limit): PaginatedResult;
