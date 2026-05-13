@@ -9,7 +9,8 @@ use App\UserManagement\Application\CreateUser\CreateUserHandler;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -24,7 +25,7 @@ class CreateUserController extends AbstractController
 
     public function __invoke(Request $request) : JsonResponse
     {
-        $data = json_decode($request->getContent, true);
+        $data = json_decode($request->getContent(), true);
 
         try{
             $command = new CreateUserCommand(
