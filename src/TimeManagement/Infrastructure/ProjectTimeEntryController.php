@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\TimeManagement\Infrastructure;
 
 use App\ProjectManagement\Domain\Project\Project;
-use App\ProjectManagement\Infrastructure\ProjectUser\DoctrineProjectUserRepository;
-use App\Service\PaginationService;
-use App\Service\TimeEntryService;
+use App\TimeManagement\Application\TimeEntryService;
 use App\TimeManagement\Domain\TimeEntry;
-use App\TimeManagement\Infrastructure\TimeEntryRepository;
+use App\TimeManagement\Domain\TimeEntryRepositoryInterface;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,11 +20,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class ProjectTimeEntryController extends AbstractController
 {
     public function __construct(
-        private TimeEntryService              $teManager,
-        private TimeEntryRepository           $teRepository,
-        private DoctrineProjectUserRepository $puRepository,
-        private readonly PaginationService    $paginationService
-
+        private readonly TimeEntryService             $timeEntryService,
+        private readonly TimeEntryRepositoryInterface $timeEntryRepository
     ) {}
 
     /**
@@ -37,12 +32,10 @@ final class ProjectTimeEntryController extends AbstractController
     {
         $user = $this->isGranted('ROLE_ADMIN') ? null : $this->getUser();
 
-        $qb = $this->teRepository->qbByProjectAndUser($project, $user);
-
         $page = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 10);
 
-        $timeEntries = $this->paginationService->paginate($qb, $page, $limit);
+        $timeEntries = $this->timeEntryRepository->findByProjectAndUserPaginated($project,$user,$page, $limit);
 
         return $this->json($timeEntries, 200, [], ['groups' => 'time:read']);
     }
@@ -53,11 +46,17 @@ final class ProjectTimeEntryController extends AbstractController
     #[Route('', name: 'project_time_entry_create', methods: ['POST'])]
     public function create(Project $project, Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        try {
+            $data = json_decode($request->getContent(), true);
 
-        $timeEntry = $this->teManager->create($data, $project);
+            $this->timeEntryService->create($data, $project, $this->getUser());
 
-        return $this->json([], 201, [], ['groups' => 'time:read']);
+            return $this->json([], 201, [], ['groups' => 'time:read']);
+        } catch (Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
+
+
     }
 
     /**
@@ -78,9 +77,13 @@ final class ProjectTimeEntryController extends AbstractController
             throw $this->createAccessDeniedException('You can only edit your own time entries.');
         }
 
-        $data = json_decode($request->getContent(), true);
-        $timeEntry = $this->teManager->save($timeEntry, $data);
-        return $this->json([], 200, [], ['groups' => 'time:read']);
+        try {
+            $data = json_decode($request->getContent(), true);
+            $this->timeEntryService->update($timeEntry, $data);
+            return $this->json([], 200, [], ['groups' => 'time:read']);
+        } catch (Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
     }
 
     #[Route('/{timeEntryId}', name: 'project_time_entry_delete', methods: ['DELETE'])]
@@ -97,10 +100,8 @@ final class ProjectTimeEntryController extends AbstractController
             throw $this->createAccessDeniedException('You can only delete your own time entries.');
         }
 
-        $this->teManager->delete($timeEntry);
+        $this->timeEntryService->delete($timeEntry);
         return $this->json(null, 204, [], []);
     }
-
-
 
 }

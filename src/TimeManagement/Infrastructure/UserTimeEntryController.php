@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\TimeManagement\Infrastructure;
 
 use App\Service\PaginationService;
-use App\Service\TimeEntryService;
-use App\TimeManagement\Infrastructure\TimeEntryRepository;
+use App\TimeManagement\Application\TimeEntryService;
+use App\TimeManagement\Domain\TimeEntryRepositoryInterface;
 use App\UserManagement\Domain\AppUser;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,9 +17,8 @@ final class UserTimeEntryController extends AbstractController
 {
 
     public function __construct(
-      private readonly TimeEntryService    $teManager,
-      private readonly TimeEntryRepository $teRepostory,
-      private readonly PaginationService   $paginationService
+      private readonly TimeEntryService             $timeEntryService,
+      private readonly TimeEntryRepositoryInterface $timeEntryRepository
     ) {}
 
     #[Route('', name: 'index', methods: ['GET'])]
@@ -29,16 +28,14 @@ final class UserTimeEntryController extends AbstractController
             throw $this->createAccessDeniedException('Cannot see hours of other users.');
         }
 
-        $qb = $this->teRepostory->qbByUser($user);
-
         $page = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 10);
 
-        $entries = $this->paginationService->paginate($qb, $page, $limit);
+        $entries = $this->timeEntryRepository->findByUserPaginated($user, $page, $limit);
 
         #Provisional method, might change in the future
 
-        $totalHours = $this->teRepostory->getTotalHoursByUser($user);
+        $totalHours = $this->timeEntryRepository->getTotalHoursByUser($user);
 
         return $this->json([
             'total_hours' => $totalHours,
@@ -55,9 +52,11 @@ final class UserTimeEntryController extends AbstractController
         if(!$this->isGranted('ROLE_ADMIN') && $user !== $this->getUser()){
             throw $this->createAccessDeniedException('Cannot see hours of other users.');
         }
-        $data = json_decode($request->getContent(), true);
+        {
+            $data = json_decode($request->getContent(), true);
 
-        $timeEntry = $this->teManager->create(data: $data, targetUser:  $user);
-        return $this->json([], 201, [], ['groups' => ['time:read']]);
+            $this->timeEntryService->create(data: $data, user: $user);
+            return $this->json(['message' => 'Time entry created'], 201, [], ['groups' => ['time:read']]);
+        }
     }
 }
