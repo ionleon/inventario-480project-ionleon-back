@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UserManagement\Infrastructure;
+namespace App\UserManagement\Infrastructure\Persistence;
 
 
 use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
