@@ -22,7 +22,7 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         parent::__construct($registry, Project::class);
     }
 
-    public function findById(string $id): Project
+    public function findById(string $id): ?Project
     {
         return $this->find($id);
     }

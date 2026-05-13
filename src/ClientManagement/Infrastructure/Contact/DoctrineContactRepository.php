@@ -7,7 +7,7 @@ use App\ClientManagement\Domain\Contact\Contact;
 use App\ClientManagement\Domain\Contact\ContactRepositoryInterface;
 use App\Shared\Domain\Pagination\PaginatedResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -61,28 +61,45 @@ class DoctrineContactRepository extends ServiceEntityRepository implements Conta
         $qb->getQuery()->execute();
     }
 
-    public function countContactsForClient(string $clientId): int
+    public function countContactsForClient(Client $client): int
     {
         return $this->createQueryBuilder('c')
             ->select('count(c.id)')
             ->where('c.client = :client')
-            ->setParameter('client', $clientId)
+            ->setParameter('client', $client)
             ->getQuery()
             ->getSingleScalarResult();
     }
 
-    public function findByClient(Client $client): QueryBuilder
+    public function findByClient(Client $client): array
     {
         return $this->createQueryBuilder('c')
             ->where('c.client = :client')
-            ->setParameter('client', $client);
+            ->setParameter('client', $client)
+            ->orderBy('c.fullName', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
 
-    public function findByClientPaginated(string $clientId, int $page, int $limit): PaginatedResult
+    public function findByClientPaginated(Client $client, int $page, int $limit): PaginatedResult
     {
-        return $this->createQueryBuilder('c')
+        $qb = $this->createQueryBuilder('c')
             ->where('c.client = :client')
-            ->setParameter('client', $client);
+            ->setParameter('client', $client)
+            ->orderBy('c.fullName', 'ASC')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        $paginator = new Paginator($qb);
+        $totalItems = count($paginator);
+        $items = iterator_to_array($paginator->getIterator());
+
+        return new PaginatedResult(
+            $items,
+            $totalItems,
+            $page,
+            $limit
+        );
     }
 }

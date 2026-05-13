@@ -81,7 +81,7 @@ class DoctrineProjectUserRepository extends ServiceEntityRepository implements P
     }
 
 
-    public function updateActivationByUserId(string $userId, bool $isActive)
+    public function updateActivationByUserId(string $userId, bool $isActive): void
     {
         $this->getEntityManager()
             ->createQueryBuilder()

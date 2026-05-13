@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'User Management')]
 #[Route('/users/{id}', name: 'app_user_edit', methods: ['PUT'])]
 #[IsGranted('ROLE_ADMIN')]
-class UpdateUserController extends AbstractController
+final class UpdateUserController extends AbstractController
 {
     public function __construct(
         private readonly UpdateUserHandler $handler,

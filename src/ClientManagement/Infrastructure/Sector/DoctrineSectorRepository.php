@@ -5,7 +5,6 @@ namespace App\ClientManagement\Infrastructure\Sector;
 use App\ClientManagement\Domain\Sector\Sector;
 use App\ClientManagement\Domain\Sector\SectorRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

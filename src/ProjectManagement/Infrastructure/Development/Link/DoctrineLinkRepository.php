@@ -18,6 +18,16 @@ class DoctrineLinkRepository extends ServiceEntityRepository implements LinkRepo
         parent::__construct($registry, Link::class);
     }
 
+    public function findById(string $id): ?Link
+    {
+        return $this->find($id);
+    }
+
+    public function findAll(): array
+    {
+        return parent::findAll();
+    }
+
     public function save(Link $link, bool $flush = true): void
     {
         $this->getEntityManager()->persist($link);
