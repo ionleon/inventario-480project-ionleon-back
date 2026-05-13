@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\Shared\Infrastructure\Fixtures;
 
 use App\ClientManagement\Domain\Client\Client;
 use App\ProjectManagement\Domain\Project\Project;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\Shared\Infrastructure\Fixtures;
 
-use App\Enum\SystemRole;
+use App\Shared\Domain\Enum\SystemRole;
 use App\UserManagement\Domain\AppUser;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;

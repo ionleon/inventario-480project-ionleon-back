@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\Shared\Infrastructure\Fixtures;
 
 use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
 use App\TimeManagement\Domain\TimeEntry;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\Shared\Infrastructure\Fixtures;
 
 use App\Entity\Sector;
 use Doctrine\Bundle\FixturesBundle\Fixture;

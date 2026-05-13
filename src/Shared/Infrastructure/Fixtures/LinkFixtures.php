@@ -1,10 +1,10 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\Shared\Infrastructure\Fixtures;
 
-use App\Enum\Enviroment;
 use App\ProjectManagement\Domain\Developments\Development;
 use App\ProjectManagement\Domain\Developments\Link\Link;
+use App\Shared\Domain\Enum\Enviroment;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
