@@ -2,10 +2,11 @@
 
 namespace App\TimeManagement\Infrastructure\TimeEntry;
 
+use App\Shared\Infrastructure\Http\AppController;
 use App\TimeManagement\Application\ListTimeEntriesByProject\ListTimeEntriesByProjectHandler;
 use App\TimeManagement\Application\ListTimeEntriesByProject\ListTimeEntriesByProjectQuery;
+use App\TimeManagement\Infrastructure\TimeEntry\Response\TimeEntryListResponse;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Time Entries')]
 #[Route('/projects/{id}/time-entries', name: 'project_time_entries_index', methods: ['GET'])]
 #[IsGranted(new Expression("is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')"))]
-final class ListTimeEntriesByProjectController extends AbstractController
+final class ListTimeEntriesByProjectController extends AppController
 {
     public function __construct(
         private readonly ListTimeEntriesByProjectHandler $handler,
@@ -32,7 +33,7 @@ final class ListTimeEntriesByProjectController extends AbstractController
         try {
             $entries = $this->handler->handle(new ListTimeEntriesByProjectQuery($id, $userId, $page, $limit));
 
-            return $this->json($entries, 200, [], ['groups' => ['time:read']]);
+            return $this->json(TimeEntryListResponse::fromPaginatedResult($entries), 200);
         } catch (\DomainException $e) {
             return $this->json(['error' => $e->getMessage()], 404);
         }

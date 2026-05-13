@@ -19,20 +19,22 @@ final class UpdateTimeEntryHandler
             throw new \DomainException('Time entry not found');
         }
 
-        if ($command->date !== null) {
+        if ($command->date !== null || $command->hour !== null) {
             try {
-                $timeEntry->setDate(new \DateTime($command->date));
+                $date = $command->date !== null
+                    ? new \DateTime($command->date)
+                    : $timeEntry->getDate();
+                $hour = $command->hour !== null
+                    ? (string) $command->hour
+                    : $timeEntry->getHour();
+                $timeEntry->updateTime($date, $hour);
             } catch (\Exception) {
                 throw new \InvalidArgumentException('Date format invalid. Use YYYY-MM-DD.');
             }
         }
 
-        if ($command->hour !== null) {
-            $timeEntry->setHour((string) $command->hour);
-        }
-
         if ($command->comment !== null) {
-            $timeEntry->setComment($command->comment);
+            $timeEntry->updateComment($command->comment);
         }
 
         $this->repository->save($timeEntry);

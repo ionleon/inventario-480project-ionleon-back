@@ -2,16 +2,17 @@
 
 namespace App\TimeManagement\Infrastructure\TimeEntry;
 
+use App\Shared\Infrastructure\Http\AppController;
 use App\TimeManagement\Application\GetTimeEntry\GetTimeEntryHandler;
 use App\TimeManagement\Application\GetTimeEntry\GetTimeEntryQuery;
+use App\TimeManagement\Infrastructure\TimeEntry\Response\TimeEntryResponse;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Time Entries')]
 #[Route('/time-entries/{id}', name: 'time_entries_show', methods: ['GET'])]
-final class GetTimeEntryController extends AbstractController
+final class GetTimeEntryController extends AppController
 {
     public function __construct(
         private readonly GetTimeEntryHandler $handler,
@@ -27,7 +28,7 @@ final class GetTimeEntryController extends AbstractController
                 throw $this->createAccessDeniedException('You can only view your own time entries.');
             }
 
-            return $this->json($timeEntry, 200, [], ['groups' => ['time:read']]);
+            return $this->json(TimeEntryResponse::fromEntity($timeEntry), 200);
         } catch (\DomainException $e) {
             return $this->json(['error' => $e->getMessage()], 404);
         }

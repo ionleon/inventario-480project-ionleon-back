@@ -45,18 +45,19 @@ final class CreateTimeEntryHandler
             throw new \LogicException('The assignment does not belong to the specified user.');
         }
 
-        $timeEntry = new TimeEntry();
-        $timeEntry->setId(Uuid::fromString($command->id));
-        $timeEntry->setProjectUser($projectUser);
-
         try {
-            $timeEntry->setDate(new \DateTime($command->date));
+            $date = new \DateTime($command->date);
         } catch (\Exception) {
             throw new \InvalidArgumentException('Date format invalid. Use YYYY-MM-DD.');
         }
 
-        $timeEntry->setHour((string) $command->hour);
-        $timeEntry->setComment($command->comment);
+        $timeEntry = TimeEntry::create(
+            id: Uuid::fromString($command->id),
+            date: $date,
+            hour: (string) $command->hour,
+            projectUser: $projectUser,
+            comment: $command->comment,
+        );
 
         $this->repository->save($timeEntry);
 

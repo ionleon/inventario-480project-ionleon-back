@@ -20,15 +20,15 @@ class TimeEntry
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
     #[Groups(['time:read', 'dash:read'])]
-    private ?Uuid $id = null;
+    private Uuid $id;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Groups(['time:read', 'dash:read'])]
-    private ?\DateTime $date = null;
+    private \DateTime $date;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2)]
     #[Groups(['time:read', 'dash:read'])]
-    private ?string $hour = null;
+    private string $hour;
 
     #[ORM\Column(length: 150, nullable: true)]
     #[Groups(['time:read', 'dash:read'])]
@@ -38,61 +38,40 @@ class TimeEntry
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['time:read'])]
     #[SerializedPath('[project]')]
-    private ?ProjectUser $projectUser = null;
+    private ProjectUser $projectUser;
 
+    public static function create(
+        Uuid $id,
+        \DateTime $date,
+        string $hour,
+        ProjectUser $projectUser,
+        ?string $comment = null,
+    ): self {
+        $entry = new self();
+        $entry->id = $id;
+        $entry->date = $date;
+        $entry->hour = $hour;
+        $entry->projectUser = $projectUser;
+        $entry->comment = $comment;
 
-    #[Groups(['dash:read'])]
-    #[SerializedName('project')]
-    public function getProjectForDash(): ?Project
-    {
-        return $this->projectUser?->getProject();
+        return $entry;
     }
-    public function getId(): ?uuid
+
+    // Getters (solo lectura)
+
+    public function getId(): Uuid
     {
         return $this->id;
     }
 
-    public function setId(Uuid $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    public function getProjectUser(): ?ProjectUser
-    {
-        return $this->projectUser;
-    }
-
-    public function setProjectUser(?ProjectUser $projectUser): static
-    {
-        $this->projectUser = $projectUser;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTime
+    public function getDate(): \DateTime
     {
         return $this->date;
     }
 
-    public function setDate(\DateTime $date): static
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getHour(): ?string
+    public function getHour(): string
     {
         return $this->hour;
-    }
-
-    public function setHour(string $hour): static
-    {
-        $this->hour = $hour;
-
-        return $this;
     }
 
     public function getComment(): ?string
@@ -100,10 +79,36 @@ class TimeEntry
         return $this->comment;
     }
 
-    public function setComment(?string $comment): static
+    public function getProjectUser(): ProjectUser
+    {
+        return $this->projectUser;
+    }
+
+    #[Groups(['dash:read'])]
+    #[SerializedName('project')]
+    public function getProjectForDash(): ?Project
+    {
+        return $this->projectUser?->getProject();
+    }
+
+    // Comportamientos explícitos del dominio
+
+    public function updateTime(\DateTime $date, string $hour): static
+    {
+        $this->date = $date;
+        $this->hour = $hour;
+        return $this;
+    }
+
+    public function updateComment(?string $comment): static
     {
         $this->comment = $comment;
+        return $this;
+    }
 
+    public function reassignTo(ProjectUser $projectUser): static
+    {
+        $this->projectUser = $projectUser;
         return $this;
     }
 }

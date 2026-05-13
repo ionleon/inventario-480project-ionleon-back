@@ -2,17 +2,18 @@
 
 namespace App\TimeManagement\Infrastructure\TimeEntry;
 
+use App\Shared\Infrastructure\Http\AppController;
 use App\TimeManagement\Application\ListTimeEntriesByUser\ListTimeEntriesByUserHandler;
 use App\TimeManagement\Application\ListTimeEntriesByUser\ListTimeEntriesByUserQuery;
+use App\TimeManagement\Infrastructure\TimeEntry\Response\TimeEntryListResponse;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Time Entries')]
 #[Route('/users/{id}/time-entries', name: 'user_time_entries_index', methods: ['GET'])]
-final class ListTimeEntriesByUserController extends AbstractController
+final class ListTimeEntriesByUserController extends AppController
 {
     public function __construct(
         private readonly ListTimeEntriesByUserHandler $handler,
@@ -31,7 +32,10 @@ final class ListTimeEntriesByUserController extends AbstractController
         try {
             $result = $this->handler->handle(new ListTimeEntriesByUserQuery($id, $page, $limit));
 
-            return $this->json($result, 200, [], ['groups' => ['dash:read']]);
+            return $this->json([
+                'total_hours' => $result['total_hours'],
+                'data' => TimeEntryListResponse::fromPaginatedResult($result['data']),
+            ], 200);
         } catch (\DomainException $e) {
             return $this->json(['error' => $e->getMessage()], 404);
         }

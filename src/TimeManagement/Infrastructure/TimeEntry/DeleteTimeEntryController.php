@@ -2,18 +2,18 @@
 
 namespace App\TimeManagement\Infrastructure\TimeEntry;
 
+use App\Shared\Infrastructure\Http\AppController;
 use App\TimeManagement\Application\DeleteTimeEntry\DeleteTimeEntryCommand;
 use App\TimeManagement\Application\DeleteTimeEntry\DeleteTimeEntryHandler;
 use App\TimeManagement\Application\GetTimeEntry\GetTimeEntryHandler;
 use App\TimeManagement\Application\GetTimeEntry\GetTimeEntryQuery;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Time Entries')]
 #[Route('/time-entries/{id}', name: 'time_entries_delete', methods: ['DELETE'])]
-final class DeleteTimeEntryController extends AbstractController
+final class DeleteTimeEntryController extends AppController
 {
     public function __construct(
         private readonly DeleteTimeEntryHandler $handler,
