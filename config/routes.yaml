@@ -52,7 +52,15 @@ client_http_controllers:
     type: attribute
     prefix: /480project
 
+user_http_controllers:
+    resource: ../src/UserManagement/Infrastructure/Http/
+    type: attribute
+    prefix: /480project
 
+time_entry_controllers:
+    resource: ../src/TimeManagement/Infrastructure/TimeEntry/
+    type: attribute
+    prefix: /480project
 
 api_login_check:
     path: /480project/login
