@@ -37,6 +37,15 @@ class DoctrineUserRepository extends ServiceEntityRepository implements AppUserR
         return $this->find($id);
     }
 
+    public function findByEmail(string $email): ?AppUser
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * @throws Exception
      */
@@ -148,4 +157,6 @@ class DoctrineUserRepository extends ServiceEntityRepository implements AppUserR
         $this->getEntityManager()->remove($user);
         $this->getEntityManager()->flush();
     }
+
+
 }

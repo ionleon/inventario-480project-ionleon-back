@@ -12,6 +12,8 @@ interface AppUserRepositoryInterface
 
     public function findById(string $id): ?AppUser;
 
+    public function findByEmail(string $email): ?AppUser;
+
     public function save(AppUser $user): void;
 
     public function delete(AppUser $user): void;
