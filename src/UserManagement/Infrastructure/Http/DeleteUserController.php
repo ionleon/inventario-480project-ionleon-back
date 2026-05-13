@@ -2,11 +2,10 @@
 
 namespace App\UserManagement\Infrastructure\Http;
 
-use App\UserManagement\Application\DeleteUser\DeleteUserHandler;
-use App\UserManagement\Domain\AppUser;
-use OpenApi\Attributes as OA;
+use App\Shared\Infrastructure\Http\AppController;
 use App\UserManagement\Application\DeleteUser\DeleteUserCommand;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\UserManagement\Application\DeleteUser\DeleteUserHandler;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -14,19 +13,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'User Management')]
 #[Route('/users/{id}', name: 'app_user_delete', methods: ['DELETE'])]
 #[IsGranted('ROLE_ADMIN')]
-class DeleteUserController extends AbstractController
+final class DeleteUserController extends AppController
 {
     public function __construct(
-      private readonly DeleteUserHandler $handler
+        private readonly DeleteUserHandler $handler,
     ) {}
 
-    public function __invoke(AppUser $user): JsonResponse
+    public function __invoke(string $id): JsonResponse
     {
         try {
-            $this->handler->handle(new DeleteUserCommand($user->getId()));
+            $this->handler->handle(new DeleteUserCommand($id));
             return $this->json(null, 204);
-        } catch (\Exception $e) {
-            return $this->json(['error' => $e->getMessage()], 400);
+        } catch (\DomainException $e) {
+            return $this->json(['error' => $e->getMessage()], 404);
         }
     }
 }

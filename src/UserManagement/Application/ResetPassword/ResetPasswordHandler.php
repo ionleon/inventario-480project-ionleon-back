@@ -2,7 +2,8 @@
 
 namespace App\UserManagement\Application\ResetPassword;
 
-use App\Auth\Application\AuthService;
+use App\Auth\Application\ForceLogout\ForceLogoutCommand;
+use App\Auth\Application\ForceLogout\ForceLogoutHandler;
 use App\UserManagement\Domain\AppUserRepositoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -11,7 +12,7 @@ class ResetPasswordHandler
     public function __construct(
         private readonly AppUserRepositoryInterface  $userRepository,
         private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly AuthService                $authService,
+        private readonly ForceLogoutHandler           $forceLogoutHandler,
     ) {}
 
     public function handle(ResetPasswordCommand $command): void
@@ -31,6 +32,6 @@ class ResetPasswordHandler
         );
 
         $this->userRepository->save($user);
-        $this->authService->forceLogout($user);
+        $this->forceLogoutHandler->handle(new ForceLogoutCommand($user->getUserIdentifier()));
     }
 }

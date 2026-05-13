@@ -22,24 +22,24 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'uuid')]
     #[Assert\Uuid]
     #[Groups(['user:read', 'user:write', 'project:read'])]
-    private ?Uuid $id = null;
+    private Uuid $id;
 
     #[ORM\Column(length: 100)]
     #[Groups(['user:read', 'user:write', 'user:update', 'project:read', 'time:read'])]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(length: 100)]
     #[Groups(['user:read', 'user:write', 'user:update', 'project:read', 'time:read'])]
     #[Assert\NotBlank]
-    private ?string $surname = null;
+    private string $surname;
 
     #[ORM\Column(length: 150, unique: true)]
     #[Groups(['user:read', 'user:write', 'user:update', 'project:read'])]
     #[Assert\NotBlank(message: "El email no puede estar vacío")]
     #[Assert\Email(message: "El formato del email no es válido")]
-    private ?string $email = null;
+    private string $email;
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 8, minMessage: "La contraseña debe tener al menos 8 caracteres")]
@@ -49,64 +49,57 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Groups(['user:read', 'user:write'])]
     #[SerializedName('first_time')]
-    private ?bool $firstTime = null;
+    private bool $firstTime = true;
 
     #[ORM\Column]
     #[Groups(['user:read', 'project:read'])]
     #[SerializedName('is_active')]
-    private ?bool $isActive = null;
+    private bool $isActive = true;
 
     #[ORM\Column(type: 'string', enumType: SystemRole::class)]
     #[Groups(['user:read', 'user:write' , 'user:update'])]
     #[Assert\Type(SystemRole::class)]
     private SystemRole $role = SystemRole::EMPLOYEE;
 
-    public function getId(): ?Uuid
+    public static function create(
+        Uuid $id,
+        string $email,
+        string $name,
+        string $surname,
+        SystemRole $role = SystemRole::EMPLOYEE,
+    ): self {
+        $user = new self();
+        $user->id = $id;
+        $user->email = $email;
+        $user->name = $name;
+        $user->surname = $surname;
+        $user->role = $role;
+        $user->firstTime = true;
+        $user->isActive = true;
+
+        return $user;
+    }
+
+    // Getters (solo lectura)
+
+    public function getId(): Uuid
     {
         return $this->id;
     }
 
-    public function setId(Uuid $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getSurname(): ?string
+    public function getSurname(): string
     {
         return $this->surname;
     }
 
-    public function setSurname(string $surname): static
-    {
-        $this->surname = $surname;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
     }
 
     public function getPassword(): ?string
@@ -114,35 +107,14 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function firstTime(): ?bool
+    public function firstTime(): bool
     {
         return $this->firstTime;
     }
 
-    public function setFirstTime(bool $firstTime): static
-    {
-        $this->firstTime = $firstTime;
-
-        return $this;
-    }
-
     public function isActive(): bool
     {
-        return $this->isActive ?? false;
-    }
-
-    public function setIsActive(bool $isActive): static
-    {
-        $this->isActive = $isActive;
-
-        return $this;
+        return $this->isActive;
     }
 
     public function getRole(): SystemRole
@@ -150,15 +122,56 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->role;
     }
 
-    public function setRole(SystemRole $role): static
+    public function getRoles(): array
+    {
+        return [$this->role->value];
+    }
+
+    // Único setter público requerido por Symfony
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    // Comportamientos explícitos del dominio
+
+    public function activate(): static
+    {
+        $this->isActive = true;
+        return $this;
+    }
+
+    public function deactivate(): static
+    {
+        $this->isActive = false;
+        return $this;
+    }
+
+    public function toggleActivation(): static
+    {
+        $this->isActive = !$this->isActive;
+        return $this;
+    }
+
+    public function changeRole(SystemRole $role): static
     {
         $this->role = $role;
         return $this;
     }
 
-    public function getRoles(): array
+    public function updateProfile(string $name, string $surname): static
     {
-        return [$this->role->value];
+        $this->name = $name;
+        $this->surname = $surname;
+        return $this;
+    }
+
+    public function markAsReturning(): static
+    {
+        $this->firstTime = false;
+        return $this;
     }
 
     public function eraseCredentials(): void
@@ -168,6 +181,6 @@ class AppUser implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 }

@@ -2,21 +2,23 @@
 
 namespace App\UserManagement\Infrastructure\Http;
 
+use App\Shared\Infrastructure\Http\AppController;
 use App\UserManagement\Application\ChangePassword\ChangePasswordCommand;
 use App\UserManagement\Application\ChangePassword\ChangePasswordHandler;
+use App\UserManagement\Infrastructure\Http\Request\ChangePasswordRequest;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'User Management')]
 #[Route('/users/{id}/password-change', name: 'user_password_change', methods: ['PUT'])]
-final class ChangePasswordController extends AbstractController
+final class ChangePasswordController extends AppController
 {
     public function __construct(
         private readonly ChangePasswordHandler $handler,
+        private readonly ValidatorInterface $validator,
     ) {}
 
     public function __invoke(string $id, Request $request): JsonResponse
@@ -25,17 +27,21 @@ final class ChangePasswordController extends AbstractController
             throw $this->createAccessDeniedException('You cannot change another user\'s password.');
         }
 
-        $data = json_decode($request->getContent(), true);
+        $dto = ChangePasswordRequest::fromRequest($request);
+
+        $violations = $this->validator->validate($dto);
+        if (count($violations) > 0) {
+            return $this->json(['errors' => $this->formatViolations($violations)], 400);
+        }
 
         try {
             $this->handler->handle(new ChangePasswordCommand(
                 userId:      $id,
-                oldPassword: $data['old_password'] ?? '',
-                newPassword: $data['new_password'] ?? '',
+                oldPassword: $dto->oldPassword,
+                newPassword: $dto->newPassword,
             ));
 
             return $this->json(null, 204);
-
         } catch (\InvalidArgumentException $e) {
             return $this->json(['error' => $e->getMessage()], 400);
         } catch (\DomainException $e) {

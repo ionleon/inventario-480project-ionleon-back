@@ -2,19 +2,18 @@
 
 namespace App\UserManagement\Infrastructure\Http\Request;
 
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class ChangePasswordRequest
+final readonly class ChangePasswordRequest
 {
     public function __construct(
         #[Assert\NotBlank]
-        public readonly string $oldPassword,
+        public string $oldPassword,
 
         #[Assert\NotBlank]
         #[Assert\Length(min: 8)]
-        public readonly string $newPassword,
+        public string $newPassword,
     ) {}
 
     public static function fromRequest(Request $request): self

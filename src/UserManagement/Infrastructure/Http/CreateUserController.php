@@ -2,50 +2,52 @@
 
 namespace App\UserManagement\Infrastructure\Http;
 
-use App\Shared\Domain\Enum\SystemRole;
+use App\Shared\Infrastructure\Http\AppController;
 use App\UserManagement\Application\CreateUser\CreateUserCommand;
 use App\UserManagement\Application\CreateUser\CreateUserHandler;
-
+use App\UserManagement\Infrastructure\Http\Request\CreateUserRequest;
+use App\UserManagement\Infrastructure\Http\Response\GetUserResponse;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'User Management')]
 #[Route('/users', name: 'app_user_create', methods: ['POST'])]
 #[IsGranted('ROLE_ADMIN')]
-class CreateUserController extends AbstractController
+final class CreateUserController extends AppController
 {
     public function __construct(
         private readonly CreateUserHandler $handler,
+        private readonly ValidatorInterface $validator,
     ) {}
 
-    public function __invoke(Request $request) : JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        $dto = CreateUserRequest::fromRequest($request);
 
-        try{
+        $violations = $this->validator->validate($dto);
+        if (count($violations) > 0) {
+            return $this->json(['errors' => $this->formatViolations($violations)], 400);
+        }
+
+        try {
             $command = new CreateUserCommand(
-                id:         $data['id']             ?? throw new \InvalidArgumentException('Id is required.'),
-                email:      $data['email']          ?? throw new \InvalidArgumentException('Email is required.'),
-                password:   $data['password']       ?? throw new \InvalidArgumentException('Password is required.'),
-                name:       $data['name']           ?? '',
-                surname:    $data['surname']        ?? '',
-                role:       SystemRole::from($data['role'] ?? 'ROLE_USER'),
+                id:       $dto->id,
+                email:    $dto->email,
+                password: $dto->password,
+                name:     $dto->name,
+                surname:  $dto->surname,
+                role:     $dto->role,
             );
 
             $user = $this->handler->handle($command);
 
-            return $this->json([], 201, [], ['groups' => ['user:read']]);
-        } catch (\InvalidArgumentException $e) {
-            return $this->json(['error' => $e->getMessage()], 400);
+            return $this->json(GetUserResponse::fromEntity($user), 201);
         } catch (\DomainException $e) {
             return $this->json(['error' => $e->getMessage()], 409);
         }
-
     }
-
 }

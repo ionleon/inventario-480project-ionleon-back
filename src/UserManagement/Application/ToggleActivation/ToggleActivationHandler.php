@@ -2,7 +2,8 @@
 
 namespace App\UserManagement\Application\ToggleActivation;
 
-use App\Auth\Application\AuthService;
+use App\Auth\Application\ForceLogout\ForceLogoutCommand;
+use App\Auth\Application\ForceLogout\ForceLogoutHandler;
 use App\UserManagement\Domain\AppUserRepositoryInterface;
 use App\UserManagement\Domain\Event\UserActivationChanged;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -11,7 +12,7 @@ final class ToggleActivationHandler
 {
     public function __construct(
         private readonly AppUserRepositoryInterface $userRepository,
-        private readonly AuthService               $authService,
+        private readonly ForceLogoutHandler          $forceLogoutHandler,
         private readonly EventDispatcherInterface  $eventDispatcher,
     ) {}
 
@@ -23,8 +24,8 @@ final class ToggleActivationHandler
             throw new \DomainException('User not found.');
         }
 
-        $newStatus = !$user->isActive();
-        $user->setIsActive($newStatus);
+        $user->toggleActivation();
+        $newStatus = $user->isActive();
 
         $this->userRepository->save($user);
 
@@ -33,7 +34,7 @@ final class ToggleActivationHandler
         );
 
         if ($newStatus === false) {
-            $this->authService->forceLogout($user);
+            $this->forceLogoutHandler->handle(new ForceLogoutCommand($user->getUserIdentifier()));
         }
     }
 

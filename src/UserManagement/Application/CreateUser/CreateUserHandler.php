@@ -25,14 +25,14 @@ class CreateUserHandler
             throw new \DomainException('Email already exists.');
         }
 
-        $user = new AppUser();
-        $user->setId(Uuid::fromString($command->id));
-        $user->setEmail($command->email);
-        $user->setName($command->name);
-        $user->setSurname($command->surname);
-        $user->setRole($command->role);
-        $user->setFirstTime(true);
-        $user->setIsActive(true);
+        $user = AppUser::create(
+            id: Uuid::fromString($command->id),
+            email: $command->email,
+            name: $command->name,
+            surname: $command->surname,
+            role: $command->role,
+        );
+
         $user->setPassword(
             $this->passwordHasher->hashPassword($user, $command->password)
         );

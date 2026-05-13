@@ -2,23 +2,18 @@
 
 namespace App\UserManagement\Infrastructure\Http;
 
-use App\Shared\Domain\Enum\SystemRole;
+use App\Shared\Infrastructure\Http\AppController;
 use App\UserManagement\Application\ToggleActivation\ToggleActivationCommand;
 use App\UserManagement\Application\ToggleActivation\ToggleActivationHandler;
-use App\UserManagement\Application\UpdateUser\UpdateUserCommand;
-use App\UserManagement\Application\UpdateUser\UpdateUserHandler;
-
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'User Management')]
 #[Route('/users/{id}', name: 'app_user_deactivate', methods: ['PATCH'])]
 #[IsGranted('ROLE_ADMIN')]
-final class ToggleActivationController extends AbstractController
+final class ToggleActivationController extends AppController
 {
     public function __construct(
         private readonly ToggleActivationHandler $handler,
