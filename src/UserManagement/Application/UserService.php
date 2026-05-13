@@ -5,8 +5,6 @@ namespace App\UserManagement\Application;
 use App\Auth\Application\AuthService;
 use App\UserManagement\Domain\AppUser;
 use App\UserManagement\Domain\AppUserRepositoryInterface;
-use App\UserManagement\Infrastructure\DoctrineUserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
