@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Infrastructure\Security;
+namespace App\Auth\Infrastructure\EventListener;
 
 use App\Auth\Application\AuthService;
 use App\UserManagement\Domain\AppUser;
@@ -15,7 +15,7 @@ final class LoginSuccessListener
 
     #Needs further work, doesn't actually work
     public function __construct(
-        private readonly AuthService $authManager,
+        private readonly AuthService $authService,
     ) {}
 
     /**
@@ -28,6 +28,6 @@ final class LoginSuccessListener
         $user = $event->getUser();
         if (!$user instanceof AppUser) return;
 
-        $this->authManager->forceLogout($user);
+        $this->authService->forceLogout($user);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Infrastructure\Security;
+namespace App\Auth\Infrastructure\EventListener;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTAuthenticatedEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
