@@ -19,4 +19,6 @@ interface ProjectUserRepositoryInterface
 
     // Para el proceso de sync, necesitamos persistir varios pero hacer el flush al final
     public function transaction(callable $operation): void;
+
+    public function updateActivationByUserId(string $userId, bool $isActive);
 }
