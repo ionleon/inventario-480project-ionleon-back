@@ -72,3 +72,15 @@ services:
 
     App\App\UI\API\Response\Service\GetCurrentEnvironment:
         arguments: ['%kernel.environment%']
+
+    App\Core\Domain\Model\Repository\SectorRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmSectorRepository
+
+    App\Core\Domain\Service\Sector\CreateSector\CreateSectorServiceInterface:
+        class: App\Core\Domain\Service\Sector\CreateSector\CreateSectorService
+
+    App\Core\Domain\Service\Sector\UpdateSector\UpdateSectorServiceInterface:
+        class: App\Core\Domain\Service\Sector\UpdateSector\UpdateSectorService
+
+    App\Core\Domain\Service\Sector\DeleteSector\DeleteSectorServiceInterface:
+        class: App\Core\Domain\Service\Sector\DeleteSector\DeleteSectorService
