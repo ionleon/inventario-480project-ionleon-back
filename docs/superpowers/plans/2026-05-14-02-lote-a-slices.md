@@ -12,6 +12,20 @@
 
 ---
 
+## ⚠️ ACTUALIZACIÓN (lección de la primera ejecución)
+
+Las secciones tituladas **"### Borrado legacy"** dentro de cada slice de este documento están **OBSOLETAS** y deben ser ignoradas. Borrar el legacy aggregate-por-aggregate durante los slices rompe las dependencias cross-context del código legacy (ej. Client legacy importa Sector legacy; al borrar Sector legacy mientras Client legacy aún existe, el código deja de compilar).
+
+**Nueva estrategia:**
+- Cada slice **solo CREA código nuevo** en `src/Core/...`, `src/App/UI/...` y configs.
+- Cada slice **comenta** los `#[Route(...)]` de los controllers legacy de SU aggregate (sin borrar el archivo) para evitar colisión con las nuevas rutas.
+- Cada slice **quita `#[ORM\Entity]`** de la entidad legacy de SU aggregate (sin borrar el archivo) para evitar doble mapping con la nueva XML.
+- El **borrado físico** de las carpetas legacy se hace **completo y atómico** en **Plan 8 (cleanup)**, cuando los 11 aggregates están migrados y nadie referencia legacy.
+
+Ver `docs/superpowers/plans/recipe-aggregate-slice.md` § Paso 14 para el detalle del nuevo procedimiento.
+
+---
+
 ## Ejecución paralela
 
 ```bash

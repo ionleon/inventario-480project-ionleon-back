@@ -8,6 +8,14 @@
 
 ---
 
+## ⚠️ ACTUALIZACIÓN (lección de la primera ejecución del Plan 2)
+
+Las secciones **"### Borrado legacy"** de cada slice están **OBSOLETAS**. Ver banner en Plan 02 y `recipe-aggregate-slice.md` § Paso 14.
+
+**Nueva estrategia:** los slices solo CREAN código nuevo; comentan `#[Route]` y `#[ORM\Entity]` del legacy correspondiente; NO borran archivos. Borrado físico → Plan 8.
+
+---
+
 ## Ejecución paralela
 
 ```bash

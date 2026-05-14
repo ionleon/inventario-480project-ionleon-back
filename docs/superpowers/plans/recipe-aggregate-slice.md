@@ -1072,24 +1072,61 @@ git commit -m "test(<aggregate>): add Mothers"
 
 ---
 
-## Paso 14 — Borrar código legacy + verificar
+## Paso 14 — Convivencia legacy + verificar
 
-### 14.1 Borrar la carpeta del aggregate en su contexto antiguo
+> ⚠️ **CAMBIO RESPECTO A LA VERSIÓN ANTERIOR**: las versiones iniciales de este recipe instruían a borrar el código legacy dentro del slice. Esa estrategia rompe el sistema porque los aggregates legacy se referencian unos a otros (Client→Sector, ProjectUser→User+Project+ProjectRole, etc.) y borrar uno mientras los demás siguen activos hace que el legacy no compile.
+>
+> **Nueva regla**: cada slice **solo CREA código nuevo** en `src/Core/...` y `src/App/UI/...`. El legacy se queda intacto durante toda la fase de Lotes A-D. La eliminación se hace **toda junta** en el Plan 8 (cleanup), en orden seguro y atómico.
 
-```bash
-git rm -r src/<Context>/Application/* src/<Context>/Domain/<Aggregate>* src/<Context>/Infrastructure/<Aggregate>* src/<Context>/Infrastructure/Http/<Action><Aggregate>*Controller.php
+### 14.1 Asegurar la convivencia sin doble mapping Doctrine
+
+Doctrine no tolera que dos entidades mapeen la misma tabla. Para que el nuevo `App\Core\Domain\Model\Aggregate\<Aggregate>` y el legacy `App\<Context>\Domain\<Aggregate>` coexistan, hay que **excluir el legacy del auto-mapping** de Doctrine SIN borrar los archivos PHP.
+
+En `config/packages/doctrine.yaml`, asegúrate de que el mapping `App` ya NO usa `auto_mapping: true` ni `dir: '%kernel.project_dir%/src'`. En su lugar, listar explícitamente solo los contextos legacy que aún se quieren mapear, EXCLUYENDO el aggregate que acaba de migrarse:
+
+```yaml
+doctrine:
+    orm:
+        auto_mapping: false
+        mappings:
+            # Mappings legacy (attribute-based) — se irán quitando entrada a entrada
+            UserManagementLegacy:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/UserManagement/Domain'
+                prefix: 'App\UserManagement\Domain'
+                alias: UserManagementLegacy
+            ClientManagementLegacy:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/ClientManagement/Domain'
+                prefix: 'App\ClientManagement\Domain'
+                alias: ClientManagementLegacy
+            # ... etc ...
+
+            # Mapping nuevo (XML) — recibe TODOS los aggregates migrados
+            Core:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Core/Infrastructure/Persistence/Doctrine/ORM/Mapping/XML'
+                prefix: 'App\Core\Domain\Model\Aggregate'
+                alias: Core
 ```
 
-(Adaptar al layout específico del contexto antiguo.)
+Cuando un aggregate migra (por ejemplo Sector), su entrada legacy correspondiente (`ClientManagementLegacy/Sector*`) debe **desaparecer del scope del mapping** sin borrar el archivo PHP. La forma más sencilla: el agente del slice mueve el archivo legacy del aggregate concreto (ej. `src/ClientManagement/Domain/Sector/Sector.php`) a `src/ClientManagement/Domain/_legacy_unmapped/Sector.php` o similar, fuera del `dir:` configurado. Ese movimiento se debe coordinar para que el código legacy que aún typehints `App\ClientManagement\Domain\Sector\Sector` siga compilando — lo más cómodo es **dejar la clase exactamente donde está, pero borrar el `#[ORM\Entity]` attribute** mediante un parche pequeño documentado en el slice. La clase entonces queda como una clase PHP normal: los typehints siguen funcionando, pero Doctrine no la mapea.
 
-### 14.2 Quitar mapping legacy de `doctrine.yaml`
+> Recomendación: en el primer slice de cada contexto legacy, hacer el cambio "auto_mapping → mapping explícito" en `doctrine.yaml` una sola vez. Los slices siguientes solo borran annotations `#[ORM\Entity]` del legacy correspondiente.
 
-Si la entidad tenía atributos Doctrine, quitarla del `auto_mapping` o exclude su carpeta. El bind XML de `App\Core` ya está activo.
+### 14.2 Conflicto de rutas
+
+Si tu nuevo controller en `App\App\UI\API\Controller\<Aggregate>\<Action>\` declara `#[Route(path: '/<aggregates>', methods: ['POST'])]` y el legacy controller en `<Context>/Infrastructure/Http/` tiene la misma ruta, Symfony detecta colisión.
+
+**Solución**: en el slice, **comenta** el `#[Route(...)]` del controller legacy (sin borrar el archivo). Añade un comentario `// MIGRATED to App\\App\\UI\\API\\Controller\\<Aggregate>` arriba para trazabilidad. El controller legacy queda como código muerto sin route attached — no responde a HTTP, pero el archivo PHP existe.
 
 ### 14.3 Smoke test manual
 
 ```bash
-# Crear via API
+# Crear via API (usa el NUEVO controller)
 curl -X POST http://localhost/<aggregates> \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $JWT" \
@@ -1110,11 +1147,15 @@ make composer ARGS="phpstan"
 make bin-console ARGS="doctrine:schema:validate"
 ```
 
+Si `doctrine:schema:validate` reporta error de doble mapping para tu aggregate, vuelve al paso 14.1 — la annotation `#[ORM\Entity]` legacy sigue activa o el legacy sigue dentro del `dir:` mapeado.
+
 ### 14.5 Commit final del slice
 
 ```bash
 git commit -m "feat(<aggregate>): complete vertical slice migration"
 ```
+
+El borrado físico de los archivos legacy (carpetas `<Context>/...`) ocurre en el **Plan 8 (cleanup)** cuando TODOS los aggregates están migrados y nadie referencia el legacy.
 
 ---
 

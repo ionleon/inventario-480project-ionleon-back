@@ -8,6 +8,14 @@
 
 ---
 
+## ⚠️ ACTUALIZACIÓN (lección de la primera ejecución del Plan 2)
+
+Las secciones tituladas **"### Borrado legacy"** dentro de cada slice de este documento están **OBSOLETAS** y deben ser ignoradas. Ver el banner equivalente en `docs/superpowers/plans/2026-05-14-02-lote-a-slices.md` y `recipe-aggregate-slice.md` § Paso 14.
+
+**Nueva estrategia:** cada slice solo CREA código nuevo; comenta `#[Route(...)]` de los legacy controllers de SU aggregate; quita `#[ORM\Entity]` de la entidad legacy de SU aggregate; NO borra archivos. El borrado físico completo se hace en **Plan 8 (cleanup)**.
+
+---
+
 ## Ejecución paralela
 
 ```bash
