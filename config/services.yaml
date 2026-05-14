@@ -44,6 +44,6 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'lexik_jwt_authentication.on_jwt_created', method: 'onJWTCreated' }
 
-    App\EventListener\ExceptionListener:
+    App\Shared\Infrastructure\EventListener\ExceptionListener:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception' }
