@@ -1,0 +1,112 @@
+deptrac:
+  skip_violations:
+    App\ClientManagement\Domain\Client\Client:
+      - App\ClientManagement\Infrastructure\Client\DoctrineClientRepository
+    App\ClientManagement\Domain\Client\ClientRepositoryInterface:
+      - App\Shared\Domain\Pagination\PaginatedResult
+    App\ClientManagement\Domain\Contact\Contact:
+      - App\ClientManagement\Infrastructure\Contact\DoctrineContactRepository
+    App\ClientManagement\Domain\Contact\ContactRepositoryInterface:
+      - App\Shared\Domain\Pagination\PaginatedResult
+    App\ClientManagement\Domain\Sector\Sector:
+      - App\ClientManagement\Infrastructure\Sector\DoctrineSectorRepository
+    App\ProjectManagement\Domain\Development\Development:
+      - App\ProjectManagement\Infrastructure\Development\DoctrineDevelopmentRepository
+    App\ProjectManagement\Domain\Development\Link\Link:
+      - App\ProjectManagement\Infrastructure\Development\Link\DoctrineLinkRepository
+      - App\Shared\Domain\Enum\Enviroment
+    App\ProjectManagement\Domain\Development\Technology\Technology:
+      - App\ProjectManagement\Infrastructure\Development\Technology\DoctrineTechnologyRepository
+    App\ProjectManagement\Domain\ProjectRole\ProjectRole:
+      - App\ProjectManagement\Infrastructure\ProjectRole\DoctrineProjectRoleRepository
+    App\ProjectManagement\Domain\ProjectUser\ProjectUser:
+      - App\ProjectManagement\Infrastructure\ProjectUser\DoctrineProjectUserRepository
+    App\ProjectManagement\Domain\ProjectUser\ProjectUserRepositoryInterface:
+      - App\Shared\Domain\Pagination\PaginatedResult
+    App\ProjectManagement\Domain\Project\Project:
+      - App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository
+    App\ProjectManagement\Domain\Project\ProjectRepositoryInterface:
+      - App\Shared\Domain\Pagination\PaginatedResult
+    App\Shared\Infrastructure\Fixtures\ClientFixtures:
+      - App\ClientManagement\Domain\Client\Client
+      - App\ClientManagement\Domain\Sector\Sector
+      - App\Shared\Infrastructure\Fixtures\SectorFixtures
+    App\Shared\Infrastructure\Fixtures\ContactFixtures:
+      - App\ClientManagement\Domain\Client\Client
+      - App\ClientManagement\Domain\Contact\Contact
+      - App\Shared\Infrastructure\Fixtures\ClientFixtures
+    App\Shared\Infrastructure\Fixtures\DevelopmentFixtures:
+      - App\ProjectManagement\Domain\Development\Development
+      - App\ProjectManagement\Domain\Development\Technology\Technology
+      - App\ProjectManagement\Domain\Project\Project
+      - App\Shared\Infrastructure\Fixtures\ProjectFixtures
+      - App\Shared\Infrastructure\Fixtures\TechnologyFixtures
+    App\Shared\Infrastructure\Fixtures\LinkFixtures:
+      - App\ProjectManagement\Domain\Development\Development
+      - App\ProjectManagement\Domain\Development\Link\Link
+      - App\Shared\Domain\Enum\Enviroment
+      - App\Shared\Infrastructure\Fixtures\DevelopmentFixtures
+    App\Shared\Infrastructure\Fixtures\ProjectFixtures:
+      - App\ClientManagement\Domain\Client\Client
+      - App\ProjectManagement\Domain\Project\Project
+      - App\Shared\Infrastructure\Fixtures\ClientFixtures
+    App\Shared\Infrastructure\Fixtures\ProjectRoleFixtures:
+      - App\ProjectManagement\Domain\ProjectRole\ProjectRole
+    App\Shared\Infrastructure\Fixtures\ProjectUserFixtures:
+      - App\ProjectManagement\Domain\ProjectRole\ProjectRole
+      - App\ProjectManagement\Domain\ProjectUser\ProjectUser
+      - App\ProjectManagement\Domain\Project\Project
+      - App\Shared\Infrastructure\Fixtures\ProjectFixtures
+      - App\Shared\Infrastructure\Fixtures\ProjectRoleFixtures
+      - App\Shared\Infrastructure\Fixtures\UserFixtures
+      - App\UserManagement\Domain\AppUser
+    App\Shared\Infrastructure\Fixtures\SectorFixtures:
+      - App\ClientManagement\Domain\Sector\Sector
+    App\Shared\Infrastructure\Fixtures\TechnologyFixtures:
+      - App\ProjectManagement\Domain\Development\Technology\Technology
+    App\Shared\Infrastructure\Fixtures\TimeEntryFixtures:
+      - App\ProjectManagement\Domain\ProjectUser\ProjectUser
+      - App\Shared\Infrastructure\Fixtures\ProjectUserFixtures
+      - App\TimeManagement\Domain\TimeEntry
+    App\Shared\Infrastructure\Fixtures\UserFixtures:
+      - App\Shared\Domain\Enum\SystemRole
+      - App\UserManagement\Domain\AppUser
+    App\TimeManagement\Domain\TimeEntry:
+      - App\TimeManagement\Infrastructure\DoctrineTimeEntryRepository
+    App\TimeManagement\Domain\TimeEntryRepositoryInterface:
+      - App\Shared\Domain\Pagination\PaginatedResult
+    App\TimeManagement\Infrastructure\TimeEntry\CreateTimeEntryForProjectController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\TimeManagement\Infrastructure\TimeEntry\CreateTimeEntryForUserController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\TimeManagement\Infrastructure\TimeEntry\DeleteTimeEntryController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\TimeManagement\Infrastructure\TimeEntry\GetTimeEntryController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\TimeManagement\Infrastructure\TimeEntry\ListTimeEntriesByProjectController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\TimeManagement\Infrastructure\TimeEntry\ListTimeEntriesByUserController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\TimeManagement\Infrastructure\TimeEntry\UpdateTimeEntryController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\UserManagement\Domain\AppUser:
+      - App\Shared\Domain\Enum\SystemRole
+      - App\UserManagement\Infrastructure\Persistence\DoctrineUserRepository
+    App\UserManagement\Domain\AppUserRepositoryInterface:
+      - App\Shared\Domain\Pagination\PaginatedResult
+    App\UserManagement\Infrastructure\Http\ChangePasswordController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\UserManagement\Infrastructure\Http\CreateUserController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\UserManagement\Infrastructure\Http\DeleteUserController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\UserManagement\Infrastructure\Http\GetUserController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\UserManagement\Infrastructure\Http\ListUserController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\UserManagement\Infrastructure\Http\ResetPasswordController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\UserManagement\Infrastructure\Http\ToggleActivationController:
+      - App\Shared\Infrastructure\Http\AppController
+    App\UserManagement\Infrastructure\Http\UpdateUserController:
+      - App\Shared\Infrastructure\Http\AppController
