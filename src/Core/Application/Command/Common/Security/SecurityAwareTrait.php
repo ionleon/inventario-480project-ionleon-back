@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\Application\Command\Common\Security;
 
-use App\Core\Application\DTO\Security\SecurityToken;
+use App\Core\Domain\DTO\Security\SecurityToken;
 use App\Shared\Domain\Enum\SystemRole;
 
 trait SecurityAwareTrait

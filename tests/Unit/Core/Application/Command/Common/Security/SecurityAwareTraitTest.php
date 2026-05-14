@@ -6,7 +6,7 @@ namespace App\Tests\Unit\Core\Application\Command\Common\Security;
 
 use App\Core\Application\Command\Common\Security\SecurableHandler;
 use App\Core\Application\Command\Common\Security\SecurityAwareTrait;
-use App\Core\Application\DTO\Security\SecurityToken;
+use App\Core\Domain\DTO\Security\SecurityToken;
 use App\Core\Domain\Service\Security\SecurityChecker;
 use App\Shared\Domain\Enum\SystemRole;
 use PHPUnit\Framework\TestCase;

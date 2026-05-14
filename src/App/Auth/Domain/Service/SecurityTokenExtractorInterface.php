@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\App\Auth\Domain\Service;
 
-use App\Core\Application\DTO\Security\SecurityToken;
+use App\Core\Domain\DTO\Security\SecurityToken;
 
 interface SecurityTokenExtractorInterface
 {

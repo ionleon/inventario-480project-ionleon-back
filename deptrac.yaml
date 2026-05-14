@@ -22,15 +22,25 @@ deptrac:
       collectors:
         - { type: classLike, value: 'App\\Shared\\.*' }
   ruleset:
-    Domain: ~
+    Domain:
+      - Domain
+      - Shared
     Application:
       - Domain
+      - Application
+      - Shared
     Infrastructure:
       - Domain
       - Application
+      - Infrastructure
+      - Shared
     App:
       - Domain
       - Application
       - Infrastructure
       - Shared
-    Shared: ~
+    Shared:
+      - Application
+      - Domain
+      - Infrastructure
+      - Shared

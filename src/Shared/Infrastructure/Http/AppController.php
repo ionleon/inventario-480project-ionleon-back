@@ -7,6 +7,9 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 abstract class AppController extends AbstractController
 {
+    /**
+     * @return array<string, string>
+     */
     protected function formatViolations(ConstraintViolationListInterface $violations): array
     {
         $errors = [];

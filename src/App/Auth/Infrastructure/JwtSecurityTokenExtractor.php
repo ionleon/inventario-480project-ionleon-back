@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\App\Auth\Infrastructure;
 
 use App\App\Auth\Domain\Service\SecurityTokenExtractorInterface;
-use App\Core\Application\DTO\Security\SecurityToken;
+use App\Core\Domain\DTO\Security\SecurityToken;
 use App\Shared\Domain\Enum\SystemRole;
 use App\UserManagement\Domain\AppUser;
 use Symfony\Bundle\SecurityBundle\Security;

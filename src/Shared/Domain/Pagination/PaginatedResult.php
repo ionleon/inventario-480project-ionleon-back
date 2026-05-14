@@ -8,6 +8,7 @@ namespace App\Shared\Domain\Pagination;
 class PaginatedResult
 {
     public function __construct(
+        /** @var iterable<mixed> */
         public iterable $items,
         public int $totalItems,
         public int $currentPage,

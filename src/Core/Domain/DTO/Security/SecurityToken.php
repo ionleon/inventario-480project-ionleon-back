@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Application\DTO\Security;
+namespace App\Core\Domain\DTO\Security;
 
 use App\Shared\Domain\Enum\SystemRole;
 
