@@ -1,0 +1,10 @@
+.gitignore
+.dockerignore
+.idea
+.git
+vendor
+var
+node_modules
+tests
+docs
+arquitectura-general
