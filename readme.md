@@ -1,152 +1,45 @@
+# Inventario 480 Project — Backend
 
-# 480 Project - Backend (Symfony + Docker)
+API REST en Symfony 7.3 + PHP 8.3 sobre FrankenPHP, PostgreSQL 17 y JWT (Lexik).
 
+## Requisitos
 
-##  Requisitos previos
+- Docker (con plugin compose v2)
+- Make
+- (Opcional) Cuenta GitHub SSH configurada para el remote
 
-Antes de empezar, asegúrate de tener instalado:
-* [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-* [Docker Compose](https://docs.docker.com/compose/install/)
-
-##  Instalación y Despliegue
-
-Sigue estos pasos para levantar el entorno local:
-
-### 1. Clonar el repositorio
-```bash
-git clone <url-del-repositorio>
-
-````
-
-
- ### Ejecutar script deploy.sh
-```Bash
-./deploy.sh
-```
-
-
-> [!NOTE]
-> ### __El script configura el resto de pasos necesarios
->
-> - **No es obligatorio seguir los pasos posteriores**: Se mantienen para poder observar el flujo de ejecucion y 
-> despliegue del proyecto.
-
-
-
-### 2. Configurar variables de entorno
-
-
-
-
-#### Crea una copia del archivo de ejemplo y configúralo (si es necesario):
-
-
-
-```Bash
-cp .env .env.local
-```
-#### Una vez creado el .env.local sustituye las variables por las siguientes
-
-```
-DATABASE_URL="postgresql://user_admin:skibidiman123@database:5432/project_inventory_480_db?serverVersion=18&charset=utf8"
-
-JWT_PASSPHRASE=a35eab0d39a99076c5f8747bc553c0df86693e150a22e465987f288d610bdef3
-
-APP_SECRET=cf313f261c7cd660b5b066cb67962665
-```
-
-_Nota: Por defecto, el archivo `.env` ya viene configurado para funcionar con los contenedores de Docker._
-
-### 3. Levantar los contenedores
-
-Ejecuta el siguiente comando para construir y levantar los servicios (Base de datos, PHP y Nginx):
-
-
-
-```Bash
-docker-compose up -d --build
-```
-
-### 4. Instalar dependencias de PHP
-
-
-
-```Bash
-docker-compose exec php composer install
-```
-
-### 5. Generar las claves JWT
-
-Para que la autenticación funcione, es necesario generar el par de claves (pública/privada):
-
-
-
-```Bash
-docker-compose exec php bin/console lexik:jwt:generate-keypair
-```
-
-### 6. Configurar la Base de Datos
-
-Crea la base de datos y ejecuta las migraciones:
-
-
-
-```Bash
-docker-compose exec php bin/console doctrine:database:create --if-not-exists
-docker-compose exec php bin/console doctrine:migrations:migrate 
-```
-
-### 7. Cargar datos por defecto
-
-Se ha utilizado la libreria **DataFixtures** para crear informacion por defecto en la base de datos, una vez realizada la migración ejecuta el siguiente comando:
-
-```Bash
-docker-compose exec php bin/console doctrine:fixtures:load 
-```
-
----
-
-##  Información de la API
-
-- **URL Base:** `http://localhost:8000`
-
-- **Prefijo de rutas:** `/480project`
-
-- **Endpoint de Login:** `POST http://localhost:8000/480project/login`
-
-### Ejemplo de petición de Login (POST)
-
-
-
-```JSON
-{
-    "email": "usuario@ejemplo.com",
-    "password": "tu_password"
-}
-```
+## Arranque
 
 ```bash
--------------------------------------------------------
-Prueba de autenticacion (Copia y pega):
-
-curl -X POST http://localhost:8000/480project/login \
-     -H "Content-Type: application/json" \
-     -d '{"email":"admin@example.com", "password":"password1234"}'
--------------------------------------------------------
+make start
 ```
 
+Esto construye los contenedores, instala dependencias, genera el par de claves JWT, crea la BD, ejecuta migraciones y carga fixtures.
 
-##  Comandos útiles de Docker
+App disponible en `http://localhost`.
 
-- **Ver logs en tiempo real:** `docker-compose logs -f`
+## Comandos habituales
 
-- **Reiniciar contenedores:** `docker-compose restart`
+```bash
+make bash                # shell en el contenedor api
+make bin-console ARGS="cache:clear"
+make migrations-migrate
+make code-quality        # phpcs + phpstan + deptrac
+make tests-unit
+make tests-api           # E2E Codeception (recrea DB de tests)
+make tests-all
+```
 
-- **Detener contenedores:** `docker-compose down`
+Ver `make help` para la lista completa.
 
-- **Entrar al terminal de PHP:** `docker-compose exec php bash`
+## Arquitectura
 
+El proyecto sigue **DDD por capas + CQRS** según `arquitectura-general/`. Para añadir una feature, lee `arquitectura-general/04-anadir-una-feature.md`. El estado del refactor activo está documentado en `docs/superpowers/specs/` y `docs/superpowers/plans/`.
 
-##  Solución de problemas (CORS)
+## Autenticación
 
-Si el frontend (React) recibe errores de CORS, asegúrate de que el archivo `.env.local` permite el origen de tu servidor de desarrollo: `CORS_ALLOW_ORIGIN='^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'`
+```bash
+curl -X POST http://localhost/480project/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@example.com","password":"password1234"}'
+```
