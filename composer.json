@@ -99,6 +99,7 @@
         "codeception/codeception": "^5.3.5",
         "codeception/module-asserts": "^3.3",
         "codeception/module-db": "^3.2.2",
+        "codeception/module-doctrine": "^3",
         "codeception/module-rest": "^3.4.3",
         "codeception/module-symfony": "^3.9.1",
         "doctrine/doctrine-fixtures-bundle": "^4.3.1",
