@@ -63,3 +63,6 @@ services:
     App\Core\Application\Bus\QueryBus:
         class: App\Shared\Infrastructure\Bus\MessengerQueryBus
         arguments: ['@messenger.bus.query.bus']
+
+    App\Core\Domain\Service\Security\SecurityChecker:
+        class: App\Core\Domain\Service\Security\PermissiveSecurityChecker
