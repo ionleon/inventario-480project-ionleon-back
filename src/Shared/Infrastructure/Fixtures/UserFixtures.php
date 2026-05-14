@@ -52,21 +52,25 @@ class UserFixtures extends Fixture
         ];
 
         foreach ($usersData as $data) {
-            $user = new AppUser();
-            $user->setId(Uuid::fromString($data['id']));
-            $user->setEmail($data['email']);
-            $user->setName($data['name']);
-            $user->setSurname($data['surname']);
-            $user->setFirstTime(false);
-            $user->setIsActive($data['active']);
-            $user->setRole($data['role']);
+            $user = AppUser::create(
+                Uuid::fromString($data['id']),
+                $data['email'],
+                $data['name'],
+                $data['surname'],
+                $data['role'],
+            );
+
+            if (!$data['active']) {
+                $user->deactivate();
+            }
+
+            $user->markAsReturning();
 
             $hashedPassword = $this->passwordHasher->hashPassword($user, 'password1234');
             $user->setPassword($hashedPassword);
 
             $manager->persist($user);
 
-            // Guardamos la referencia usando la clave 'ref' del array
             $this->addReference($data['ref'], $user);
         }
         $manager->flush();

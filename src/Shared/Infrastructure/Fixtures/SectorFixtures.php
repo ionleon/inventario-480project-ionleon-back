@@ -2,7 +2,7 @@
 
 namespace App\Shared\Infrastructure\Fixtures;
 
-use App\Entity\Sector;
+use App\ClientManagement\Domain\Sector\Sector;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Uid\Uuid;

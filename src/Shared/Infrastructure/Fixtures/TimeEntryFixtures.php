@@ -40,12 +40,13 @@ class TimeEntryFixtures extends Fixture implements DependentFixtureInterface
         ];
 
         foreach ($entries as $data) {
-            $timeEntry = new TimeEntry();
-            $timeEntry->setId(Uuid::fromString($data['id']));
-            $timeEntry->setProjectUser($projectUser);
-            $timeEntry->setDate(new \DateTime($data['date']));
-            $timeEntry->setHour($data['hour']);
-            $timeEntry->setComment($data['comment']);
+            $timeEntry = TimeEntry::create(
+                Uuid::fromString($data['id']),
+                new \DateTime($data['date']),
+                $data['hour'],
+                $projectUser,
+                $data['comment'],
+            );
 
             $manager->persist($timeEntry);
         }

@@ -34,7 +34,7 @@ composer composer-install composer-update: ## Composer wrapper. Usage: make comp
 
 # APP
 start: ## Prepare dev environment from scratch
-	@UID=$$(id -u) GID=$$(id -g) make dc-up-d-rebuild
+	@export UID=$$(id -u); export GID=$$(id -g); $(DOCKER_COMPOSE_COMMAND) up -d --build --force-recreate
 	@make composer ENVS="APP_ENV=dev" ARGS="install"
 	@make bin-console ARGS="lexik:jwt:generate-keypair --skip-if-exists"
 	@make prepare-dev-db
