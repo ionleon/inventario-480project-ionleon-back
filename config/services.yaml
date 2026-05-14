@@ -9,6 +9,14 @@
 parameters:
 
 services:
+    _instanceof:
+        App\Core\Application\Bus\CommandHandler:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+        App\Core\Application\Bus\QueryHandler:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
+
     # default configuration for services in *this* file
     _defaults:
         bind:
@@ -47,3 +55,11 @@ services:
     App\Shared\Infrastructure\EventListener\ExceptionListener:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception' }
+
+    App\Core\Application\Bus\CommandBus:
+        class: App\Shared\Infrastructure\Bus\MessengerCommandBus
+        arguments: ['@messenger.bus.command.bus']
+
+    App\Core\Application\Bus\QueryBus:
+        class: App\Shared\Infrastructure\Bus\MessengerQueryBus
+        arguments: ['@messenger.bus.query.bus']
