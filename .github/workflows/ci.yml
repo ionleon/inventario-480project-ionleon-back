@@ -1,0 +1,111 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  composer-install:
+    runs-on: ubuntu-latest
+    container:
+      image: dunglas/frankenphp:1.5.0-php8.3-alpine
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PHP extensions
+        run: install-php-extensions @composer pdo_pgsql intl opcache zip
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+      - name: Install
+        run: composer install --no-progress --no-interaction
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vendor
+          path: vendor
+
+  lint:
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: dunglas/frankenphp:1.5.0-php8.3-alpine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: vendor, path: vendor }
+      - run: composer phpcs
+
+  phpstan:
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: dunglas/frankenphp:1.5.0-php8.3-alpine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: vendor, path: vendor }
+      - run: composer phpstan
+
+  deptrac:
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: dunglas/frankenphp:1.5.0-php8.3-alpine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: vendor, path: vendor }
+      - run: composer deptrac
+
+  tests-unit:
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: dunglas/frankenphp:1.5.0-php8.3-alpine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: vendor, path: vendor }
+      - run: install-php-extensions pdo_pgsql intl
+      - run: cp .env.test.pipeline .env.test
+      - run: composer dump-env test
+      - run: composer tests:unit
+
+  tests-api:
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: dunglas/frankenphp:1.5.0-php8.3-alpine
+    services:
+      postgres:
+        image: postgres:17-alpine
+        ports: ['5433:5432']
+        env:
+          POSTGRES_DB: project_inventory_480_db_test
+          POSTGRES_USER: user_admin
+          POSTGRES_PASSWORD: skibidiman123
+        options: >-
+          --health-cmd "pg_isready -U user_admin -d project_inventory_480_db_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: vendor, path: vendor }
+      - run: install-php-extensions pdo_pgsql intl
+      - run: echo "127.0.0.1 postgres" >> /etc/hosts
+      - run: cp .env.test.pipeline .env.test
+      - run: sed -i 's/localhost:5433/postgres:5432/' .env.test
+      - run: composer dump-env test
+      - name: Generate JWT keys
+        run: php bin/console lexik:jwt:generate-keypair --skip-if-exists --env=test
+      - name: Migrate
+        run: php bin/console doctrine:migrations:migrate --no-interaction --env=test
+      - name: Run FrankenPHP in worker mode
+        run: frankenphp run --config .docker/caddy/worker.caddyfile &
+      - name: Wait for server
+        run: until curl -s http://localhost/ > /dev/null; do sleep 1; done
+      - run: composer tests:api
