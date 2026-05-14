@@ -77,7 +77,14 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "phpcs": "phpcs",
+        "phpstan": "phpstan analyse",
+        "deptrac": "deptrac analyse",
+        "tests:unit": "codecept run Unit --steps",
+        "tests:functional": "codecept run Functional --steps",
+        "tests:api": "codecept run Api --steps",
+        "tests:all": ["@tests:unit", "@tests:functional", "@tests:api"]
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -89,6 +96,11 @@
         }
     },
     "require-dev": {
+        "codeception/codeception": "^5.1",
+        "codeception/module-asserts": "^3.0",
+        "codeception/module-db": "^3.2",
+        "codeception/module-rest": "^3.4",
+        "codeception/module-symfony": "^3.4",
         "doctrine/doctrine-fixtures-bundle": "^4.3",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.5",
