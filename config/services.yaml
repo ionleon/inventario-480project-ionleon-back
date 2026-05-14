@@ -69,3 +69,6 @@ services:
 
     App\App\Auth\Domain\Service\SecurityTokenExtractorInterface:
         class: App\App\Auth\Infrastructure\JwtSecurityTokenExtractor
+
+    App\App\UI\API\Response\Service\GetCurrentEnvironment:
+        arguments: ['%kernel.environment%']
