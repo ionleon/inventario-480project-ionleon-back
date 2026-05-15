@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Projects')]
-#[Route('/projects/{id}', name: 'project_deactivate', methods: ['PATCH'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Project/
+// #[Route('/projects/{id}', name: 'project_deactivate', methods: ['PATCH'])]
 final class ToggleProjectActivationController extends AbstractController
 {
     public function __construct(

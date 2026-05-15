@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Projects')]
-#[Route('/projects', name: 'project_index', methods: ['GET'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Project/
+// #[Route('/projects', name: 'project_index', methods: ['GET'])]
 final class ListProjectsController extends AbstractController
 {
     public function __construct(

@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/projects/{id}/developments/{developmentId}', name: 'project_development_update', methods: ['PUT'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Project/UpdateProjectDevelopment/
+// #[Route('/projects/{id}/developments/{developmentId}', name: 'project_development_update', methods: ['PUT'])]
 final class UpdateDevelopmentController extends AbstractController
 {
     public function __construct(

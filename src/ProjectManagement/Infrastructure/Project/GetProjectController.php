@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Projects')]
-#[Route('/projects/{id}', name: 'project_detail_show', methods: ['GET'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Project/
+// #[Route('/projects/{id}', name: 'project_detail_show', methods: ['GET'])]
 final class GetProjectController extends AbstractController
 {
     public function __construct(

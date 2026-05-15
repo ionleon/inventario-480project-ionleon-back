@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Projects')]
-#[Route('/projects', name: 'project_create', methods: ['POST'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Project/
+// #[Route('/projects', name: 'project_create', methods: ['POST'])]
 final class CreateProjectController extends AbstractController
 {
     public function __construct(

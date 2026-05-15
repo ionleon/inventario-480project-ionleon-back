@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Projects')]
-#[Route('/projects/{id}', name: 'project_edit', methods: ['PUT'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Project/
+// #[Route('/projects/{id}', name: 'project_edit', methods: ['PUT'])]
 final class UpdateProjectController extends AbstractController
 {
     public function __construct(

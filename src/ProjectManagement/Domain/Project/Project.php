@@ -17,6 +17,8 @@ use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
+// NOTE: ORM\Entity kept to maintain legacy relations (Development, ProjectUser).
+// The DDD aggregate App\Core\Domain\Model\Aggregate\Project also maps to this table.
 #[ORM\Entity(repositoryClass: DoctrineProjectRepository::class)]
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 class Project

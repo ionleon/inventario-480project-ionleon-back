@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Projects')]
-#[Route('/projects/{id}', name: 'project_delete', methods: ['DELETE'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Project/
+// #[Route('/projects/{id}', name: 'project_delete', methods: ['DELETE'])]
 final class DeleteProjectController extends AbstractController
 {
     public function __construct(
