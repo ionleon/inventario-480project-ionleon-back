@@ -11,7 +11,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Client Management')]
-#[Route('/clients/{id}/contacts/{contactId}/main', name: 'app_client_contact_set_main', methods: ['PATCH'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Contact/
+// #[Route('/clients/{id}/contacts/{contactId}/main', name: 'app_client_contact_set_main', methods: ['PATCH'])]
 #[IsGranted('ROLE_ADMIN')]
 final class MarkContactAsMainController extends AbstractController
 {

@@ -12,7 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Client Management')]
-#[Route('/clients/{id}/contacts/{contactId}', name: 'app_client_contact_update', methods: ['PUT', 'PATCH'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Contact/
+// #[Route('/clients/{id}/contacts/{contactId}', name: 'app_client_contact_update', methods: ['PUT', 'PATCH'])]
 #[IsGranted('ROLE_ADMIN')]
 final class UpdateContactController extends AbstractController
 {
