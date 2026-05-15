@@ -1,6 +1,18 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+        types:
+            sector_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\SectorIdType
+            sector_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\SectorNameType
+            user_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\UserIdType
+            user_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\UserNameType
+            user_surname: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\UserSurnameType
+            user_email: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\EmailType
+            user_password: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\PasswordType
+            technology_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\TechnologyIdType
+            technology_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\TechnologyNameType
+            project_role_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectRoleIdType
+            project_role_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectRoleNameType
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
@@ -18,12 +30,25 @@ doctrine:
             Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
         auto_mapping: true
         mappings:
+            Core:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Core/Infrastructure/Persistence/Doctrine/ORM/Mapping/XML'
+                prefix: 'App\Core\Domain\Model\Aggregate'
+                alias: Core
             App:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
+                dir: '%kernel.project_dir%/src'
+                prefix: 'App'
                 alias: App
+            Auth:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Auth/Domain/RefreshToken'
+                prefix: 'App\Auth\Domain\RefreshToken'
+                alias: Auth
+
         controller_resolver:
             auto_mapping: false
 

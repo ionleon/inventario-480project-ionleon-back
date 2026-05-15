@@ -7,8 +7,63 @@
 # To list all registered routes, run the following command:
 #   bin/console debug:router
 
-controllers:
-    resource: ../src/Controller/
+#controllers:
+#    resource: ../src/Controller/
+#    type: attribute
+#    prefix: /480project
+
+app_ui_api_controllers:
+    resource: ../src/App/UI/API/Controller/
+    type: attribute
+    prefix: /480project
+
+auth_controllers:
+    resource: ../src/Auth/Infrastructure/Controller/
+    type: attribute
+    prefix: /480project
+
+project_controllers:
+    resource: ../src/ProjectManagement/Infrastructure/Project/
+    type: attribute
+    prefix: /480project
+
+project_development_controllers:
+    resource: ../src/ProjectManagement/Infrastructure/Development/
+    type: attribute
+    prefix: /480project
+
+link_controllers:
+    resource: ../src/ProjectManagement/Infrastructure/Development/Link/
+    type: attribute
+    prefix: /480project
+
+technology_controllers:
+    resource: ../src/ProjectManagement/Infrastructure/Development/Technology/
+    type: attribute
+    prefix: /480project
+
+project_role_controllers:
+    resource: ../src/ProjectManagement/Infrastructure/ProjectRole/
+    type: attribute
+    prefix: /480project
+
+project_user_controllers:
+    resource: ../src/ProjectManagement/Infrastructure/ProjectUser/
+    type: attribute
+    prefix: /480project
+
+client_http_controllers:
+    resource: ../src/ClientManagement/Infrastructure/Http/
+    type: attribute
+    prefix: /480project
+
+user_http_controllers:
+    resource: ../src/UserManagement/Infrastructure/Http/
+    type: attribute
+    prefix: /480project
+
+time_entry_controllers:
+    resource: ../src/TimeManagement/Infrastructure/TimeEntry/
     type: attribute
     prefix: /480project
 

@@ -9,6 +9,14 @@
 parameters:
 
 services:
+    _instanceof:
+        App\Core\Application\Bus\CommandHandler:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+        App\Core\Application\Bus\QueryHandler:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
+
     # default configuration for services in *this* file
     _defaults:
         bind:
@@ -20,13 +28,98 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Auth/'
+            - '../src/Kernel.php'
+
+    App\Auth\:
+        resource: '../src/Auth/'
+        exclude:
+            - '..src/Auth/Domain/RefreshToken/'
+
+
+    App\Auth\Domain\RefreshToken\RefreshTokenRepositoryInterface: '@App\Auth\Infrastructure\Persistence\DoctrineRefreshTokenRepository'
+    App\Auth\Domain\Service\TokenBlacklistInterface: '@App\Auth\Infrastructure\Service\SymfonyCacheBlacklist'
+    App\Auth\Domain\Service\TokenPayloadExtractorInterface: '@App\Auth\Infrastructure\Service\LexikPayloadExtractor'
+
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\EventListener\JWTCreatedListener:
+    App\Auth\Infrastructure\EventListener\JWTCreatedListener:
         tags:
             - { name: 'kernel.event_listener', event: 'lexik_jwt_authentication.on_jwt_created', method: 'onJWTCreated' }
 
-    App\EventListener\ExceptionListener:
+    App\Shared\Infrastructure\EventListener\ExceptionListener:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception' }
+
+    App\Core\Application\Bus\CommandBus:
+        class: App\Shared\Infrastructure\Bus\MessengerCommandBus
+        arguments: ['@command.bus']
+
+    App\Core\Application\Bus\QueryBus:
+        class: App\Shared\Infrastructure\Bus\MessengerQueryBus
+        arguments: ['@query.bus']
+
+    App\Core\Domain\Service\Security\SecurityChecker:
+        class: App\Core\Domain\Service\Security\PermissiveSecurityChecker
+
+    App\App\Auth\Domain\Service\SecurityTokenExtractorInterface:
+        class: App\App\Auth\Infrastructure\JwtSecurityTokenExtractor
+
+    App\App\UI\API\Response\Service\GetCurrentEnvironment:
+        arguments: ['%kernel.environment%']
+
+    App\Core\Domain\Model\Repository\SectorRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmSectorRepository
+
+    App\Core\Domain\Service\Sector\CreateSector\CreateSectorServiceInterface:
+        class: App\Core\Domain\Service\Sector\CreateSector\CreateSectorService
+
+    App\Core\Domain\Service\Sector\UpdateSector\UpdateSectorServiceInterface:
+        class: App\Core\Domain\Service\Sector\UpdateSector\UpdateSectorService
+
+    App\Core\Domain\Service\Sector\DeleteSector\DeleteSectorServiceInterface:
+        class: App\Core\Domain\Service\Sector\DeleteSector\DeleteSectorService
+
+    App\Core\Domain\Model\Repository\UserRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmUserRepository
+
+    App\Core\Domain\Service\User\CreateUser\CreateUserServiceInterface:
+        class: App\Core\Domain\Service\User\CreateUser\CreateUserService
+
+    App\Core\Domain\Service\User\UpdateUser\UpdateUserServiceInterface:
+        class: App\Core\Domain\Service\User\UpdateUser\UpdateUserService
+
+    App\Core\Domain\Service\User\DeleteUser\DeleteUserServiceInterface:
+        class: App\Core\Domain\Service\User\DeleteUser\DeleteUserService
+
+    App\Core\Domain\Service\User\ChangePassword\ChangePasswordServiceInterface:
+        class: App\Core\Domain\Service\User\ChangePassword\ChangePasswordService
+
+    App\Core\Domain\Service\User\ResetPassword\ResetPasswordServiceInterface:
+        class: App\Core\Domain\Service\User\ResetPassword\ResetPasswordService
+
+    App\Core\Domain\Service\User\ToggleUserActivation\ToggleUserActivationServiceInterface:
+        class: App\Core\Domain\Service\User\ToggleUserActivation\ToggleUserActivationService
+
+    App\Core\Domain\Model\Repository\TechnologyRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmTechnologyRepository
+
+    App\Core\Domain\Service\Technology\CreateTechnology\CreateTechnologyServiceInterface:
+        class: App\Core\Domain\Service\Technology\CreateTechnology\CreateTechnologyService
+
+    App\Core\Domain\Service\Technology\DeleteTechnology\DeleteTechnologyServiceInterface:
+        class: App\Core\Domain\Service\Technology\DeleteTechnology\DeleteTechnologyService
+
+    App\Core\Domain\Model\Repository\ProjectRoleRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmProjectRoleRepository
+
+    App\Core\Domain\Service\ProjectRole\CreateProjectRole\CreateProjectRoleServiceInterface:
+        class: App\Core\Domain\Service\ProjectRole\CreateProjectRole\CreateProjectRoleService
+
+    App\Core\Domain\Service\ProjectRole\DeleteProjectRole\DeleteProjectRoleServiceInterface:
+        class: App\Core\Domain\Service\ProjectRole\DeleteProjectRole\DeleteProjectRoleService

@@ -1,0 +1,6 @@
+actor: UnitTester
+suite_namespace: App\Tests\Unit
+modules:
+    enabled:
+        - Asserts
+        - \App\Tests\Support\Helper\Unit

@@ -9,7 +9,7 @@ security:
     providers:
         app_user_provider:
             entity:
-                class: App\Entity\AppUser
+                class: App\Core\Domain\Model\Aggregate\User
                 property: email # React enviará el email para loguearse
 
     hide_user_not_found: false
@@ -22,7 +22,7 @@ security:
         login:
             pattern: ^/480project/login
             stateless: true
-            user_checker: App\Security\UserChecker
+            user_checker: App\Auth\Infrastructure\Security\UserChecker
             json_login:
                 check_path: /480project/login
                 username_path: email

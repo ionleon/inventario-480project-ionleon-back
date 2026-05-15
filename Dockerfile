@@ -1,21 +1,47 @@
-FROM php:8.3-fpm
+# syntax=docker/dockerfile:1
+FROM dunglas/frankenphp:1.5.0-php8.3-alpine AS base
 
-# Instalar dependencias del sistema y drivers de Postgres
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    git \
-    unzip \
-    && docker-php-ext-install pdo pdo_pgsql
+ARG APP_USER_ID=1000
+ARG APP_GROUP_ID=1000
+ARG FRANKENPHP_WORKER_MODE_ENABLED=false
 
-# Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+ENV FRANKENPHP_WORKER_MODE_ENABLED=${FRANKENPHP_WORKER_MODE_ENABLED}
 
-# Instalar Symfony CLI (muy útil para desarrollo)
-RUN curl -sS https://get.symfony.com/cli/installer | bash \
-    && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+RUN apk add --no-cache git unzip bash icu-libs su-exec \
+ && install-php-extensions @composer pdo_pgsql intl opcache zip
 
-RUN git config --global --add safe.directory /var/www/html
+# Sync user/group with host to avoid permission issues on bind mounts
+RUN if [ "$(id -u www-data)" != "$APP_USER_ID" ]; then \
+      deluser www-data || true; \
+      addgroup -g $APP_GROUP_ID -S www-data || true; \
+      adduser -u $APP_USER_ID -G www-data -S www-data; \
+    fi
 
-WORKDIR /var/www/html
+WORKDIR /app
 
-RUN pecl install redis && docker-php-ext-enable redis
+# Choose Caddyfile depending on FRANKENPHP_WORKER_MODE_ENABLED at container start
+COPY .docker/caddy/classic.caddyfile /etc/caddy/classic.Caddyfile
+COPY .docker/caddy/worker.caddyfile  /etc/caddy/worker.Caddyfile
+
+# ---------- DEV ----------
+FROM base AS dev
+
+RUN install-php-extensions xdebug
+COPY .docker/php/conf.d/zz-php.ini /usr/local/etc/php/conf.d/zz-php.ini
+COPY .docker/php/conf.d/dev/       /usr/local/etc/php/conf.d/
+
+ENV APP_ENV=dev
+CMD ["sh", "-c", "if [ \"$FRANKENPHP_WORKER_MODE_ENABLED\" = \"true\" ]; then frankenphp run --config /etc/caddy/worker.Caddyfile; else frankenphp run --config /etc/caddy/classic.Caddyfile; fi"]
+
+# ---------- PROD ----------
+FROM base AS prod
+
+COPY .docker/php/conf.d/zz-php.ini /usr/local/etc/php/conf.d/zz-php.ini
+COPY .docker/php/conf.d/prod/      /usr/local/etc/php/conf.d/
+
+COPY --chown=www-data:www-data . /app
+USER www-data
+RUN composer install --no-dev --no-progress --optimize-autoloader
+
+ENV APP_ENV=prod
+CMD ["frankenphp", "run", "--config", "/etc/caddy/classic.Caddyfile"]

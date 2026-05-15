@@ -1,0 +1,46 @@
+imports:
+  - deptrac.baseline.yaml
+
+deptrac:
+  paths:
+    - ./src
+  exclude_files: []
+  layers:
+    - name: Domain
+      collectors:
+        - { type: classLike, value: '.*\\Domain\\.*' }
+    - name: Application
+      collectors:
+        - { type: classLike, value: '.*\\Application\\.*' }
+    - name: Infrastructure
+      collectors:
+        - { type: classLike, value: '.*\\Infrastructure\\.*' }
+    - name: App
+      collectors:
+        - { type: classLike, value: 'App\\App\\.*' }
+    - name: Shared
+      collectors:
+        - { type: classLike, value: 'App\\Shared\\.*' }
+  ruleset:
+    Domain:
+      - Domain
+      - Shared
+    Application:
+      - Domain
+      - Application
+      - Shared
+    Infrastructure:
+      - Domain
+      - Application
+      - Infrastructure
+      - Shared
+    App:
+      - Domain
+      - Application
+      - Infrastructure
+      - Shared
+    Shared:
+      - Application
+      - Domain
+      - Infrastructure
+      - Shared
