@@ -9,8 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
+// MIGRATED: route disabled, see App\App\UI\API\Controller\Technology\DeleteTechnology\DeleteTechnologyController
 #[OA\Tag(name: 'Technologies')]
-#[Route('/technologies/{id}', name: 'technologies_delete', methods: ['DELETE'])]
+// #[Route('/technologies/{id}', name: 'technologies_delete', methods: ['DELETE'])]
 final class DeleteTechnologyController extends AbstractController
 {
     public function __construct(

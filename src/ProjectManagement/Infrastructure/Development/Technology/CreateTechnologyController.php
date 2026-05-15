@@ -10,8 +10,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+// MIGRATED: route disabled, see App\App\UI\API\Controller\Technology\CreateTechnology\CreateTechnologyController
 #[OA\Tag(name: 'Technologies')]
-#[Route('/technologies', name: 'technologies_create', methods: ['POST'])]
+// #[Route('/technologies', name: 'technologies_create', methods: ['POST'])]
 final class CreateTechnologyController extends AbstractController
 {
     public function __construct(
