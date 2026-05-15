@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Links')]
-#[Route('/links/{id}', name: 'link_delete', methods: ['DELETE'])]
+// #[Route('/links/{id}', name: 'link_delete', methods: ['DELETE'])] — superseded by DeleteLinkController in App\App\UI\API\Controller\Link
 final class DeleteLinkController extends AbstractController
 {
     public function __construct(

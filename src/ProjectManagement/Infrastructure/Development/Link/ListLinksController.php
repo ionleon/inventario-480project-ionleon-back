@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Links')]
-#[Route('/links', name: 'link_index', methods: ['GET'])]
+// #[Route('/links', name: 'link_index', methods: ['GET'])] — superseded by ListLinksByProjectController in App\App\UI\API\Controller\Link
 final class ListLinksController extends AbstractController
 {
     public function __construct(

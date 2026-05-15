@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Links')]
-#[Route('/links/{id}', name: 'link_show', methods: ['GET'])]
+// #[Route('/links/{id}', name: 'link_show', methods: ['GET'])] — superseded by DDD Link slice controllers
 final class GetLinkController extends AbstractController
 {
     public function __construct(

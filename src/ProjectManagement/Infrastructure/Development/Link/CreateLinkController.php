@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Links')]
-#[Route('/links', name: 'link_create', methods: ['POST'])]
+// #[Route('/links', name: 'link_create', methods: ['POST'])] — superseded by CreateLinkController in App\App\UI\API\Controller\Link
 final class CreateLinkController extends AbstractController
 {
     public function __construct(
