@@ -186,3 +186,18 @@ services:
 
     App\Core\Domain\Service\Link\DeleteLink\DeleteLinkServiceInterface:
         class: App\Core\Domain\Service\Link\DeleteLink\DeleteLinkService
+
+    App\Core\Domain\Model\Repository\ProjectUserRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmProjectUserRepository
+
+    App\Core\Domain\Service\ProjectUser\AssignUserToProject\AssignUserToProjectServiceInterface:
+        class: App\Core\Domain\Service\ProjectUser\AssignUserToProject\AssignUserToProjectService
+
+    App\Core\Domain\Service\ProjectUser\UpdateProjectUser\UpdateProjectUserServiceInterface:
+        class: App\Core\Domain\Service\ProjectUser\UpdateProjectUser\UpdateProjectUserService
+
+    App\Core\Domain\Service\ProjectUser\ToggleProjectUserActivation\ToggleProjectUserActivationServiceInterface:
+        class: App\Core\Domain\Service\ProjectUser\ToggleProjectUserActivation\ToggleProjectUserActivationService
+
+    App\Core\Domain\Service\ProjectUser\SyncProjectUsers\SyncProjectUsersServiceInterface:
+        class: App\Core\Domain\Service\ProjectUser\SyncProjectUsers\SyncProjectUsersService
