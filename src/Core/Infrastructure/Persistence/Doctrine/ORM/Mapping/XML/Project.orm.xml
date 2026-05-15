@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Core\Domain\Model\Aggregate\Project" table="project">
+
+        <id name="id" type="project_id" column="id">
+            <generator strategy="NONE"/>
+        </id>
+
+        <field name="name" type="project_name" column="name" length="150" nullable="false"/>
+        <field name="description" type="project_description" column="description" nullable="true"/>
+        <field name="clientId" type="client_id" column="client_id" length="36" nullable="false"/>
+        <field name="managerId" type="user_id" column="manager_id" length="36" nullable="true"/>
+        <field name="startDate" type="project_start_date" column="start_date" nullable="true"/>
+        <field name="endDate" type="project_end_date" column="end_date" nullable="true"/>
+        <field name="isActive" type="boolean" column="is_active" nullable="false"/>
+
+        <!-- Development embedded state (new columns added by migration) -->
+        <field name="developmentStatus" type="string" column="development_status" nullable="true" enum-type="App\Core\Domain\Model\VO\Project\DevelopmentStatus"/>
+        <field name="developmentNotes" type="development_notes" column="development_notes" nullable="true"/>
+        <field name="developmentProgress" type="development_progress" column="development_progress" nullable="true"/>
+
+        <!-- Many-to-many with Technology via project_technology join table -->
+        <many-to-many field="technologies" target-entity="App\Core\Domain\Model\Aggregate\Technology" fetch="EAGER">
+            <join-table name="project_technology">
+                <join-columns>
+                    <join-column name="project_id" referenced-column-name="id" on-delete="CASCADE"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="technology_id" referenced-column-name="id" on-delete="CASCADE"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+    </entity>
+
+</doctrine-mapping>

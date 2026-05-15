@@ -19,6 +19,13 @@ doctrine:
             contact_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ContactNameType
             contact_email: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ContactEmailType
             phone_number: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\PhoneType
+            project_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectIdType
+            project_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectNameType
+            project_description: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectDescriptionType
+            project_start_date: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectStartDateType
+            project_end_date: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectEndDateType
+            development_notes: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\DevelopmentNotesType
+            development_progress: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\DevelopmentProgressType
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
