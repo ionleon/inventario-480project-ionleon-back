@@ -13,6 +13,8 @@ doctrine:
             technology_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\TechnologyNameType
             project_role_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectRoleIdType
             project_role_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectRoleNameType
+            client_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ClientIdType
+            client_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ClientNameType
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)

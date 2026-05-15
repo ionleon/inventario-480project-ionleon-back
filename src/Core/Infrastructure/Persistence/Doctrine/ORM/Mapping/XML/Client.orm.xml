@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Core\Domain\Model\Aggregate\Client" table="client">
+
+        <id name="id" type="client_id" column="id">
+            <generator strategy="NONE"/>
+        </id>
+
+        <field name="name" type="client_name" column="name" length="120"/>
+        <field name="sectorId" type="sector_id" column="sector_id" length="36"/>
+        <field name="isActive" type="boolean" column="is_active"/>
+
+    </entity>
+
+</doctrine-mapping>
