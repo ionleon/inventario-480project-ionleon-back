@@ -12,7 +12,7 @@
 
         <field name="projectId" type="project_id" column="project_id" length="36" nullable="false"/>
         <field name="url" type="link_url" column="url" nullable="false"/>
-        <field name="label" type="string" column="label" length="100" nullable="true"/>
+        <field name="label" type="link_label" column="label" length="100" nullable="true"/>
         <field name="createdAt" type="datetime_immutable" column="created_at" nullable="false"/>
 
     </entity>
