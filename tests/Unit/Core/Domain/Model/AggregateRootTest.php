@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Core\Domain\Model;
 
-use App\Core\Domain\Model\AggregateRoot;
+use App\Core\Domain\AggregateRoot;
 use PHPUnit\Framework\TestCase;
 
 final class AggregateRootTest extends TestCase

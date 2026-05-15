@@ -11,7 +11,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Client Management')]
-#[Route('/sectors', name: 'app_sector_index', methods: ['GET'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Sector/
+// #[Route('/sectors', name: 'app_sector_index', methods: ['GET'])]
 #[IsGranted('ROLE_ADMIN')]
 final class ListSectorsController extends AbstractController
 {

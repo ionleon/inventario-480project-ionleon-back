@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Model\Aggregate;
 
-use App\Core\Domain\Model\AggregateRoot;
+use App\Core\Domain\AggregateRoot;
 use App\Core\Domain\Model\Event\Sector\SectorWasCreated;
 use App\Core\Domain\Model\Event\Sector\SectorWasUpdated;
 use App\Core\Domain\Model\VO\Sector\SectorId;

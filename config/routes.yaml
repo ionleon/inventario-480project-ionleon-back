@@ -12,6 +12,11 @@
 #    type: attribute
 #    prefix: /480project
 
+app_ui_api_controllers:
+    resource: ../src/App/UI/API/Controller/
+    type: attribute
+    prefix: /480project
+
 auth_controllers:
     resource: ../src/Auth/Infrastructure/Controller/
     type: attribute

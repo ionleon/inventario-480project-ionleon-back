@@ -20,7 +20,7 @@ final class UpdateSectorController
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
     ) {}
 
-    #[Route(path: '/sectors/{id}', methods: ['PUT'])]
+    #[Route(path: '/sectors/{id}', methods: ['PATCH'])]
     public function __invoke(string $id, #[MapRequestPayload] UpdateSectorRequest $request): Response
     {
         $this->commandBus->dispatch(new UpdateSectorCommand(

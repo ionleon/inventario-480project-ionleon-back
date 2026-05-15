@@ -12,7 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Client Management')]
-#[Route('/sectors', name: 'app_sector_create', methods: ['POST'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Sector/
+// #[Route('/sectors', name: 'app_sector_create', methods: ['POST'])]
 #[IsGranted('ROLE_ADMIN')]
 final class CreateSectorController extends AbstractController
 {

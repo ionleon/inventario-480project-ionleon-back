@@ -12,7 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Client Management')]
-#[Route('/sectors/{id}', name: 'app_sector_update', methods: ['PATCH'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Sector/
+// #[Route('/sectors/{id}', name: 'app_sector_update', methods: ['PATCH'])]
 #[IsGranted('ROLE_ADMIN')]
 final class UpdateSectorController extends AbstractController
 {

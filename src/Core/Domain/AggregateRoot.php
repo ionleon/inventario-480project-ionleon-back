@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model;
+namespace App\Core\Domain;
 
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\MappedSuperclass]
 abstract class AggregateRoot
 {
     /** @var list<object> */
