@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Project Assignments')]
-#[Route('/projects/{id}/users/{userId}', name: 'project_users_remove_user', methods: ['DELETE'])]
+// #[Route('/projects/{id}/users/{userId}', name: 'project_users_remove_user', methods: ['DELETE'])]
 final class RemoveUserFromProjectController extends AbstractController
 {
     public function __construct(

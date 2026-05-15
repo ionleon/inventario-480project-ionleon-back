@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Project Assignments')]
-#[Route('/projects/{id}/users', name: 'project_users_index', methods: ['GET'])]
+// #[Route('/projects/{id}/users', name: 'project_users_index', methods: ['GET'])]
 final class ListProjectUsersController extends AbstractController
 {
     public function __construct(

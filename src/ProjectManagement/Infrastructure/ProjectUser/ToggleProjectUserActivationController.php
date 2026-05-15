@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Project Assignments')]
-#[Route('/projects/{id}/users/{userId}', name: 'project_users_deactivate_user', methods: ['PATCH'])]
+// #[Route('/projects/{id}/users/{userId}', name: 'project_users_deactivate_user', methods: ['PATCH'])]
 final class ToggleProjectUserActivationController extends AbstractController
 {
     public function __construct(

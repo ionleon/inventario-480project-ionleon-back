@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Project Assignments')]
-#[Route('/projects/{id}/users/{userId}', name: 'project_users_update_single', methods: ['PUT'])]
+// #[Route('/projects/{id}/users/{userId}', name: 'project_users_update_single', methods: ['PUT'])]
 final class UpdateProjectUserController extends AbstractController
 {
     public function __construct(
