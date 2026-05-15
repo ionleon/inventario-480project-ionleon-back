@@ -105,3 +105,12 @@ services:
 
     App\Core\Domain\Service\User\ToggleUserActivation\ToggleUserActivationServiceInterface:
         class: App\Core\Domain\Service\User\ToggleUserActivation\ToggleUserActivationService
+
+    App\Core\Domain\Model\Repository\TechnologyRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmTechnologyRepository
+
+    App\Core\Domain\Service\Technology\CreateTechnology\CreateTechnologyServiceInterface:
+        class: App\Core\Domain\Service\Technology\CreateTechnology\CreateTechnologyService
+
+    App\Core\Domain\Service\Technology\DeleteTechnology\DeleteTechnologyServiceInterface:
+        class: App\Core\Domain\Service\Technology\DeleteTechnology\DeleteTechnologyService
