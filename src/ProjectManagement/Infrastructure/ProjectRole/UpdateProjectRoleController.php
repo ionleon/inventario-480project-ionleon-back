@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Project Roles')]
-#[Route('/project-roles/{id}', name: 'project_role_update', methods: ['PUT'])]
+// MIGRATED — route disabled pending new UpdateProjectRole controller in Core slice
+// #[Route('/project-roles/{id}', name: 'project_role_update', methods: ['PUT'])]
 final class UpdateProjectRoleController extends AbstractController
 {
     public function __construct(

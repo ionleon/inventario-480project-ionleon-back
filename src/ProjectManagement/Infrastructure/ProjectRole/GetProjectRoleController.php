@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Project Roles')]
-#[Route('/project-roles/{id}', name: 'project_role_show', methods: ['GET'])]
+// MIGRATED — route disabled pending new GetProjectRole controller in Core slice
+// #[Route('/project-roles/{id}', name: 'project_role_show', methods: ['GET'])]
 final class GetProjectRoleController extends AbstractController
 {
     public function __construct(

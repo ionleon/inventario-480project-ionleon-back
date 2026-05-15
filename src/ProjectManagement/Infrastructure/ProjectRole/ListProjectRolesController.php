@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Project Roles')]
-#[Route('/project-roles', name: 'project_role_index', methods: ['GET'])]
+// MIGRATED to App\App\UI\API\Controller\ProjectRole\ListProjectRoles\ListProjectRolesController
+// #[Route('/project-roles', name: 'project_role_index', methods: ['GET'])]
 final class ListProjectRolesController extends AbstractController
 {
     public function __construct(

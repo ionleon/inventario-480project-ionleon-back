@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Project Roles')]
-#[Route('/project-roles', name: 'project_role_create', methods: ['POST'])]
+// MIGRATED to App\App\UI\API\Controller\ProjectRole\CreateProjectRole\CreateProjectRoleController
+// #[Route('/project-roles', name: 'project_role_create', methods: ['POST'])]
 final class CreateProjectRoleController extends AbstractController
 {
     public function __construct(

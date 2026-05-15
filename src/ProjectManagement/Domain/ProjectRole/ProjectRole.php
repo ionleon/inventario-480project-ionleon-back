@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: DoctrineProjectRoleRepository::class)]
+// #[ORM\Entity(repositoryClass: DoctrineProjectRoleRepository::class)] — MIGRATED to XML mapping in Core slice
 #[UniqueEntity(fields: ['id'], message: 'This ID already in use.')]
 #[UniqueEntity(fields: ['name'], message: 'This name already exists.')]
 class ProjectRole
