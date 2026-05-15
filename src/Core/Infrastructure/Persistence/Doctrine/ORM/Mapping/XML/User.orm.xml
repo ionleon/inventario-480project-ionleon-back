@@ -14,7 +14,7 @@
         <field name="name" type="user_name" column="name" length="100"/>
         <field name="surname" type="user_surname" column="surname" length="100"/>
         <field name="password" type="user_password" column="password" length="255"/>
-        <field name="role" type="string" column="role" length="255"/>
+        <field name="role" type="string" column="role" length="255" enum-type="App\Shared\Domain\Enum\SystemRole"/>
         <field name="isActive" type="boolean" column="is_active"/>
         <field name="firstTime" type="boolean" column="first_time"/>
 
