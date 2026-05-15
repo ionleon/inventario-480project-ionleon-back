@@ -40,43 +40,28 @@ final readonly class OrmProjectUserRepository implements ProjectUserRepository
     public function findByProject(ProjectId $projectId): array
     {
         /** @var list<ProjectUser> */
-        return $this->em->createQueryBuilder()
-            ->select('pu')
-            ->from(ProjectUser::class, 'pu')
-            ->where('CAST(pu.projectId AS string) = :projectId')
-            ->setParameter('projectId', (string) $projectId)
-            ->orderBy('pu.isActive', 'DESC')
-            ->getQuery()
-            ->getResult();
+        return $this->em->getRepository(ProjectUser::class)->findBy(
+            ['projectId' => $projectId],
+            ['isActive' => 'DESC'],
+        );
     }
 
     /** @return list<ProjectUser> */
     public function findActiveByUser(UserId $userId): array
     {
         /** @var list<ProjectUser> */
-        return $this->em->createQueryBuilder()
-            ->select('pu')
-            ->from(ProjectUser::class, 'pu')
-            ->where('CAST(pu.userId AS string) = :userId')
-            ->andWhere('pu.isActive = :isActive')
-            ->setParameter('userId', (string) $userId)
-            ->setParameter('isActive', true)
-            ->getQuery()
-            ->getResult();
+        return $this->em->getRepository(ProjectUser::class)->findBy([
+            'userId' => $userId,
+            'isActive' => true,
+        ]);
     }
 
     public function findOneByProjectAndUser(ProjectId $projectId, UserId $userId): ?ProjectUser
     {
         /** @var ?ProjectUser */
-        return $this->em->createQueryBuilder()
-            ->select('pu')
-            ->from(ProjectUser::class, 'pu')
-            ->where('CAST(pu.projectId AS string) = :projectId')
-            ->andWhere('CAST(pu.userId AS string) = :userId')
-            ->setParameter('projectId', (string) $projectId)
-            ->setParameter('userId', (string) $userId)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $this->em->getRepository(ProjectUser::class)->findOneBy([
+            'projectId' => $projectId,
+            'userId' => $userId,
+        ]);
     }
 }
