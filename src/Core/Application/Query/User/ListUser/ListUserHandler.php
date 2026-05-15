@@ -6,7 +6,7 @@ namespace App\Core\Application\Query\User\ListUser;
 
 use App\App\UI\API\Controller\User\ListUser\ListUserResponse;
 use App\Core\Application\Bus\QueryHandler;
-use App\Core\Application\DTO\UserFilters;
+use App\Core\Domain\Model\DTO\UserFilters;
 use App\Core\Domain\Model\Repository\UserRepository;
 
 final readonly class ListUserHandler implements QueryHandler

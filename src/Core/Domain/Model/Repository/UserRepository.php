@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Model\Repository;
 
-use App\Core\Application\DTO\UserFilters;
+use App\Core\Domain\Model\DTO\UserFilters;
 use App\Core\Domain\Exception\User\UserNotFoundException;
 use App\Core\Domain\Model\Aggregate\User;
 use App\Core\Domain\Model\VO\Common\Email;

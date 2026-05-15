@@ -22,3 +22,11 @@ deptrac:
       - App\TimeManagement\Infrastructure\DoctrineTimeEntryRepository
     App\UserManagement\Domain\AppUser:
       - App\UserManagement\Infrastructure\Persistence\DoctrineUserRepository
+    App\Core\Application\Query\Sector\GetSector\GetSectorHandler:
+      - App\App\UI\API\Controller\Sector\GetSector\GetSectorResponse
+    App\Core\Application\Query\Sector\ListSectors\ListSectorsHandler:
+      - App\App\UI\API\Controller\Sector\ListSectors\ListSectorsResponse
+    App\Core\Application\Query\User\GetUser\GetUserHandler:
+      - App\App\UI\API\Controller\User\GetUser\GetUserResponse
+    App\Core\Application\Query\User\ListUser\ListUserHandler:
+      - App\App\UI\API\Controller\User\ListUser\ListUserResponse
