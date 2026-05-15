@@ -2,7 +2,7 @@
 
 namespace App\Auth\Infrastructure\Security;
 
-use App\UserManagement\Domain\AppUser;
+use App\Core\Domain\Model\Aggregate\User as AppUser;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

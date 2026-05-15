@@ -11,7 +11,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'User Management')]
-#[Route('/users/{id}', name: 'app_user_delete', methods: ['DELETE'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/User/
+// #[Route('/users/{id}', name: 'app_user_delete', methods: ['DELETE'])]
 #[IsGranted('ROLE_ADMIN')]
 final class DeleteUserController extends AppController
 {

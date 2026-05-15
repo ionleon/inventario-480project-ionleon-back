@@ -15,7 +15,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'User Management')]
-#[Route('/users', name: 'app_user_create', methods: ['POST'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/User/
+// #[Route('/users', name: 'app_user_create', methods: ['POST'])]
 #[IsGranted('ROLE_ADMIN')]
 final class CreateUserController extends AppController
 {

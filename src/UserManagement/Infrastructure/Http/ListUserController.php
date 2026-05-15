@@ -13,7 +13,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'User Management')]
-#[Route('/users', name: 'app_user_index', methods: ['GET'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/User/
+// #[Route('/users', name: 'app_user_index', methods: ['GET'])]
 #[IsGranted('ROLE_ADMIN')]
 final class ListUserController extends AppController
 {

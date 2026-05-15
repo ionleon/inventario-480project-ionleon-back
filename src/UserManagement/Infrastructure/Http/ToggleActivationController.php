@@ -11,7 +11,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'User Management')]
-#[Route('/users/{id}', name: 'app_user_deactivate', methods: ['PATCH'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/User/
+// #[Route('/users/{id}', name: 'app_user_deactivate', methods: ['PATCH'])]
 #[IsGranted('ROLE_ADMIN')]
 final class ToggleActivationController extends AppController
 {

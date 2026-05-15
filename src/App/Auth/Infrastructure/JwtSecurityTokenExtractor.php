@@ -7,7 +7,7 @@ namespace App\App\Auth\Infrastructure;
 use App\App\Auth\Domain\Service\SecurityTokenExtractorInterface;
 use App\Core\Domain\DTO\Security\SecurityToken;
 use App\Shared\Domain\Enum\SystemRole;
-use App\UserManagement\Domain\AppUser;
+use App\Core\Domain\Model\Aggregate\User as AppUser;
 use Symfony\Bundle\SecurityBundle\Security;
 
 final class JwtSecurityTokenExtractor implements SecurityTokenExtractorInterface
@@ -23,8 +23,8 @@ final class JwtSecurityTokenExtractor implements SecurityTokenExtractorInterface
         }
 
         return new SecurityToken(
-            authUserId: (string) $user->getId(),
-            role: $user->getRole(),
+            authUserId: (string) $user->id(),
+            role: $user->role(),
         );
     }
 }

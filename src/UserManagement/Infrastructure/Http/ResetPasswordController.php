@@ -14,7 +14,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'User Management')]
-#[Route('/users/{id}/admin-password', name: 'user_admin_password_reset', methods: ['PUT'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/User/
+// #[Route('/users/{id}/admin-password', name: 'user_admin_password_reset', methods: ['PUT'])]
 #[IsGranted('ROLE_ADMIN')]
 final class ResetPasswordController extends AppController
 {

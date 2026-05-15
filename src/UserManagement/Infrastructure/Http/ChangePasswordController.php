@@ -13,7 +13,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'User Management')]
-#[Route('/users/{id}/password-change', name: 'user_password_change', methods: ['PUT'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/User/
+// #[Route('/users/{id}/password-change', name: 'user_password_change', methods: ['PUT'])]
 final class ChangePasswordController extends AppController
 {
     public function __construct(

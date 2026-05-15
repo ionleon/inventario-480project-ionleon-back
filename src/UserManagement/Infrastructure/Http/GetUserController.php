@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'User Management')]
-#[Route('/users/{id}', name: 'app_user_show', methods: ['GET'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/User/
+// #[Route('/users/{id}', name: 'app_user_show', methods: ['GET'])]
 final class GetUserController extends AppController
 {
     public function __construct(

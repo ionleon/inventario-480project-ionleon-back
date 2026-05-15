@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Infrastructure\EventListener;
 
-use App\UserManagement\Domain\AppUser;
+use App\Core\Domain\Model\Aggregate\User as AppUser;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Random\RandomException;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -33,9 +33,9 @@ class JWTCreatedListener
 
         $payload['exp'] = $expiration->getTimestamp();
 
-        $payload['id'] = $user->getId();
-        $payload['name'] = $user->getName();
-        $payload['surname'] = $user->getSurname();
+        $payload['id'] = (string) $user->id();
+        $payload['name'] = (string) $user->name();
+        $payload['surname'] = (string) $user->surname();
         $payload['isActive'] = $user->isActive();
 
 
