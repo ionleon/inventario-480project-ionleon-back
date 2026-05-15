@@ -29,6 +29,8 @@ doctrine:
             link_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\LinkIdType
             link_url: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\LinkUrlType
             link_label: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\LinkLabelType
+            project_user_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectUserIdType
+            project_user_allocation: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectUserAllocationType
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
