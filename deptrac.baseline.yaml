@@ -30,3 +30,5 @@ deptrac:
       - App\App\UI\API\Controller\User\GetUser\GetUserResponse
     App\Core\Application\Query\User\ListUser\ListUserHandler:
       - App\App\UI\API\Controller\User\ListUser\ListUserResponse
+    App\Core\Application\Query\Technology\ListTechnologies\ListTechnologiesHandler:
+      - App\App\UI\API\Controller\Technology\ListTechnologies\ListTechnologiesResponse
