@@ -47,13 +47,13 @@ class Project extends AggregateRoot
         private ProjectName $name,
         private ?ProjectDescription $description,
         private ClientId $clientId,
-        private UserId $managerId,
+        private ?UserId $managerId,
         private ?ProjectStartDate $startDate,
         private ?ProjectEndDate $endDate,
         private bool $isActive,
-        private DevelopmentStatus $developmentStatus,
+        private ?DevelopmentStatus $developmentStatus,
         private ?DevelopmentNotes $developmentNotes,
-        private DevelopmentProgress $developmentProgress,
+        private ?DevelopmentProgress $developmentProgress,
     ) {
         $this->technologies = new ArrayCollection();
     }
@@ -66,7 +66,7 @@ class Project extends AggregateRoot
         ProjectName $name,
         ?ProjectDescription $description,
         ClientId $clientId,
-        UserId $managerId,
+        ?UserId $managerId,
         array $technologies,
         ?ProjectStartDate $startDate = null,
         ?ProjectEndDate $endDate = null,
@@ -105,7 +105,7 @@ class Project extends AggregateRoot
         ProjectName $name,
         ?ProjectDescription $description,
         ClientId $clientId,
-        UserId $managerId,
+        ?UserId $managerId,
         array $technologies,
         ?ProjectStartDate $startDate,
         ?ProjectEndDate $endDate,
@@ -132,9 +132,9 @@ class Project extends AggregateRoot
     }
 
     public function updateDevelopment(
-        DevelopmentStatus $status,
+        ?DevelopmentStatus $status,
         ?DevelopmentNotes $notes,
-        DevelopmentProgress $progress,
+        ?DevelopmentProgress $progress,
     ): void {
         $this->developmentStatus = $status;
         $this->developmentNotes = $notes;
@@ -162,7 +162,7 @@ class Project extends AggregateRoot
         return $this->clientId;
     }
 
-    public function managerId(): UserId
+    public function managerId(): ?UserId
     {
         return $this->managerId;
     }
@@ -182,7 +182,7 @@ class Project extends AggregateRoot
         return $this->isActive;
     }
 
-    public function developmentStatus(): DevelopmentStatus
+    public function developmentStatus(): ?DevelopmentStatus
     {
         return $this->developmentStatus;
     }
@@ -192,7 +192,7 @@ class Project extends AggregateRoot
         return $this->developmentNotes;
     }
 
-    public function developmentProgress(): DevelopmentProgress
+    public function developmentProgress(): ?DevelopmentProgress
     {
         return $this->developmentProgress;
     }

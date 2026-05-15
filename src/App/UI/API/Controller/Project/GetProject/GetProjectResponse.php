@@ -21,9 +21,9 @@ final readonly class GetProjectResponse
         public ?string $startDate,
         public ?string $endDate,
         public bool $isActive,
-        public string $developmentStatus,
+        public ?string $developmentStatus,
         public ?string $developmentNotes,
-        public int $developmentProgress,
+        public ?int $developmentProgress,
     ) {}
 
     public static function from(Project $project): self
@@ -38,9 +38,9 @@ final readonly class GetProjectResponse
             startDate: $project->startDate() !== null ? (string) $project->startDate() : null,
             endDate: $project->endDate() !== null ? (string) $project->endDate() : null,
             isActive: $project->isActive(),
-            developmentStatus: $project->developmentStatus()->value,
+            developmentStatus: $project->developmentStatus()?->value,
             developmentNotes: $project->developmentNotes() !== null ? (string) $project->developmentNotes() : null,
-            developmentProgress: $project->developmentProgress()->value(),
+            developmentProgress: $project->developmentProgress()?->value(),
         );
     }
 }
