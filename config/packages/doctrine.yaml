@@ -15,6 +15,10 @@ doctrine:
             project_role_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ProjectRoleNameType
             client_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ClientIdType
             client_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ClientNameType
+            contact_id: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ContactIdType
+            contact_name: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ContactNameType
+            contact_email: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\ContactEmailType
+            phone_number: App\Core\Infrastructure\Persistence\Doctrine\DBAL\Types\PhoneType
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)

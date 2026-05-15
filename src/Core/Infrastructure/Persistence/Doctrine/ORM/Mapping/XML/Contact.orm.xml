@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Core\Domain\Model\Aggregate\Contact" table="contact">
+
+        <id name="id" type="contact_id" column="id">
+            <generator strategy="NONE"/>
+        </id>
+
+        <field name="clientId" type="client_id" column="client_id" length="36"/>
+        <field name="fullName" type="contact_name" column="full_name" length="255"/>
+        <field name="email" type="contact_email" column="email" length="255"/>
+        <field name="phoneNumber" type="phone_number" column="phone_number" length="30"/>
+        <field name="note" type="text" column="note" nullable="true"/>
+        <field name="isMain" type="boolean" column="is_main"/>
+
+    </entity>
+
+</doctrine-mapping>
