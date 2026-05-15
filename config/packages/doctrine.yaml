@@ -42,12 +42,8 @@ doctrine:
                 dir: '%kernel.project_dir%/src'
                 prefix: 'App'
                 alias: App
-            Auth:
-                type: attribute
-                is_bundle: false
-                dir: '%kernel.project_dir%/src/Auth/Domain/RefreshToken'
-                prefix: 'App\Auth\Domain\RefreshToken'
-                alias: Auth
+            # Auth RefreshToken is now mapped via the Core XML mapping.
+            # Legacy Auth mapping removed to avoid duplicate table registration.
 
         controller_resolver:
             auto_mapping: false

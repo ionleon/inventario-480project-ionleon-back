@@ -37,7 +37,7 @@ services:
     App\Auth\:
         resource: '../src/Auth/'
         exclude:
-            - '..src/Auth/Domain/RefreshToken/'
+            - '../src/Auth/Domain/RefreshToken/'
 
 
     App\Auth\Domain\RefreshToken\RefreshTokenRepositoryInterface: '@App\Auth\Infrastructure\Persistence\DoctrineRefreshTokenRepository'
@@ -123,3 +123,12 @@ services:
 
     App\Core\Domain\Service\ProjectRole\DeleteProjectRole\DeleteProjectRoleServiceInterface:
         class: App\Core\Domain\Service\ProjectRole\DeleteProjectRole\DeleteProjectRoleService
+
+    App\Core\Domain\Model\Repository\RefreshTokenRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmRefreshTokenRepository
+
+    App\Core\Domain\Service\RefreshToken\RevokeRefreshToken\RevokeRefreshTokenServiceInterface:
+        class: App\Core\Domain\Service\RefreshToken\RevokeRefreshToken\RevokeRefreshTokenService
+
+    App\Core\Domain\Service\RefreshToken\RevokeAllRefreshTokensForUser\RevokeAllRefreshTokensForUserServiceInterface:
+        class: App\Core\Domain\Service\RefreshToken\RevokeAllRefreshTokensForUser\RevokeAllRefreshTokensForUserService

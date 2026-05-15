@@ -2,12 +2,15 @@
 
 namespace App\Auth\Infrastructure\Persistence;
 
-use App\Auth\Domain\RefreshToken\RefreshToken;
 use App\Auth\Domain\RefreshToken\RefreshTokenRepositoryInterface;
+use App\Core\Domain\Model\Aggregate\RefreshToken;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * MIGRATED: This repository now delegates to the Core aggregate.
+ * The entity class is App\Core\Domain\Model\Aggregate\RefreshToken.
+ *
  * @extends ServiceEntityRepository<RefreshToken>
  */
 class DoctrineRefreshTokenRepository extends ServiceEntityRepository implements RefreshTokenRepositoryInterface

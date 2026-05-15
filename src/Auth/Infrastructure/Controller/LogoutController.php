@@ -12,8 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Auth/Logout/LogoutController.php
 #[OA\Tag(name: 'Authentication')]
-#[Route('/logout', name: 'app_logout', methods: ['POST'])]
+// #[Route('/logout', name: 'app_logout', methods: ['POST'])]
 final class LogoutController extends AbstractController
 {
     public function __construct(
