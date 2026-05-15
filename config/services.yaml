@@ -114,3 +114,12 @@ services:
 
     App\Core\Domain\Service\Technology\DeleteTechnology\DeleteTechnologyServiceInterface:
         class: App\Core\Domain\Service\Technology\DeleteTechnology\DeleteTechnologyService
+
+    App\Core\Domain\Model\Repository\ProjectRoleRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmProjectRoleRepository
+
+    App\Core\Domain\Service\ProjectRole\CreateProjectRole\CreateProjectRoleServiceInterface:
+        class: App\Core\Domain\Service\ProjectRole\CreateProjectRole\CreateProjectRoleService
+
+    App\Core\Domain\Service\ProjectRole\DeleteProjectRole\DeleteProjectRoleServiceInterface:
+        class: App\Core\Domain\Service\ProjectRole\DeleteProjectRole\DeleteProjectRoleService

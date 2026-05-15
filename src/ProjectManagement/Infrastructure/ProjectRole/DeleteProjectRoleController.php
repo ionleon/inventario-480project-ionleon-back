@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Project Roles')]
-#[Route('/project-roles/{id}', name: 'project_role_delete', methods: ['DELETE'])]
+// MIGRATED to App\App\UI\API\Controller\ProjectRole\DeleteProjectRole\DeleteProjectRoleController
+// #[Route('/project-roles/{id}', name: 'project_role_delete', methods: ['DELETE'])]
 final class DeleteProjectRoleController extends AbstractController
 {
     public function __construct(
