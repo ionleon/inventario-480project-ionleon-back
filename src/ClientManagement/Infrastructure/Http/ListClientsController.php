@@ -12,7 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Client Management')]
-#[Route('/clients', name: 'app_client_index', methods: ['GET'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Client/
+// #[Route('/clients', name: 'app_client_index', methods: ['GET'])]
 #[IsGranted('ROLE_ADMIN')]
 final class ListClientsController extends AbstractController
 {

@@ -12,7 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Client Management')]
-#[Route('/clients', name: 'app_client_create', methods: ['POST'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Client/
+// #[Route('/clients', name: 'app_client_create', methods: ['POST'])]
 #[IsGranted('ROLE_ADMIN')]
 final class CreateClientController extends AbstractController
 {

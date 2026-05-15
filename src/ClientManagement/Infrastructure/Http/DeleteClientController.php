@@ -11,7 +11,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Client Management')]
-#[Route('/clients/{id}', name: 'app_client_delete', methods: ['DELETE'])]
+// MIGRATED: route disabled, see src/App/UI/API/Controller/Client/
+// #[Route('/clients/{id}', name: 'app_client_delete', methods: ['DELETE'])]
 #[IsGranted('ROLE_ADMIN')]
 final class DeleteClientController extends AbstractController
 {

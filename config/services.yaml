@@ -132,3 +132,18 @@ services:
 
     App\Core\Domain\Service\RefreshToken\RevokeAllRefreshTokensForUser\RevokeAllRefreshTokensForUserServiceInterface:
         class: App\Core\Domain\Service\RefreshToken\RevokeAllRefreshTokensForUser\RevokeAllRefreshTokensForUserService
+
+    App\Core\Domain\Model\Repository\ClientRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmClientRepository
+
+    App\Core\Domain\Service\Client\CreateClient\CreateClientServiceInterface:
+        class: App\Core\Domain\Service\Client\CreateClient\CreateClientService
+
+    App\Core\Domain\Service\Client\UpdateClient\UpdateClientServiceInterface:
+        class: App\Core\Domain\Service\Client\UpdateClient\UpdateClientService
+
+    App\Core\Domain\Service\Client\DeleteClient\DeleteClientServiceInterface:
+        class: App\Core\Domain\Service\Client\DeleteClient\DeleteClientService
+
+    App\Core\Domain\Service\Client\ToggleClientActivation\ToggleClientActivationServiceInterface:
+        class: App\Core\Domain\Service\Client\ToggleClientActivation\ToggleClientActivationService

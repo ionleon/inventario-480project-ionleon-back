@@ -34,3 +34,7 @@ deptrac:
       - App\App\UI\API\Controller\Technology\ListTechnologies\ListTechnologiesResponse
     App\Core\Application\Query\ProjectRole\ListProjectRoles\ListProjectRolesHandler:
       - App\App\UI\API\Controller\ProjectRole\ListProjectRoles\ListProjectRolesResponse
+    App\Core\Application\Query\Client\GetClient\GetClientHandler:
+      - App\App\UI\API\Controller\Client\GetClient\GetClientResponse
+    App\Core\Application\Query\Client\ListClients\ListClientsHandler:
+      - App\App\UI\API\Controller\Client\ListClients\ListClientsResponse
