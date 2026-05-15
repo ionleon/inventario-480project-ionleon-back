@@ -38,3 +38,9 @@ deptrac:
       - App\App\UI\API\Controller\Client\GetClient\GetClientResponse
     App\Core\Application\Query\Client\ListClients\ListClientsHandler:
       - App\App\UI\API\Controller\Client\ListClients\ListClientsResponse
+    App\Core\Application\Query\Contact\ListContactsByClient\ListContactsByClientHandler:
+      - App\App\UI\API\Controller\Contact\ListContactsByClient\ListContactsByClientResponse
+    App\Core\Application\Query\Project\GetProject\GetProjectHandler:
+      - App\App\UI\API\Controller\Project\GetProject\GetProjectResponse
+    App\Core\Application\Query\Project\ListProjects\ListProjectsHandler:
+      - App\App\UI\API\Controller\Project\ListProjects\ListProjectsResponse
