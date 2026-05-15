@@ -9,8 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
+// MIGRATED: route disabled, see App\App\UI\API\Controller\Technology\ListTechnologies\ListTechnologiesController
 #[OA\Tag(name: 'Technologies')]
-#[Route('/technologies', name: 'technologies_index', methods: ['GET'])]
+// #[Route('/technologies', name: 'technologies_index', methods: ['GET'])]
 final class ListTechnologiesController extends AbstractController
 {
     public function __construct(

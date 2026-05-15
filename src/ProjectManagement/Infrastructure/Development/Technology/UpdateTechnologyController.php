@@ -10,8 +10,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+// MIGRATED: route disabled, see App\App\UI\API\Controller\Technology\
 #[OA\Tag(name: 'Technologies')]
-#[Route('/technologies/{id}', name: 'technologies_update', methods: ['PATCH'])]
+// #[Route('/technologies/{id}', name: 'technologies_update', methods: ['PATCH'])]
 final class UpdateTechnologyController extends AbstractController
 {
     public function __construct(
