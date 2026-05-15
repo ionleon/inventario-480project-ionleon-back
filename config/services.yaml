@@ -84,3 +84,24 @@ services:
 
     App\Core\Domain\Service\Sector\DeleteSector\DeleteSectorServiceInterface:
         class: App\Core\Domain\Service\Sector\DeleteSector\DeleteSectorService
+
+    App\Core\Domain\Model\Repository\UserRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmUserRepository
+
+    App\Core\Domain\Service\User\CreateUser\CreateUserServiceInterface:
+        class: App\Core\Domain\Service\User\CreateUser\CreateUserService
+
+    App\Core\Domain\Service\User\UpdateUser\UpdateUserServiceInterface:
+        class: App\Core\Domain\Service\User\UpdateUser\UpdateUserService
+
+    App\Core\Domain\Service\User\DeleteUser\DeleteUserServiceInterface:
+        class: App\Core\Domain\Service\User\DeleteUser\DeleteUserService
+
+    App\Core\Domain\Service\User\ChangePassword\ChangePasswordServiceInterface:
+        class: App\Core\Domain\Service\User\ChangePassword\ChangePasswordService
+
+    App\Core\Domain\Service\User\ResetPassword\ResetPasswordServiceInterface:
+        class: App\Core\Domain\Service\User\ResetPassword\ResetPasswordService
+
+    App\Core\Domain\Service\User\ToggleUserActivation\ToggleUserActivationServiceInterface:
+        class: App\Core\Domain\Service\User\ToggleUserActivation\ToggleUserActivationService
