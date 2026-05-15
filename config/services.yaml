@@ -147,3 +147,18 @@ services:
 
     App\Core\Domain\Service\Client\ToggleClientActivation\ToggleClientActivationServiceInterface:
         class: App\Core\Domain\Service\Client\ToggleClientActivation\ToggleClientActivationService
+
+    App\Core\Domain\Model\Repository\ContactRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmContactRepository
+
+    App\Core\Domain\Service\Contact\CreateContact\CreateContactServiceInterface:
+        class: App\Core\Domain\Service\Contact\CreateContact\CreateContactService
+
+    App\Core\Domain\Service\Contact\UpdateContact\UpdateContactServiceInterface:
+        class: App\Core\Domain\Service\Contact\UpdateContact\UpdateContactService
+
+    App\Core\Domain\Service\Contact\DeleteContact\DeleteContactServiceInterface:
+        class: App\Core\Domain\Service\Contact\DeleteContact\DeleteContactService
+
+    App\Core\Domain\Service\Contact\MarkContactAsMain\MarkContactAsMainServiceInterface:
+        class: App\Core\Domain\Service\Contact\MarkContactAsMain\MarkContactAsMainService
