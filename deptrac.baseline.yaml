@@ -44,3 +44,5 @@ deptrac:
       - App\App\UI\API\Controller\Project\GetProject\GetProjectResponse
     App\Core\Application\Query\Project\ListProjects\ListProjectsHandler:
       - App\App\UI\API\Controller\Project\ListProjects\ListProjectsResponse
+    App\Core\Application\Query\Link\ListLinksByProject\ListLinksByProjectHandler:
+      - App\App\UI\API\Controller\Link\ListLinksByProject\LinkResponse
