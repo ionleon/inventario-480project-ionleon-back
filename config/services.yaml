@@ -162,3 +162,18 @@ services:
 
     App\Core\Domain\Service\Contact\MarkContactAsMain\MarkContactAsMainServiceInterface:
         class: App\Core\Domain\Service\Contact\MarkContactAsMain\MarkContactAsMainService
+
+    App\Core\Domain\Model\Repository\ProjectRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmProjectRepository
+
+    App\Core\Domain\Service\Project\CreateProject\CreateProjectServiceInterface:
+        class: App\Core\Domain\Service\Project\CreateProject\CreateProjectService
+
+    App\Core\Domain\Service\Project\UpdateProject\UpdateProjectServiceInterface:
+        class: App\Core\Domain\Service\Project\UpdateProject\UpdateProjectService
+
+    App\Core\Domain\Service\Project\UpdateProjectDevelopment\UpdateProjectDevelopmentServiceInterface:
+        class: App\Core\Domain\Service\Project\UpdateProjectDevelopment\UpdateProjectDevelopmentService
+
+    App\Core\Domain\Service\Project\DeleteProject\DeleteProjectServiceInterface:
+        class: App\Core\Domain\Service\Project\DeleteProject\DeleteProjectService
