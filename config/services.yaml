@@ -177,3 +177,12 @@ services:
 
     App\Core\Domain\Service\Project\DeleteProject\DeleteProjectServiceInterface:
         class: App\Core\Domain\Service\Project\DeleteProject\DeleteProjectService
+
+    App\Core\Domain\Model\Repository\LinkRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmLinkRepository
+
+    App\Core\Domain\Service\Link\CreateLink\CreateLinkServiceInterface:
+        class: App\Core\Domain\Service\Link\CreateLink\CreateLinkService
+
+    App\Core\Domain\Service\Link\DeleteLink\DeleteLinkServiceInterface:
+        class: App\Core\Domain\Service\Link\DeleteLink\DeleteLinkService
