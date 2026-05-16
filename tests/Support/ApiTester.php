@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Support;
+namespace App\Tests;
 
 use App\Core\Domain\Model\Aggregate\User;
 use App\Core\Domain\Model\Repository\UserRepository;
 use App\Shared\Domain\Enum\SystemRole;
+use App\Tests\_generated\ApiTesterActions;
 use Codeception\Actor;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
@@ -15,7 +16,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
  */
 class ApiTester extends Actor
 {
-    use _generated\ApiTesterActions;
+    use ApiTesterActions;
 
     public function haveAdminHttpHeaders(string $language = 'es'): void
     {

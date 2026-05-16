@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Api\Technology;
 
 use App\Shared\Domain\Model\ErrorCode;
-use App\Tests\Support\ApiTester;
+use App\Tests\ApiTester;
 use Codeception\Util\HttpCode;
 
 final class TechnologySmokeCest
