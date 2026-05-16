@@ -7,6 +7,7 @@ namespace App\Core\Domain\Model\Aggregate;
 use App\Core\Domain\AggregateRoot;
 use App\Core\Domain\Model\Event\Link\LinkWasCreated;
 use App\Core\Domain\Model\Event\Link\LinkWasDeleted;
+use App\Core\Domain\Model\Event\Link\LinkWasUpdated;
 use App\Core\Domain\Model\VO\Link\LinkId;
 use App\Core\Domain\Model\VO\Link\LinkLabel;
 use App\Core\Domain\Model\VO\Link\LinkUrl;
@@ -33,6 +34,13 @@ class Link extends AggregateRoot
         $instance->recordEvent(LinkWasCreated::from($instance));
 
         return $instance;
+    }
+
+    public function update(LinkUrl $url, ?LinkLabel $label): void
+    {
+        $this->url = $url;
+        $this->label = $label;
+        $this->recordEvent(LinkWasUpdated::from($this));
     }
 
     public function delete(): void

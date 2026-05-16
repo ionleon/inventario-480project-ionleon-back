@@ -2,19 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\App\UI\API\Controller\Link\CreateLink;
+namespace App\App\UI\API\Controller\Link\UpdateLink;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class CreateLinkRequest
+final readonly class UpdateLinkRequest
 {
     public function __construct(
-        #[Assert\NotBlank, Assert\Uuid]
-        public string $id,
-
-        #[Assert\NotBlank, Assert\Uuid]
-        public string $projectId,
-
         #[Assert\NotBlank, Assert\Url]
         public string $url,
 
