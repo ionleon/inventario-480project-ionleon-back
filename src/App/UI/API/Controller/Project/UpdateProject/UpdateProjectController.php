@@ -20,7 +20,7 @@ final class UpdateProjectController
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
     ) {}
 
-    #[Route(path: '/projects/{id}', methods: ['PATCH'])]
+    #[Route(path: '/projects/{id}', methods: ['PUT'])]
     public function __invoke(string $id, #[MapRequestPayload] UpdateProjectRequest $request): Response
     {
         $this->commandBus->dispatch(new UpdateProjectCommand(

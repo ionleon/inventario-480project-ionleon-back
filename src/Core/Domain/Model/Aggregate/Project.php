@@ -182,6 +182,12 @@ class Project extends AggregateRoot
         return $this->isActive;
     }
 
+    public function toggleActivation(): void
+    {
+        $this->isActive = !$this->isActive;
+        $this->recordEvent(ProjectWasUpdated::from($this->id));
+    }
+
     public function developmentStatus(): ?DevelopmentStatus
     {
         return $this->developmentStatus;
