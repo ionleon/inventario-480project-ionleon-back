@@ -2,19 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\App\UI\API\Controller\TimeEntry\CreateTimeEntry;
+namespace App\App\UI\API\Controller\TimeEntry\CreateTimeEntryForProject;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class CreateTimeEntryRequest
+final readonly class CreateTimeEntryForProjectRequest
 {
     public function __construct(
         #[Assert\Uuid]
         public ?string $id = null,
-
-        #[Assert\NotBlank]
-        #[Assert\Uuid]
-        public string $projectId = '',
 
         #[Assert\NotBlank]
         #[Assert\Uuid]
