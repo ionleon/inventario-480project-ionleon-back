@@ -10,5 +10,8 @@ modules:
             environment: 'test'
         - Doctrine:
             depends: Symfony
-            cleanup: true
+            cleanup: false
         - \App\Tests\Support\Helper\Api
+extensions:
+    enabled:
+        - App\Tests\Support\Extension\DbMigrationExtension
