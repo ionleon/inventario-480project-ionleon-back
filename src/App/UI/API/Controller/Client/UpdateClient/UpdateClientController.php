@@ -20,7 +20,7 @@ final class UpdateClientController
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
     ) {}
 
-    #[Route(path: '/clients/{id}', methods: ['PATCH'])]
+    #[Route(path: '/clients/{id}', methods: ['PUT'])]
     public function __invoke(string $id, #[MapRequestPayload] UpdateClientRequest $request): Response
     {
         $this->commandBus->dispatch(new UpdateClientCommand(
