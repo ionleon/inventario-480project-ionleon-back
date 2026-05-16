@@ -31,31 +31,17 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
-            - '../src/Auth/'
             - '../src/Kernel.php'
 
-    App\Auth\:
-        resource: '../src/Auth/'
-        exclude:
-            - '../src/Auth/Domain/RefreshToken/'
+    App\App\Auth\Domain\Service\TokenBlacklistInterface:
+        class: App\App\Auth\Infrastructure\Service\SymfonyCacheBlacklist
 
+    App\App\Auth\Domain\Service\TokenPayloadExtractorInterface:
+        class: App\App\Auth\Infrastructure\Service\LexikPayloadExtractor
 
-    App\Auth\Domain\RefreshToken\RefreshTokenRepositoryInterface: '@App\Auth\Infrastructure\Persistence\DoctrineRefreshTokenRepository'
-    App\Auth\Domain\Service\TokenBlacklistInterface: '@App\Auth\Infrastructure\Service\SymfonyCacheBlacklist'
-    App\Auth\Domain\Service\TokenPayloadExtractorInterface: '@App\Auth\Infrastructure\Service\LexikPayloadExtractor'
-
-
-
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-    App\Auth\Infrastructure\EventListener\JWTCreatedListener:
+    App\App\Auth\Infrastructure\EventListener\JWTCreatedListener:
         tags:
             - { name: 'kernel.event_listener', event: 'lexik_jwt_authentication.on_jwt_created', method: 'onJWTCreated' }
-
-    # Legacy ExceptionListener — disabled in favour of App\App\UI\API\Response\Service\ExceptionListener (Plan 6)
-    # App\Shared\Infrastructure\EventListener\ExceptionListener:
-    #     tags:
-    #         - { name: 'kernel.event_listener', event: 'kernel.exception' }
 
     App\App\UI\API\Response\Service\ExceptionListener:
         tags:

@@ -50,7 +50,7 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         identity_generation_preferences:
             Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
-        auto_mapping: true
+        auto_mapping: false
         mappings:
             Core:
                 is_bundle: false
@@ -58,14 +58,6 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Core/Infrastructure/Persistence/Doctrine/ORM/Mapping/XML'
                 prefix: 'App\Core\Domain\Model\Aggregate'
                 alias: Core
-            App:
-                type: attribute
-                is_bundle: false
-                dir: '%kernel.project_dir%/src'
-                prefix: 'App'
-                alias: App
-            # Auth RefreshToken is now mapped via the Core XML mapping.
-            # Legacy Auth mapping removed to avoid duplicate table registration.
 
         controller_resolver:
             auto_mapping: false

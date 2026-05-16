@@ -1,42 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Shared\Infrastructure\Fixtures;
 
-use App\ClientManagement\Domain\Client\Client;
-use App\ClientManagement\Domain\Contact\Contact;
+use App\Core\Domain\Model\Aggregate\Client;
+use App\Core\Domain\Model\Aggregate\Contact;
+use App\Core\Domain\Model\VO\Client\ClientId;
+use App\Core\Domain\Model\VO\Common\Email;
+use App\Core\Domain\Model\VO\Common\Phone;
+use App\Core\Domain\Model\VO\Contact\ContactId;
+use App\Core\Domain\Model\VO\Contact\ContactName;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Uid\Uuid;
 
-class ContactFixtures extends Fixture implements DependentFixtureInterface
+final class ContactFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('es_ES');
 
-        // Iteramos sobre los 5 clientes que creamos en ClientFixtures
         for ($i = 0; $i < 5; $i++) {
             /** @var Client $client */
             $client = $this->getReference(ClientFixtures::CLIENT_REF . $i, Client::class);
-
-            // Creamos entre 1 y 3 contactos por cliente
             $numContacts = rand(1, 3);
 
             for ($j = 0; $j < $numContacts; $j++) {
-                $contact = new Contact();
-                $contact->setId(Uuid::v7());
-                $contact->setFullName($faker->name());
-                $contact->setPhoneNumber($faker->phoneNumber());
-                $contact->setEmail($faker->safeEmail());
-
-
-                // El primer contacto del bucle será el principal (isMain)
-                $contact->setIsMain($j === 0);
-
-                $contact->setNote($faker->boolean(50) ? $faker->sentence() : null);
-                $contact->setClient($client);
+                $contact = Contact::create(
+                    id: new ContactId(Uuid::v7()->toRfc4122()),
+                    clientId: new ClientId((string) $client->id()),
+                    fullName: new ContactName($faker->name()),
+                    email: new Email($faker->safeEmail()),
+                    phoneNumber: new Phone($faker->phoneNumber()),
+                    note: $faker->boolean(50) ? $faker->sentence() : null,
+                    isMain: $j === 0,
+                );
 
                 $manager->persist($contact);
             }
@@ -47,8 +48,6 @@ class ContactFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
-        return [
-            ClientFixtures::class,
-        ];
+        return [ClientFixtures::class];
     }
 }

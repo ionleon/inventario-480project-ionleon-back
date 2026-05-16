@@ -1,53 +1,63 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Shared\Infrastructure\Fixtures;
 
-use App\ProjectManagement\Domain\Project\Project;
-use App\ProjectManagement\Domain\ProjectRole\ProjectRole;
-use App\ProjectManagement\Domain\ProjectUser\ProjectUser;
-use App\UserManagement\Domain\AppUser;
+use App\Core\Domain\Model\Aggregate\Project;
+use App\Core\Domain\Model\Aggregate\ProjectRole;
+use App\Core\Domain\Model\Aggregate\ProjectUser;
+use App\Core\Domain\Model\Aggregate\User;
+use App\Core\Domain\Model\VO\Project\ProjectId;
+use App\Core\Domain\Model\VO\ProjectRole\ProjectRoleId;
+use App\Core\Domain\Model\VO\ProjectUser\ProjectUserAllocation;
+use App\Core\Domain\Model\VO\ProjectUser\ProjectUserId;
+use App\Core\Domain\Model\VO\User\UserId;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Uid\Uuid;
 
-class ProjectUserFixtures extends Fixture implements DependentFixtureInterface
+final class ProjectUserFixtures extends Fixture implements DependentFixtureInterface
 {
     public const PROJECT_USER_DEV_REFERENCE = 'p-user-dev-';
+
     public function load(ObjectManager $manager): void
     {
+        /** @var User $adminUser */
+        $adminUser = $this->getReference(UserFixtures::ADMIN_REFERENCE, User::class);
+        /** @var User $devUser */
+        $devUser = $this->getReference(UserFixtures::DEV_REFERENCE, User::class);
 
-        $adminUser = $this->getReference(UserFixtures::ADMIN_REFERENCE, AppUser::class);
-        $devUser = $this->getReference(UserFixtures::DEV_REFERENCE, AppUser::class);
-
+        /** @var ProjectRole $roleManager */
         $roleManager = $this->getReference('role-project-manager', ProjectRole::class);
+        /** @var ProjectRole $roleDev */
         $roleDev = $this->getReference('role-developer', ProjectRole::class);
 
         for ($i = 0; $i < 5; $i++) {
+            /** @var Project $project */
             $project = $this->getReference(ProjectFixtures::PROJECT_REF . $i, Project::class);
 
-            $projectUserAdmin = new ProjectUser();
-
-            $projectUserAdmin->setId(Uuid::v7());
-            $projectUserAdmin->setProject($project);
-            $projectUserAdmin->setAppUser($adminUser);
-            $projectUserAdmin->setIsActive(true);
-            $projectUserAdmin->setProjectRole($roleManager);
+            $projectUserAdmin = ProjectUser::assign(
+                id: new ProjectUserId(Uuid::v7()->toRfc4122()),
+                projectId: new ProjectId((string) $project->id()),
+                userId: new UserId((string) $adminUser->id()),
+                roleId: new ProjectRoleId((string) $roleManager->id()),
+                allocation: new ProjectUserAllocation(100),
+            );
 
             $manager->persist($projectUserAdmin);
 
-
             if ($i < 3) {
-                $projectUserDev = new ProjectUser();
-                $projectUserDev->setId(Uuid::v7());
-                $projectUserDev->setProject($project);
-                $projectUserDev->setAppUser($devUser);
-                $projectUserDev->setIsActive(true);
-                $projectUserDev->setProjectRole($roleDev);
+                $projectUserDev = ProjectUser::assign(
+                    id: new ProjectUserId(Uuid::v7()->toRfc4122()),
+                    projectId: new ProjectId((string) $project->id()),
+                    userId: new UserId((string) $devUser->id()),
+                    roleId: new ProjectRoleId((string) $roleDev->id()),
+                    allocation: new ProjectUserAllocation(100),
+                );
 
                 $manager->persist($projectUserDev);
-
-
                 $this->addReference(self::PROJECT_USER_DEV_REFERENCE . $i, $projectUserDev);
             }
         }
@@ -60,7 +70,7 @@ class ProjectUserFixtures extends Fixture implements DependentFixtureInterface
         return [
             ProjectFixtures::class,
             UserFixtures::class,
-            ProjectRoleFixtures::class
+            ProjectRoleFixtures::class,
         ];
     }
 }

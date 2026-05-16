@@ -3,7 +3,6 @@ security:
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
-        App\Entity\AppUser: 'auto'
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
@@ -22,7 +21,7 @@ security:
         login:
             pattern: ^/480project/login
             stateless: true
-            user_checker: App\Auth\Infrastructure\Security\UserChecker
+            user_checker: App\App\Auth\Infrastructure\Security\UserChecker
             json_login:
                 check_path: /480project/login
                 username_path: email

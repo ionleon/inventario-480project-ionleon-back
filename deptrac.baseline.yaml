@@ -1,56 +1,34 @@
 deptrac:
   skip_violations:
-    App\ClientManagement\Domain\Client\Client:
-      - App\ClientManagement\Infrastructure\Client\DoctrineClientRepository
-    App\ClientManagement\Domain\Contact\Contact:
-      - App\ClientManagement\Infrastructure\Contact\DoctrineContactRepository
-    App\ClientManagement\Domain\Sector\Sector:
-      - App\ClientManagement\Infrastructure\Sector\DoctrineSectorRepository
-    App\ProjectManagement\Domain\Development\Development:
-      - App\ProjectManagement\Infrastructure\Development\DoctrineDevelopmentRepository
-    App\ProjectManagement\Domain\Development\Link\Link:
-      - App\ProjectManagement\Infrastructure\Development\Link\DoctrineLinkRepository
-    App\ProjectManagement\Domain\Development\Technology\Technology:
-      - App\ProjectManagement\Infrastructure\Development\Technology\DoctrineTechnologyRepository
-    App\ProjectManagement\Domain\Project\Project:
-      - App\ProjectManagement\Infrastructure\Project\DoctrineProjectRepository
-    App\ProjectManagement\Domain\ProjectRole\ProjectRole:
-      - App\ProjectManagement\Infrastructure\ProjectRole\DoctrineProjectRoleRepository
-    App\ProjectManagement\Domain\ProjectUser\ProjectUser:
-      - App\ProjectManagement\Infrastructure\ProjectUser\DoctrineProjectUserRepository
-    App\TimeManagement\Domain\TimeEntry:
-      - App\TimeManagement\Infrastructure\DoctrineTimeEntryRepository
-    App\UserManagement\Domain\AppUser:
-      - App\UserManagement\Infrastructure\Persistence\DoctrineUserRepository
-    App\Core\Application\Query\Sector\GetSector\GetSectorHandler:
-      - App\App\UI\API\Controller\Sector\GetSector\GetSectorResponse
-    App\Core\Application\Query\Sector\ListSectors\ListSectorsHandler:
-      - App\App\UI\API\Controller\Sector\ListSectors\ListSectorsResponse
-    App\Core\Application\Query\User\GetUser\GetUserHandler:
-      - App\App\UI\API\Controller\User\GetUser\GetUserResponse
-    App\Core\Application\Query\User\ListUser\ListUserHandler:
-      - App\App\UI\API\Controller\User\ListUser\ListUserResponse
-    App\Core\Application\Query\Technology\ListTechnologies\ListTechnologiesHandler:
-      - App\App\UI\API\Controller\Technology\ListTechnologies\ListTechnologiesResponse
-    App\Core\Application\Query\ProjectRole\ListProjectRoles\ListProjectRolesHandler:
-      - App\App\UI\API\Controller\ProjectRole\ListProjectRoles\ListProjectRolesResponse
     App\Core\Application\Query\Client\GetClient\GetClientHandler:
       - App\App\UI\API\Controller\Client\GetClient\GetClientResponse
     App\Core\Application\Query\Client\ListClients\ListClientsHandler:
       - App\App\UI\API\Controller\Client\ListClients\ListClientsResponse
     App\Core\Application\Query\Contact\ListContactsByClient\ListContactsByClientHandler:
       - App\App\UI\API\Controller\Contact\ListContactsByClient\ListContactsByClientResponse
+    App\Core\Application\Query\Link\ListLinksByProject\ListLinksByProjectHandler:
+      - App\App\UI\API\Controller\Link\ListLinksByProject\LinkResponse
+    App\Core\Application\Query\ProjectRole\ListProjectRoles\ListProjectRolesHandler:
+      - App\App\UI\API\Controller\ProjectRole\ListProjectRoles\ListProjectRolesResponse
+    App\Core\Application\Query\ProjectUser\ListProjectUsers\ListProjectUsersHandler:
+      - App\App\UI\API\Controller\ProjectUser\ListProjectUsers\ProjectUserResponse
     App\Core\Application\Query\Project\GetProject\GetProjectHandler:
       - App\App\UI\API\Controller\Project\GetProject\GetProjectResponse
     App\Core\Application\Query\Project\ListProjects\ListProjectsHandler:
       - App\App\UI\API\Controller\Project\ListProjects\ListProjectsResponse
-    App\Core\Application\Query\Link\ListLinksByProject\ListLinksByProjectHandler:
-      - App\App\UI\API\Controller\Link\ListLinksByProject\LinkResponse
-    App\Core\Application\Query\ProjectUser\ListProjectUsers\ListProjectUsersHandler:
-      - App\App\UI\API\Controller\ProjectUser\ListProjectUsers\ProjectUserResponse
+    App\Core\Application\Query\Sector\GetSector\GetSectorHandler:
+      - App\App\UI\API\Controller\Sector\GetSector\GetSectorResponse
+    App\Core\Application\Query\Sector\ListSectors\ListSectorsHandler:
+      - App\App\UI\API\Controller\Sector\ListSectors\ListSectorsResponse
+    App\Core\Application\Query\Technology\ListTechnologies\ListTechnologiesHandler:
+      - App\App\UI\API\Controller\Technology\ListTechnologies\ListTechnologiesResponse
     App\Core\Application\Query\TimeEntry\GetTimeEntry\GetTimeEntryHandler:
-      - App\App\UI\API\Controller\TimeEntry\GetTimeEntry\TimeEntryResponse
-    App\Core\Application\Query\TimeEntry\ListTimeEntriesByUser\ListTimeEntriesByUserHandler:
       - App\App\UI\API\Controller\TimeEntry\GetTimeEntry\TimeEntryResponse
     App\Core\Application\Query\TimeEntry\ListTimeEntriesByProject\ListTimeEntriesByProjectHandler:
       - App\App\UI\API\Controller\TimeEntry\GetTimeEntry\TimeEntryResponse
+    App\Core\Application\Query\TimeEntry\ListTimeEntriesByUser\ListTimeEntriesByUserHandler:
+      - App\App\UI\API\Controller\TimeEntry\GetTimeEntry\TimeEntryResponse
+    App\Core\Application\Query\User\GetUser\GetUserHandler:
+      - App\App\UI\API\Controller\User\GetUser\GetUserResponse
+    App\Core\Application\Query\User\ListUser\ListUserHandler:
+      - App\App\UI\API\Controller\User\ListUser\ListUserResponse
