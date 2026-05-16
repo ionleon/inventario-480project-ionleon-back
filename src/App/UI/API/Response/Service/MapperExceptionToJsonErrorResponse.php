@@ -11,6 +11,7 @@ use App\Shared\Domain\Model\ErrorCode;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Throwable;
 
@@ -18,6 +19,17 @@ final readonly class MapperExceptionToJsonErrorResponse
 {
     public function __invoke(Throwable $exception, bool $returnGenericUnexpectedError = false): ?JsonResponse
     {
+        // Unwrap Messenger's HandlerFailedException to get the real domain exception
+        while ($exception instanceof HandlerFailedException) {
+            $nested = method_exists($exception, 'getWrappedExceptions')
+                ? $exception->getWrappedExceptions()
+                : [];
+            $exception = $nested[0] ?? $exception->getPrevious() ?? $exception;
+            if ($exception instanceof HandlerFailedException === false) {
+                break;
+            }
+        }
+
         // 403 — ForbiddenException is a CustomException, handle first so it gets 403
         if ($exception instanceof ForbiddenException) {
             return $this->build($exception->errorCode, $exception->getMessage(), Response::HTTP_FORBIDDEN);

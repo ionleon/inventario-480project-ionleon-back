@@ -16,7 +16,7 @@ use App\Core\Domain\Model\VO\Sector\SectorId;
 class Client extends AggregateRoot
 {
     private function __construct(
-        private readonly ClientId $id,
+        private ClientId $id,
         private ClientName $name,
         private SectorId $sectorId,
         private bool $isActive,

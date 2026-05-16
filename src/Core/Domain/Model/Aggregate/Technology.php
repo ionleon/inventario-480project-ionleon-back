@@ -12,7 +12,7 @@ use App\Core\Domain\Model\VO\Technology\TechnologyName;
 class Technology extends AggregateRoot
 {
     private function __construct(
-        private readonly TechnologyId $id,
+        private TechnologyId $id,
         private TechnologyName $name,
     ) {}
 

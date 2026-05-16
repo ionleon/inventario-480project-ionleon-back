@@ -18,7 +18,7 @@ use App\Core\Domain\Model\VO\Contact\ContactName;
 class Contact extends AggregateRoot
 {
     private function __construct(
-        private readonly ContactId $id,
+        private ContactId $id,
         private readonly ClientId $clientId,
         private ContactName $fullName,
         private Email $email,

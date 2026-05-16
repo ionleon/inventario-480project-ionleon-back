@@ -18,7 +18,7 @@ use DateTimeImmutable;
 class TimeEntry extends AggregateRoot
 {
     private function __construct(
-        private readonly TimeEntryId $id,
+        private TimeEntryId $id,
         private readonly ProjectUserId $projectUserId,
         private TimeEntryDate $date,
         private TimeEntryHours $hours,

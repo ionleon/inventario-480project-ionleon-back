@@ -13,7 +13,7 @@ use App\Core\Domain\Model\VO\ProjectRole\ProjectRoleName;
 class ProjectRole extends AggregateRoot
 {
     private function __construct(
-        private readonly ProjectRoleId $id,
+        private ProjectRoleId $id,
         private ProjectRoleName $name,
     ) {}
 

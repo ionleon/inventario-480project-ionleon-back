@@ -20,7 +20,7 @@ use DateTimeImmutable;
 class ProjectUser extends AggregateRoot
 {
     private function __construct(
-        private readonly ProjectUserId $id,
+        private ProjectUserId $id,
         private readonly ProjectId $projectId,
         private readonly UserId $userId,
         private ProjectRoleId $roleId,

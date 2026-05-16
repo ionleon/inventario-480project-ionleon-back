@@ -85,8 +85,8 @@
         "phpstan": "phpstan analyse",
         "deptrac": "deptrac analyse",
         "tests:unit": "codecept run Unit --steps",
-        "tests:functional": "codecept run Functional --steps",
-        "tests:api": "codecept run Api --steps",
+        "tests:functional": "APP_ENV=test codecept run Functional --steps",
+        "tests:api": "APP_ENV=test codecept run Api --steps",
         "tests:all": ["@tests:unit", "@tests:functional", "@tests:api"]
     },
     "conflict": {

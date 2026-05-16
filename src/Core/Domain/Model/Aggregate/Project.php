@@ -43,7 +43,7 @@ class Project extends AggregateRoot
     private Collection $technologies;
 
     private function __construct(
-        private readonly ProjectId $id,
+        private ProjectId $id,
         private ProjectName $name,
         private ?ProjectDescription $description,
         private ClientId $clientId,

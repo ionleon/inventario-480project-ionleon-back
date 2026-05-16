@@ -17,7 +17,7 @@ final readonly class ProjectWasCreated
         public ProjectId $id,
         public ProjectName $name,
         public ClientId $clientId,
-        public UserId $managerId,
+        public ?UserId $managerId,
         public DateTimeImmutable $occurredAt,
     ) {}
 

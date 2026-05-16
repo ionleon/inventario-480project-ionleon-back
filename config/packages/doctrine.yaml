@@ -65,8 +65,9 @@ doctrine:
 when@test:
     doctrine:
         dbal:
-            # "TEST_TOKEN" is typically set by ParaTest
-            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+            # DATABASE_URL in .env.test already points at the separate test container
+            # (inventario480-db-test) with database project_inventory_480_db_test.
+            # Don't append a suffix here.
 
 when@prod:
     doctrine:

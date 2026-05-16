@@ -13,7 +13,7 @@ use App\Core\Domain\Model\VO\Sector\SectorName;
 class Sector extends AggregateRoot
 {
     private function __construct(
-        private readonly SectorId $id,
+        private SectorId $id,
         private SectorName $name,
     ) {}
 

@@ -16,7 +16,7 @@ use DateTimeImmutable;
 class Link extends AggregateRoot
 {
     private function __construct(
-        private readonly LinkId $id,
+        private LinkId $id,
         private readonly ProjectId $projectId,
         private LinkUrl $url,
         private ?LinkLabel $label,

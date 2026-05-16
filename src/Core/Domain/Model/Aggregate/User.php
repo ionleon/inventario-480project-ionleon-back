@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User extends AggregateRoot implements UserInterface, PasswordAuthenticatedUserInterface
 {
     private function __construct(
-        private readonly UserId $id,
+        private UserId $id,
         private Email $email,
         private UserName $name,
         private UserSurname $surname,
