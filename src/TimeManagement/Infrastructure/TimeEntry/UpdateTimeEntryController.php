@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'Time Entries')]
-#[Route('/time-entries/{id}', name: 'time_entries_update', methods: ['PUT'])]
+// #[Route('/time-entries/{id}', name: 'time_entries_update', methods: ['PUT'])]
 final class UpdateTimeEntryController extends AppController
 {
     public function __construct(

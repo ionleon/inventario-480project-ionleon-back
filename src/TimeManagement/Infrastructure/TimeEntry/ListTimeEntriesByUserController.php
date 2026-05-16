@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Time Entries')]
-#[Route('/users/{id}/time-entries', name: 'user_time_entries_index', methods: ['GET'])]
+// #[Route('/users/{id}/time-entries', name: 'user_time_entries_index', methods: ['GET'])]
 final class ListTimeEntriesByUserController extends AppController
 {
     public function __construct(

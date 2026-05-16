@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'Time Entries')]
-#[Route('/projects/{id}/time-entries', name: 'project_time_entries_create', methods: ['POST'])]
+// #[Route('/projects/{id}/time-entries', name: 'project_time_entries_create', methods: ['POST'])]
 #[IsGranted(new Expression("is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')"))]
 final class CreateTimeEntryForProjectController extends AppController
 {

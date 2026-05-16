@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Time Entries')]
-#[Route('/time-entries/{id}', name: 'time_entries_delete', methods: ['DELETE'])]
+// #[Route('/time-entries/{id}', name: 'time_entries_delete', methods: ['DELETE'])]
 final class DeleteTimeEntryController extends AppController
 {
     public function __construct(

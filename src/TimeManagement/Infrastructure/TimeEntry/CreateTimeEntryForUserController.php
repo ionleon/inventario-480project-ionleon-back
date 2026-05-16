@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'Time Entries')]
-#[Route('/users/{id}/time-entries', name: 'user_time_entries_create', methods: ['POST'])]
+// #[Route('/users/{id}/time-entries', name: 'user_time_entries_create', methods: ['POST'])]
 final class CreateTimeEntryForUserController extends AppController
 {
     public function __construct(

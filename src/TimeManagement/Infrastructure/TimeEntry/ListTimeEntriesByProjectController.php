@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Time Entries')]
-#[Route('/projects/{id}/time-entries', name: 'project_time_entries_index', methods: ['GET'])]
+// #[Route('/projects/{id}/time-entries', name: 'project_time_entries_index', methods: ['GET'])]
 #[IsGranted(new Expression("is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')"))]
 final class ListTimeEntriesByProjectController extends AppController
 {

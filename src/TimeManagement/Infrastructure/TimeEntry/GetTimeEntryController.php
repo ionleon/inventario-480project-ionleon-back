@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Time Entries')]
-#[Route('/time-entries/{id}', name: 'time_entries_show', methods: ['GET'])]
+// #[Route('/time-entries/{id}', name: 'time_entries_show', methods: ['GET'])]
 final class GetTimeEntryController extends AppController
 {
     public function __construct(
