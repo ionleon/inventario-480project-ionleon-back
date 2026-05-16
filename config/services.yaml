@@ -201,3 +201,15 @@ services:
 
     App\Core\Domain\Service\ProjectUser\SyncProjectUsers\SyncProjectUsersServiceInterface:
         class: App\Core\Domain\Service\ProjectUser\SyncProjectUsers\SyncProjectUsersService
+
+    App\Core\Domain\Model\Repository\TimeEntryRepository:
+        class: App\Core\Infrastructure\Persistence\Doctrine\ORM\OrmTimeEntryRepository
+
+    App\Core\Domain\Service\TimeEntry\CreateTimeEntry\CreateTimeEntryServiceInterface:
+        class: App\Core\Domain\Service\TimeEntry\CreateTimeEntry\CreateTimeEntryService
+
+    App\Core\Domain\Service\TimeEntry\UpdateTimeEntry\UpdateTimeEntryServiceInterface:
+        class: App\Core\Domain\Service\TimeEntry\UpdateTimeEntry\UpdateTimeEntryService
+
+    App\Core\Domain\Service\TimeEntry\DeleteTimeEntry\DeleteTimeEntryServiceInterface:
+        class: App\Core\Domain\Service\TimeEntry\DeleteTimeEntry\DeleteTimeEntryService
