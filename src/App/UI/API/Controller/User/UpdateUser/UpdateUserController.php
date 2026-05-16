@@ -20,7 +20,7 @@ final class UpdateUserController
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
     ) {}
 
-    #[Route(path: '/users/{id}', methods: ['PATCH'])]
+    #[Route(path: '/users/{id}', methods: ['PUT'])]
     public function __invoke(string $id, #[MapRequestPayload] UpdateUserRequest $request): Response
     {
         $this->commandBus->dispatch(new UpdateUserCommand(

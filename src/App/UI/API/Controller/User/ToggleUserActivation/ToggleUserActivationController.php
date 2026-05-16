@@ -19,7 +19,7 @@ final class ToggleUserActivationController
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
     ) {}
 
-    #[Route(path: '/users/{id}/toggle-activation', methods: ['PATCH'])]
+    #[Route(path: '/users/{id}', methods: ['PATCH'])]
     public function __invoke(string $id): Response
     {
         $this->commandBus->dispatch(new ToggleUserActivationCommand(
