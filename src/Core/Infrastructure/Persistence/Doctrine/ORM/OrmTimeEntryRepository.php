@@ -16,7 +16,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class OrmTimeEntryRepository implements TimeEntryRepository
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function add(TimeEntry $timeEntry): void
     {
@@ -82,5 +84,23 @@ final readonly class OrmTimeEntryRepository implements TimeEntryRepository
             ['projectUserId' => $projectUserIds],
             ['date' => 'DESC'],
         );
+    }
+
+    public function findOwnerUserId(TimeEntryId $id): UserId
+    {
+        $row = $this->em->createQueryBuilder()
+            ->select('IDENTITY(pu.userId) AS user_id')
+            ->from(TimeEntry::class, 'te')
+            ->join(ProjectUser::class, 'pu', 'WITH', 'pu.id = te.projectUserId')
+            ->where('te.id = :id')
+            ->setParameter('id', (string) $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (null === $row || !isset($row['user_id'])) {
+            throw new TimeEntryNotFoundException((string) $id);
+        }
+
+        return new UserId((string) $row['user_id']);
     }
 }

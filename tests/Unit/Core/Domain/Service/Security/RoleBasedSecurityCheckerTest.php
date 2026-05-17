@@ -46,17 +46,19 @@ final class RoleBasedSecurityCheckerTest extends TestCase
         $this->checker->grants($token, $otherUserId);
     }
 
-    public function test_GivenEmployeeActingOnTimeEntryId_WhenGrants_ThenAllowed(): void
+    public function test_GivenEmployeeActingOnTimeEntryIdSubject_WhenGrants_ThenForbidden(): void
     {
+        // TimeEntryId must NOT be a valid subject — handlers must resolve ownership
+        // to a UserId and pass that. Passing TimeEntryId directly would skip ownership.
         $token = new SecurityToken(
             authUserId: Uuid::v4()->toRfc4122(),
             role: SystemRole::EMPLOYEE,
         );
         $subject = new TimeEntryId(Uuid::v4()->toRfc4122());
 
-        // Must not throw
+        $this->expectException(ForbiddenException::class);
+
         $this->checker->grants($token, $subject);
-        $this->addToAssertionCount(1);
     }
 
     public function test_GivenEmployeeActingOnArbitraryObject_WhenGrants_ThenForbiddenException(): void

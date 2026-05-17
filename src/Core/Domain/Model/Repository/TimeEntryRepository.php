@@ -30,4 +30,7 @@ interface TimeEntryRepository
 
     /** @return list<TimeEntry> */
     public function findByProject(ProjectId $projectId): array;
+
+    /** @throws TimeEntryNotFoundException */
+    public function findOwnerUserId(TimeEntryId $id): UserId;
 }
