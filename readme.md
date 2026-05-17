@@ -87,7 +87,7 @@ Lista completa: `make help`.
 
 | Suite | Comando | Cantidad | Cobertura |
 |---|---|---|---|
-| **Unit** | `make tests-unit` | 324 tests | VOs, Aggregates (factory + transitions), Domain Services, Handlers, Security trait, AggregateId immutability |
+| **Unit** | `make tests-unit` | 331 tests | VOs, Aggregates (factory + transitions), Domain Services, Handlers (incluido ownership EMPLOYEE en TimeEntry), Security trait, AggregateId immutability |
 | **API E2E** | `make tests-api` | 23 tests | smoke 1-2 por aggregate (happy + error) + cascade `UserWasDeactivated → ProjectUser` |
 
 Las suites E2E corren contra una BD aislada (`inventario480-db-test` en puerto 5433) con fixtures recargadas antes de cada ejecución (extension `DbMigrationExtension`).
@@ -98,9 +98,9 @@ Las suites E2E corren contra una BD aislada (`inventario480-db-test` en puerto 5
 make code-quality
 ```
 
-- **phpcs** — estilo PSR-12
-- **phpstan** nivel 6 — **0 errores, sin baseline**
-- **deptrac** — 0 violaciones (con baseline mínima para 16 entradas Query handler→App response, patrón intencional)
+- **phpcs** — PSR-12 (`phpcs.xml.dist`), 0 errores
+- **phpstan** nivel 6 — 0 errores, sin baseline; los Testers de Codeception se analizan de verdad (typos en `$I->...` rompen el build)
+- **deptrac** — 0 violaciones (con 51 skipped intencionales para el patrón Query handler→App response)
 
 ## Arquitectura
 
@@ -141,7 +141,10 @@ Prefijo global: `/480project`.
 | ProjectUser | `GET/POST/PUT /projects/{id}/users`, `PUT/PATCH/DELETE /projects/{id}/users/{userId}` |
 | TimeEntry | `POST /projects/{id}/time-entries`, `POST /users/{id}/time-entries`, `GET/PUT/DELETE /time-entries/{id}`, `GET /projects/{id}/time-entries`, `GET /users/{userId}/time-entries` |
 
-Toda escritura requiere JWT en `Authorization: Bearer <token>`. Las acciones `POST/PUT/DELETE/PATCH` están gateadas por `SecurityChecker` (`ROLE_ADMIN` bypassea todo; `ROLE_EMPLOYEE` solo puede actuar sobre su propio `UserId` y sobre `TimeEntry`).
+Toda escritura requiere JWT en `Authorization: Bearer <token>`. Las acciones `POST/PUT/DELETE/PATCH` están gateadas por `SecurityChecker`:
+
+- `ROLE_ADMIN`: bypass total.
+- `ROLE_EMPLOYEE`: solo puede actuar sobre recursos cuyo `UserId` dueño coincide con el suyo. Para `TimeEntry`, el handler resuelve el dueño vía `TimeEntryRepository::findOwnerUserId` y se lo pasa al checker — un EMPLOYEE no puede tocar las time entries de otro empleado.
 
 ## Autenticación de prueba
 

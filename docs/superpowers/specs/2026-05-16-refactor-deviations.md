@@ -119,6 +119,28 @@ Symfony 7.3 marca esto como deprecated y sugiere mover la lógica a `__serialize
 
 ---
 
+## 9. `EventDispatcher` usa `postFlush` (no es transaccional con la escritura original)
+
+`App\Core\Infrastructure\Persistence\Doctrine\EventDispatcher` recolecta los eventos pendientes después de que la transacción principal haga commit. Los subscribers (ej. `UserWasDeactivatedSubscriber`) corren en transacción separada. Si un subscriber falla, la operación original ya está committed → BD temporalmente inconsistente.
+
+**Por qué no `onFlush`**: `onFlush` permitiría participar en la misma transacción, pero obliga a los subscribers a manejar UnitOfWork::computeChangeSet manualmente y complica la recursividad de eventos (un subscriber puede generar nuevos eventos). Con un único subscriber actualmente y semánticas idempotentes, el trade-off es aceptable.
+
+**Mitigación actual**: todos los subscribers deben ser idempotentes. `ProjectUser::deactivate()` tiene early-return si ya está inactivo, así que re-emitir el evento es seguro (basta con re-invocar el comando `ToggleUserActivation` o un script de recovery futuro).
+
+**Acción recomendada**: si en el futuro se añade un subscriber que mute estado de forma no-idempotente (ej. enviar email, crear factura, llamar a servicio externo), migrar a `onFlush` o introducir outbox pattern. Está documentado inline en `EventDispatcher::postFlush()`.
+
+---
+
+## 10. `RoleBasedSecurityChecker` solo soporta subjects `UserId`
+
+Inicialmente había una rama permisiva que aceptaba `TimeEntryId` y dejaba pasar a cualquier EMPLOYEE — regresión vs legacy, donde el controller verificaba ownership a mano. Corregido el 2026-05-17: los 3 handlers de `TimeEntry` (Create/Update/Delete) ahora son `SecurableHandler`, resuelven el `UserId` dueño vía `TimeEntryRepository::findOwnerUserId` y se lo pasan al checker. La rama `TimeEntryId` se eliminó (footgun).
+
+**Riesgo residual**: las reglas de EMPLOYEE siguen siendo mínimas (solo `UserId` propio). Si el frontend espera que un empleado pueda, por ejemplo, ver/editar Contacts de clientes de su sector, hay que añadir más subjects con su lógica.
+
+**Acción recomendada**: cuando el frontend integre, validar matriz de permisos contra el legacy `IsGranted` por endpoint (ya catalogado en este PR vía `git grep IsGranted master`).
+
+---
+
 ## Estado final
 
 - **Tag**: `ddd-refactor-complete` apuntando a `688a7ce`
