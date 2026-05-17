@@ -9,15 +9,24 @@ Este documento recoge las decisiones que se tomaron durante la ejecución del re
 
 | # | Desviación | Estado |
 |---|---|---|
-| 1 | 4 migraciones SQL aditivas | 🟡 Aceptada (pragmática) |
+| 1 | 4 migraciones SQL aditivas (Plans 4-5) + 2 de alineación de schema (Plan post-cleanup) | 🟡 Aceptada (todas reversibles) |
 | 2 | UserFilters en Domain | 🟡 Aceptada (deptrac) |
 | 3 | OrmRefreshTokenRepository extends ServiceEntityRepository | 🟡 Aceptada (bundle) |
-| 4 | `readonly` retirado de `$id` | 🟢 Resuelta con test de inmutabilidad |
-| 5 | ToggleUserActivation usaba ruta nueva | 🟢 Resuelta con PATCH /users/{id} legacy |
-| 6 | legacy `#[ORM\Entity]` no removido | ✅ Histórico (legacy borrado en Plan 8) |
+| 4 | `readonly` retirado de `$id` | 🟢 Resuelta con `AggregateIdImmutabilityTest` |
+| 5 | ToggleUserActivation usaba ruta nueva | 🟢 Resuelta — `PATCH /users/{id}` legacy |
+| 6 | legacy `#[ORM\Entity]` no removido | ✅ Histórico |
 | 7 | Namespace `App\App\Auth` | 🟡 Aceptada (estético) |
 | 8 | `eraseCredentials()` deprecation | 🟢 Resuelta con `#[\Deprecated]` |
 | 9 | Contrato HTTP cambiado en Update/Toggle/ProjectUser/TimeEntry/Link | 🟢 Resuelta — todas las rutas legacy restauradas |
+| 10 | Schema de BD desalineado del mapping (CHAR(36) vs UUID, FKs legacy, tabla `development` huérfana) | 🟢 Resuelta — `doctrine:schema:validate` OK; 2 migraciones de cleanup + DBAL types usan `getGuidTypeDeclarationSQL()` |
+| 11 | Cascade `UserWasDeactivated → ProjectUser` sin verificar E2E | 🟢 Resuelta — `UserDeactivationCascadeCest` confirma el flow |
+
+## Deuda técnica restante (no bloqueante)
+
+- **`phpstan-baseline.neon` tiene ~193 errores ignorados** en el nuevo código Core/App. La mayoría son `MissingType.iterableValue`, falta de generics en `@return array<X>`, y casts implícitos en hidratación Doctrine. No bloquea funcionalidad. Recomendación: ir reduciendo al añadir features (`baseline.shrink` periódico).
+- **GHA CI no verificado en verde** durante esta sesión (no hay `gh` CLI instalado). El workflow debería pasar dado que todos los tests locales pasan; conviene mirar la página de Actions de GitHub al recibir el repo.
+- **`README.md` cubre arranque y comandos pero no refleja Plan 4-7** (migraciones nuevas, tests E2E, rutas restauradas). Una pasada de README final cuando se quiera entregar.
+- **`RoleBasedSecurityChecker` solo cubre 2 casos** (UserId propio + cualquier TimeEntryId). Si el frontend espera que un EMPLOYEE pueda hacer alguna escritura más (ej. crear contactos a clientes de su sector), hay que extender las reglas. Por defecto sigue siendo "deny" para empleados en todo lo demás.
 
 ---
 
