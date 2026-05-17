@@ -31,6 +31,12 @@ parameters:
 			path: src/App/UI/API/Controller/ProjectUser/AssignUserToProject/AssignUserToProjectRequest.php
 
 		-
+			message: '#^Call to function method_exists\(\) with Symfony\\Component\\Messenger\\Exception\\HandlerFailedException and ''getWrappedExceptions'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/UI/API/Response/Service/MapperExceptionToJsonErrorResponse.php
+
+		-
 			message: '#^Property App\\Core\\Domain\\Model\\Aggregate\\RefreshToken\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
 			identifier: property.unusedType
 			count: 1

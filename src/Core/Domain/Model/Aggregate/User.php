@@ -176,5 +176,11 @@ class User extends AggregateRoot implements UserInterface, PasswordAuthenticated
         return (string) $this->password;
     }
 
+    /**
+     * Required by Symfony's UserInterface. We don't store plain credentials on
+     * the aggregate (Password VO already wraps the hashed value), so there's
+     * nothing to erase. Annotated to silence the Symfony 7.3 deprecation notice.
+     */
+    #[\Deprecated]
     public function eraseCredentials(): void {}
 }
