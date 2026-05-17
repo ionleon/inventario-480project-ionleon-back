@@ -1,9 +1,23 @@
 # Desviaciones del spec del refactor DDD/CQRS
 
-**Fecha**: 2026-05-16
+**Fecha**: 2026-05-16 (actualizado 2026-05-17)
 **Branch**: `feature/ddd-refactor` (tag `ddd-refactor-complete`)
 
 Este documento recoge las decisiones que se tomaron durante la ejecución del refactor y que NO se ajustan al 100% al diseño original en `2026-05-14-arquitectura-ddd-cqrs-design.md`. Cada una incluye contexto, por qué se desvió y si conviene revisarla.
+
+## Estado de resolución (2026-05-17)
+
+| # | Desviación | Estado |
+|---|---|---|
+| 1 | 4 migraciones SQL aditivas | 🟡 Aceptada (pragmática) |
+| 2 | UserFilters en Domain | 🟡 Aceptada (deptrac) |
+| 3 | OrmRefreshTokenRepository extends ServiceEntityRepository | 🟡 Aceptada (bundle) |
+| 4 | `readonly` retirado de `$id` | 🟢 Resuelta con test de inmutabilidad |
+| 5 | ToggleUserActivation usaba ruta nueva | 🟢 Resuelta con PATCH /users/{id} legacy |
+| 6 | legacy `#[ORM\Entity]` no removido | ✅ Histórico (legacy borrado en Plan 8) |
+| 7 | Namespace `App\App\Auth` | 🟡 Aceptada (estético) |
+| 8 | `eraseCredentials()` deprecation | 🟢 Resuelta con `#[\Deprecated]` |
+| 9 | Contrato HTTP cambiado en Update/Toggle/ProjectUser/TimeEntry/Link | 🟢 Resuelta — todas las rutas legacy restauradas |
 
 ---
 
