@@ -23,7 +23,8 @@ final class UpdateProjectUserController
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
         private readonly ProjectUserRepository $projectUserRepository,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{id}/users/{userId}', methods: ['PUT'])]
     public function __invoke(string $id, string $userId, #[MapRequestPayload] UpdateProjectUserRequest $request): Response

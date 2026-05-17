@@ -22,7 +22,8 @@ final class ToggleProjectUserActivationController
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
         private readonly ProjectUserRepository $projectUserRepository,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{id}/users/{userId}', methods: ['PATCH'])]
     public function __invoke(string $id, string $userId): Response

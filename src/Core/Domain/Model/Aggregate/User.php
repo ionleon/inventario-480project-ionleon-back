@@ -32,7 +32,8 @@ class User extends AggregateRoot implements UserInterface, PasswordAuthenticated
         private SystemRole $role,
         private bool $isActive,
         private bool $firstTime,
-    ) {}
+    ) {
+    }
 
     public static function create(
         UserId $id,
@@ -182,5 +183,7 @@ class User extends AggregateRoot implements UserInterface, PasswordAuthenticated
      * nothing to erase. Annotated to silence the Symfony 7.3 deprecation notice.
      */
     #[\Deprecated]
-    public function eraseCredentials(): void {}
+    public function eraseCredentials(): void
+    {
+    }
 }

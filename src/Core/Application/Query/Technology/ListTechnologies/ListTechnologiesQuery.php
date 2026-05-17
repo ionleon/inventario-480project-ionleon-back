@@ -11,5 +11,6 @@ final readonly class ListTechnologiesQuery implements Query
 {
     public function __construct(
         public SecurityToken $securityToken,
-    ) {}
+    ) {
+    }
 }

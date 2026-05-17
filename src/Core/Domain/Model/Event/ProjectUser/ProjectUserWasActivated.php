@@ -12,5 +12,6 @@ final readonly class ProjectUserWasActivated
     public function __construct(
         public ProjectUserId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 }

@@ -15,7 +15,8 @@ final readonly class ListContactsByClientHandler implements QueryHandler
     public function __construct(
         private ClientRepository $clientRepository,
         private ContactRepository $contactRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ListContactsByClientQuery $query): ListContactsByClientResponse
     {

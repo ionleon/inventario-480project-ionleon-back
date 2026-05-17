@@ -15,7 +15,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 final readonly class OrmProjectRepository implements ProjectRepository
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function add(Project $project): void
     {

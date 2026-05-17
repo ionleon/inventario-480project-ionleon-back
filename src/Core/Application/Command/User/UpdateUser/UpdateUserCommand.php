@@ -14,5 +14,6 @@ final readonly class UpdateUserCommand implements Command
         public string $id,
         public string $name,
         public string $surname,
-    ) {}
+    ) {
+    }
 }

@@ -13,7 +13,8 @@ final readonly class LinkWasUpdated
     public function __construct(
         public LinkId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(Link $link): self
     {

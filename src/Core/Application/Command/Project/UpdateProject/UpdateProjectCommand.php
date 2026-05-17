@@ -23,5 +23,6 @@ final readonly class UpdateProjectCommand implements Command
         public ?string $startDate,
         public ?string $endDate,
         public bool $isActive,
-    ) {}
+    ) {
+    }
 }

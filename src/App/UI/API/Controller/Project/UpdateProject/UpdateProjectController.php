@@ -18,7 +18,8 @@ final class UpdateProjectController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{id}', methods: ['PUT'])]
     public function __invoke(string $id, #[MapRequestPayload] UpdateProjectRequest $request): Response

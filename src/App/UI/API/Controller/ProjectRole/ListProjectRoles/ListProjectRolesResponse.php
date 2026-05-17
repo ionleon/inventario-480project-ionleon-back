@@ -11,7 +11,8 @@ final readonly class ListProjectRolesResponse
     /** @param list<array{id: string, name: string}> $projectRoles */
     public function __construct(
         public array $projectRoles,
-    ) {}
+    ) {
+    }
 
     /** @param list<ProjectRole> $projectRoles */
     public static function from(array $projectRoles): self

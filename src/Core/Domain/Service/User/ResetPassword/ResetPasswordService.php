@@ -15,7 +15,8 @@ final readonly class ResetPasswordService implements ResetPasswordServiceInterfa
     public function __construct(
         private UserRepository $repository,
         private UserPasswordHasherInterface $passwordHasher,
-    ) {}
+    ) {
+    }
 
     /** @throws UserNotFoundException */
     public function __invoke(UserId $id, string $newPassword): void

@@ -17,5 +17,6 @@ final readonly class CreateContactCommand implements Command
         public string $email,
         public string $phoneNumber,
         public ?string $note,
-    ) {}
+    ) {
+    }
 }

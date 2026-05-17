@@ -12,7 +12,8 @@ final readonly class RemoveUserFromProjectHandler implements CommandHandler
 {
     public function __construct(
         private RemoveUserFromProjectServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(RemoveUserFromProjectCommand $command): void
     {

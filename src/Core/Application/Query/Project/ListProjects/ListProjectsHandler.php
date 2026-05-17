@@ -10,7 +10,9 @@ use App\Core\Domain\Model\Repository\ProjectRepository;
 
 final readonly class ListProjectsHandler implements QueryHandler
 {
-    public function __construct(private ProjectRepository $repository) {}
+    public function __construct(private ProjectRepository $repository)
+    {
+    }
 
     public function __invoke(ListProjectsQuery $query): ListProjectsResponse
     {

@@ -12,7 +12,9 @@ use App\Core\Domain\Model\VO\Project\ProjectId;
 
 final readonly class ListTimeEntriesByProjectHandler implements QueryHandler
 {
-    public function __construct(private TimeEntryRepository $repository) {}
+    public function __construct(private TimeEntryRepository $repository)
+    {
+    }
 
     /** @return list<TimeEntryResponse> */
     public function __invoke(ListTimeEntriesByProjectQuery $query): array

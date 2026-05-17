@@ -11,7 +11,9 @@ use App\Core\Domain\Model\VO\TimeEntry\TimeEntryId;
 
 final readonly class GetTimeEntryHandler implements QueryHandler
 {
-    public function __construct(private TimeEntryRepository $repository) {}
+    public function __construct(private TimeEntryRepository $repository)
+    {
+    }
 
     public function __invoke(GetTimeEntryQuery $query): TimeEntryResponse
     {

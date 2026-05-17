@@ -19,7 +19,8 @@ final readonly class CreateTechnologyHandler implements CommandHandler, Securabl
     public function __construct(
         private CreateTechnologyServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(CreateTechnologyCommand $command): void
     {

@@ -13,5 +13,6 @@ final readonly class UpdateSectorCommand implements Command
         public SecurityToken $securityToken,
         public string $id,
         public string $name,
-    ) {}
+    ) {
+    }
 }

@@ -18,7 +18,8 @@ final class SyncProjectUsersController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{projectId}/users', methods: ['PUT'])]
     public function __invoke(string $projectId, #[MapRequestPayload] SyncProjectUsersRequest $request): Response

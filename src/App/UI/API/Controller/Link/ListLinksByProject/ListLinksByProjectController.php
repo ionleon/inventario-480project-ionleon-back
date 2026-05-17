@@ -18,7 +18,8 @@ final class ListLinksByProjectController
     public function __construct(
         private readonly QueryBus $queryBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{projectId}/links', methods: ['GET'])]
     public function __invoke(string $projectId): Response

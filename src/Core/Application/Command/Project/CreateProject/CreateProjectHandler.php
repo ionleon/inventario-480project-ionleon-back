@@ -20,7 +20,8 @@ final readonly class CreateProjectHandler implements CommandHandler
 {
     public function __construct(
         private CreateProjectServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(CreateProjectCommand $command): void
     {

@@ -13,7 +13,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class OrmLinkRepository implements LinkRepository
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function add(Link $link): void
     {

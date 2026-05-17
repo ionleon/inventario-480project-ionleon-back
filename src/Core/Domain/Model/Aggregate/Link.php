@@ -22,7 +22,8 @@ class Link extends AggregateRoot
         private LinkUrl $url,
         private ?LinkLabel $label,
         private readonly DateTimeImmutable $createdAt,
-    ) {}
+    ) {
+    }
 
     public static function create(
         LinkId $id,

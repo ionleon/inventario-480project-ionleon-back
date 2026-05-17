@@ -12,5 +12,6 @@ final readonly class DeleteContactCommand implements Command
     public function __construct(
         public SecurityToken $securityToken,
         public string $id,
-    ) {}
+    ) {
+    }
 }

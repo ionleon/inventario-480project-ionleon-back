@@ -19,7 +19,8 @@ final class ListUserController
     public function __construct(
         private readonly QueryBus $queryBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/users', methods: ['GET'])]
     public function __invoke(Request $request): Response

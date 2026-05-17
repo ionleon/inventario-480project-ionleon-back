@@ -12,5 +12,6 @@ final readonly class ForceLogoutCommand implements Command
     public function __construct(
         public SecurityToken $securityToken,
         public string $targetUserIdentifier,
-    ) {}
+    ) {
+    }
 }

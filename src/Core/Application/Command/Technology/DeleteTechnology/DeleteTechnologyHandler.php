@@ -18,7 +18,8 @@ final readonly class DeleteTechnologyHandler implements CommandHandler, Securabl
     public function __construct(
         private DeleteTechnologyServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(DeleteTechnologyCommand $command): void
     {

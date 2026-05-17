@@ -13,5 +13,6 @@ final readonly class CreateUserRequest
         public string $surname,
         public string $password,
         public string $role = 'ROLE_EMPLOYEE',
-    ) {}
+    ) {
+    }
 }

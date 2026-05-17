@@ -14,7 +14,8 @@ final readonly class GetLinkResponse
         public string $url,
         public ?string $label,
         public string $createdAt,
-    ) {}
+    ) {
+    }
 
     public static function from(Link $link): self
     {

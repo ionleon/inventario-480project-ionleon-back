@@ -8,5 +8,6 @@ final readonly class ResetPasswordRequest
 {
     public function __construct(
         public string $newPassword,
-    ) {}
+    ) {
+    }
 }

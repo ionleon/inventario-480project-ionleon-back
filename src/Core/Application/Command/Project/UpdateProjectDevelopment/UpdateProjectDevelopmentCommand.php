@@ -15,5 +15,6 @@ final readonly class UpdateProjectDevelopmentCommand implements Command
         public string $status,
         public ?string $notes,
         public int $progress,
-    ) {}
+    ) {
+    }
 }

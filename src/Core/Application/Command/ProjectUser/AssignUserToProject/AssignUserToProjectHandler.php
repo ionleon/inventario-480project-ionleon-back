@@ -16,7 +16,8 @@ final readonly class AssignUserToProjectHandler implements CommandHandler
 {
     public function __construct(
         private AssignUserToProjectServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(AssignUserToProjectCommand $command): void
     {

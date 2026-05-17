@@ -17,7 +17,8 @@ final readonly class CreateLinkService implements CreateLinkServiceInterface
     public function __construct(
         private LinkRepository $linkRepository,
         private ProjectRepository $projectRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         LinkId $id,

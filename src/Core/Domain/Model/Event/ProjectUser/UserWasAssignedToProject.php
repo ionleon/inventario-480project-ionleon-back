@@ -18,7 +18,8 @@ final readonly class UserWasAssignedToProject
         public UserId $userId,
         public ProjectRoleId $roleId,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\ProjectUser $projectUser): self
     {

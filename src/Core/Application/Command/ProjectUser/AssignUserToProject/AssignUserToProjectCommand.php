@@ -16,5 +16,6 @@ final readonly class AssignUserToProjectCommand implements Command
         public string $userId,
         public string $roleId,
         public int $allocation,
-    ) {}
+    ) {
+    }
 }

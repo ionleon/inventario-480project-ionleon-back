@@ -17,7 +17,8 @@ final readonly class ClientWasCreated
         public SectorId $sectorId,
         public bool $isActive,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\Client $client): self
     {

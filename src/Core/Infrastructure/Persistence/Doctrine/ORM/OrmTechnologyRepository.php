@@ -13,7 +13,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class OrmTechnologyRepository implements TechnologyRepository
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function add(Technology $technology): void
     {

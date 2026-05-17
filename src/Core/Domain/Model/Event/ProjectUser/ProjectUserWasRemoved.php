@@ -16,5 +16,6 @@ final readonly class ProjectUserWasRemoved
         public ProjectId $projectId,
         public UserId $userId,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 }

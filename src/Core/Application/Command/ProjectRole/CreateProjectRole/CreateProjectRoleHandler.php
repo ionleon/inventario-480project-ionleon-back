@@ -19,7 +19,8 @@ final readonly class CreateProjectRoleHandler implements CommandHandler, Securab
     public function __construct(
         private CreateProjectRoleServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(CreateProjectRoleCommand $command): void
     {

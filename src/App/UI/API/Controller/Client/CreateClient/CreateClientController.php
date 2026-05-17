@@ -18,7 +18,8 @@ final class CreateClientController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/clients', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateClientRequest $request): Response

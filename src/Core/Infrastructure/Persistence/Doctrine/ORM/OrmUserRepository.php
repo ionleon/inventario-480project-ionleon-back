@@ -16,7 +16,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 final readonly class OrmUserRepository implements UserRepository
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function add(User $user): void
     {

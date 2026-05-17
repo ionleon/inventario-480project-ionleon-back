@@ -14,7 +14,8 @@ final readonly class SectorWasCreated
         public SectorId $id,
         public SectorName $name,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\Sector $sector): self
     {

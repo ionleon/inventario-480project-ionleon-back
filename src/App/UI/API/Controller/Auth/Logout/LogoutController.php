@@ -18,7 +18,8 @@ final class LogoutController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/logout', methods: ['POST'])]
     public function __invoke(Request $request): Response

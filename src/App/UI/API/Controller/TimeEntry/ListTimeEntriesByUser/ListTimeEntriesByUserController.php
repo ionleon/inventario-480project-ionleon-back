@@ -18,7 +18,8 @@ final class ListTimeEntriesByUserController
     public function __construct(
         private readonly QueryBus $queryBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/users/{userId}/time-entries', methods: ['GET'])]
     public function __invoke(string $userId): Response

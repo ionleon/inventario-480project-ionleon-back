@@ -11,14 +11,12 @@ final readonly class CreateLinkRequest
     public function __construct(
         #[Assert\NotBlank, Assert\Uuid]
         public string $id,
-
         #[Assert\NotBlank, Assert\Uuid]
         public string $projectId,
-
         #[Assert\NotBlank, Assert\Url]
         public string $url,
-
         #[Assert\Length(max: 100)]
         public ?string $label = null,
-    ) {}
+    ) {
+    }
 }

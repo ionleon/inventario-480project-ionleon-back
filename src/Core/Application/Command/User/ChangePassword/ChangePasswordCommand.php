@@ -14,5 +14,6 @@ final readonly class ChangePasswordCommand implements Command
         public string $id,
         public string $oldPassword,
         public string $newPassword,
-    ) {}
+    ) {
+    }
 }

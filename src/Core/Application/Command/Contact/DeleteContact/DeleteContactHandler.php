@@ -18,7 +18,8 @@ final readonly class DeleteContactHandler implements CommandHandler, SecurableHa
     public function __construct(
         private DeleteContactServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(DeleteContactCommand $command): void
     {

@@ -13,7 +13,8 @@ final readonly class RefreshTokenWasRevoked
         public ?int $id,
         public string $username,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(RefreshToken $token): self
     {

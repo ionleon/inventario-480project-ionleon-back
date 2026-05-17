@@ -14,5 +14,6 @@ final readonly class UpdateLinkCommand implements Command
         public string $id,
         public string $url,
         public ?string $label,
-    ) {}
+    ) {
+    }
 }

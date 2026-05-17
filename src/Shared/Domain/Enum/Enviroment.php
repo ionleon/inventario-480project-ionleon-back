@@ -7,6 +7,4 @@ enum Enviroment : string
     case STAGE = 'STAGE';
     case PREPRODUCTION = 'PREPRODUCTION';
     case PRODUCTION = 'PRODUCTION';
-
-
 }

@@ -9,5 +9,6 @@ final readonly class ChangePasswordRequest
     public function __construct(
         public string $oldPassword,
         public string $newPassword,
-    ) {}
+    ) {
+    }
 }

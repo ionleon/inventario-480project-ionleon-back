@@ -20,7 +20,8 @@ class Client extends AggregateRoot
         private ClientName $name,
         private SectorId $sectorId,
         private bool $isActive,
-    ) {}
+    ) {
+    }
 
     public static function create(
         ClientId $id,

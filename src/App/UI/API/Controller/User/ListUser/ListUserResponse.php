@@ -19,7 +19,8 @@ final readonly class ListUserResponse
         public int $currentPage,
         public int $itemsPerPage,
         public int $totalPages,
-    ) {}
+    ) {
+    }
 
     public static function from(PaginatedResult $result): self
     {

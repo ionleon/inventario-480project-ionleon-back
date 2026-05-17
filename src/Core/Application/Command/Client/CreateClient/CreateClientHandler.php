@@ -20,7 +20,8 @@ final readonly class CreateClientHandler implements CommandHandler, SecurableHan
     public function __construct(
         private CreateClientServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(CreateClientCommand $command): void
     {

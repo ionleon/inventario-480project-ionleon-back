@@ -10,7 +10,9 @@ use App\Core\Domain\Model\Repository\TechnologyRepository;
 
 final readonly class ListTechnologiesHandler implements QueryHandler
 {
-    public function __construct(private TechnologyRepository $repository) {}
+    public function __construct(private TechnologyRepository $repository)
+    {
+    }
 
     public function __invoke(ListTechnologiesQuery $query): ListTechnologiesResponse
     {

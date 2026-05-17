@@ -11,11 +11,10 @@ final readonly class UpdateTimeEntryRequest
     public function __construct(
         #[Assert\NotBlank]
         public string $date = '',
-
         #[Assert\NotBlank]
         #[Assert\Positive]
         public float $hours = 0.0,
-
         public ?string $description = null,
-    ) {}
+    ) {
+    }
 }

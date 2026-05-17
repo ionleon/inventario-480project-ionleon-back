@@ -19,7 +19,8 @@ final readonly class CreateSectorHandler implements CommandHandler, SecurableHan
     public function __construct(
         private CreateSectorServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(CreateSectorCommand $command): void
     {

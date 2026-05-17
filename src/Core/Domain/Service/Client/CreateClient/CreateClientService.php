@@ -18,7 +18,8 @@ final readonly class CreateClientService implements CreateClientServiceInterface
     public function __construct(
         private ClientRepository $clientRepository,
         private SectorRepository $sectorRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * @throws DuplicatedClientNameException

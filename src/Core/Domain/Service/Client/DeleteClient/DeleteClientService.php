@@ -10,7 +10,9 @@ use App\Core\Domain\Model\VO\Client\ClientId;
 
 final readonly class DeleteClientService implements DeleteClientServiceInterface
 {
-    public function __construct(private ClientRepository $repository) {}
+    public function __construct(private ClientRepository $repository)
+    {
+    }
 
     /**
      * @throws ClientNotFoundException

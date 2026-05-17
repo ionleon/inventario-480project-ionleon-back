@@ -17,7 +17,8 @@ final class DeleteLinkController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/links/{id}', methods: ['DELETE'])]
     public function __invoke(string $id): Response

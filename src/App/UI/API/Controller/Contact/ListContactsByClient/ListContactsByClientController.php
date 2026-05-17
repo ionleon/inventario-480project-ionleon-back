@@ -18,7 +18,8 @@ final class ListContactsByClientController
     public function __construct(
         private readonly QueryBus $queryBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/clients/{clientId}/contacts', methods: ['GET'])]
     public function __invoke(string $clientId): Response

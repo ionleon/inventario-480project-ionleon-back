@@ -16,7 +16,8 @@ final readonly class UserWasCreated
         public Email $email,
         public SystemRole $role,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\User $user): self
     {

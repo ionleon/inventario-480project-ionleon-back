@@ -12,7 +12,10 @@ final class AggregateRootTest extends TestCase
     public function test_GivenAggregate_WhenRecordEvent_ThenPullEventsReturnsAndClears(): void
     {
         $aggregate = new class extends AggregateRoot {
-            public function fire(object $event): void { $this->recordEvent($event); }
+            public function fire(object $event): void
+            {
+                $this->recordEvent($event);
+            }
         };
 
         $event1 = new \stdClass();

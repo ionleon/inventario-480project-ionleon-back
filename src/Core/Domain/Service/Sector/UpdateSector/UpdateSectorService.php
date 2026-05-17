@@ -13,7 +13,9 @@ use App\Core\Domain\Model\VO\Sector\SectorName;
 
 final readonly class UpdateSectorService implements UpdateSectorServiceInterface
 {
-    public function __construct(private SectorRepository $repository) {}
+    public function __construct(private SectorRepository $repository)
+    {
+    }
 
     /**
      * @throws SectorNotFoundException

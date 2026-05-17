@@ -8,7 +8,9 @@ use DateTimeImmutable;
 
 final readonly class ProjectEndDate
 {
-    public function __construct(private DateTimeImmutable $value) {}
+    public function __construct(private DateTimeImmutable $value)
+    {
+    }
 
     public function value(): DateTimeImmutable
     {

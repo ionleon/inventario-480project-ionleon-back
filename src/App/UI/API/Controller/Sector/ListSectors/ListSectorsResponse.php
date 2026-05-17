@@ -11,7 +11,8 @@ final readonly class ListSectorsResponse
     /** @param list<array{id: string, name: string}> $sectors */
     public function __construct(
         public array $sectors,
-    ) {}
+    ) {
+    }
 
     /** @param list<Sector> $sectors */
     public static function from(array $sectors): self

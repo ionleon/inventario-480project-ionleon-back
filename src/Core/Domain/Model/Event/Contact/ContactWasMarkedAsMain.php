@@ -14,7 +14,8 @@ final readonly class ContactWasMarkedAsMain
         public ContactId $id,
         public ClientId $clientId,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\Contact $contact): self
     {

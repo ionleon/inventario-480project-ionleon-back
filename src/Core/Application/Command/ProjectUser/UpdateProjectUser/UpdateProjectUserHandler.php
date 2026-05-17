@@ -14,7 +14,8 @@ final readonly class UpdateProjectUserHandler implements CommandHandler
 {
     public function __construct(
         private UpdateProjectUserServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(UpdateProjectUserCommand $command): void
     {

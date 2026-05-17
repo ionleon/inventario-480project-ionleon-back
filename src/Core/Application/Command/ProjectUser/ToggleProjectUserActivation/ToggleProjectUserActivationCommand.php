@@ -12,5 +12,6 @@ final readonly class ToggleProjectUserActivationCommand implements Command
     public function __construct(
         public SecurityToken $securityToken,
         public string $id,
-    ) {}
+    ) {
+    }
 }

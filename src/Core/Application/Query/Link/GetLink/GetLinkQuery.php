@@ -12,5 +12,6 @@ final readonly class GetLinkQuery implements Query
     public function __construct(
         public SecurityToken $securityToken,
         public string $id,
-    ) {}
+    ) {
+    }
 }

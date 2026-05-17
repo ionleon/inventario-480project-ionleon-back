@@ -15,5 +15,6 @@ final readonly class UpdateTimeEntryCommand implements Command
         public string $date,
         public string $hours,
         public ?string $description,
-    ) {}
+    ) {
+    }
 }

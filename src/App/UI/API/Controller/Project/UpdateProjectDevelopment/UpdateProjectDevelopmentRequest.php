@@ -14,5 +14,6 @@ final readonly class UpdateProjectDevelopmentRequest
         public ?string $notes = null,
         #[Assert\Range(min: 0, max: 100)]
         public int $progress = 0,
-    ) {}
+    ) {
+    }
 }

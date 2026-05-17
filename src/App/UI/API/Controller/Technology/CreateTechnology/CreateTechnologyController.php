@@ -18,7 +18,8 @@ final class CreateTechnologyController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/technologies', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateTechnologyRequest $request): Response

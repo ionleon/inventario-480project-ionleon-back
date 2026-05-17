@@ -15,7 +15,8 @@ final readonly class UpdateTimeEntryService implements UpdateTimeEntryServiceInt
 {
     public function __construct(
         private TimeEntryRepository $timeEntryRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         TimeEntryId $id,

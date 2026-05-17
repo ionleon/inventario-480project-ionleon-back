@@ -19,7 +19,8 @@ final class AssignUserToProjectController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{projectId}/users', methods: ['POST'])]
     public function __invoke(string $projectId, #[MapRequestPayload] AssignUserToProjectRequest $request): Response

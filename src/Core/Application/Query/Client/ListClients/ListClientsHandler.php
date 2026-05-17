@@ -10,7 +10,9 @@ use App\Core\Domain\Model\Repository\ClientRepository;
 
 final readonly class ListClientsHandler implements QueryHandler
 {
-    public function __construct(private ClientRepository $repository) {}
+    public function __construct(private ClientRepository $repository)
+    {
+    }
 
     public function __invoke(ListClientsQuery $query): ListClientsResponse
     {

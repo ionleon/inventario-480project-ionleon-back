@@ -12,7 +12,9 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 final class JwtSecurityTokenExtractor implements SecurityTokenExtractorInterface
 {
-    public function __construct(private readonly Security $security) {}
+    public function __construct(private readonly Security $security)
+    {
+    }
 
     public function __invoke(): SecurityToken
     {

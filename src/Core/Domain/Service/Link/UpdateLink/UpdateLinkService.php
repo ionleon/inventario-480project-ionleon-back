@@ -12,7 +12,9 @@ use App\Core\Domain\Model\VO\Link\LinkUrl;
 
 final readonly class UpdateLinkService implements UpdateLinkServiceInterface
 {
-    public function __construct(private LinkRepository $repository) {}
+    public function __construct(private LinkRepository $repository)
+    {
+    }
 
     /** @throws LinkNotFoundException */
     public function __invoke(LinkId $id, LinkUrl $url, ?LinkLabel $label): void

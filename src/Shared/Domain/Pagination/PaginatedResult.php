@@ -2,8 +2,6 @@
 
 namespace App\Shared\Domain\Pagination;
 
-
-
 #Not used, might use in the future
 class PaginatedResult
 {
@@ -13,7 +11,8 @@ class PaginatedResult
         public int $totalItems,
         public int $currentPage,
         public int $itemsPerPage,
-    ) {}
+    ) {
+    }
 
     public function getTotalPages(): int
     {

@@ -10,7 +10,9 @@ use App\Core\Domain\Model\Repository\SectorRepository;
 
 final readonly class ListSectorsHandler implements QueryHandler
 {
-    public function __construct(private SectorRepository $repository) {}
+    public function __construct(private SectorRepository $repository)
+    {
+    }
 
     public function __invoke(ListSectorsQuery $query): ListSectorsResponse
     {

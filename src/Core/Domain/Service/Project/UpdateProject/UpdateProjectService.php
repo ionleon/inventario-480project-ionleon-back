@@ -26,7 +26,8 @@ final readonly class UpdateProjectService implements UpdateProjectServiceInterfa
         private ClientRepository $clientRepository,
         private UserRepository $userRepository,
         private TechnologyRepository $technologyRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         ProjectId $id,

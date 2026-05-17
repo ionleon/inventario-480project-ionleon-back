@@ -13,7 +13,9 @@ use App\Core\Domain\Model\VO\Project\ProjectId;
 
 final readonly class UpdateProjectDevelopmentService implements UpdateProjectDevelopmentServiceInterface
 {
-    public function __construct(private ProjectRepository $projectRepository) {}
+    public function __construct(private ProjectRepository $projectRepository)
+    {
+    }
 
     public function __invoke(
         ProjectId $id,

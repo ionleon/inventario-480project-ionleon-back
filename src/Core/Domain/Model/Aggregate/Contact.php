@@ -25,7 +25,8 @@ class Contact extends AggregateRoot
         private Phone $phoneNumber,
         private ?string $note,
         private bool $isMain,
-    ) {}
+    ) {
+    }
 
     public static function create(
         ContactId $id,

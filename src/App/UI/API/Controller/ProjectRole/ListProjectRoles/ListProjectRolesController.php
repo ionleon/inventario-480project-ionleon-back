@@ -18,7 +18,8 @@ final class ListProjectRolesController
     public function __construct(
         private readonly QueryBus $queryBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/project-roles', methods: ['GET'])]
     public function __invoke(): Response

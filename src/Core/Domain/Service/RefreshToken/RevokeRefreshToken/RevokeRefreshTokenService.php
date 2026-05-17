@@ -10,7 +10,9 @@ use App\Core\Domain\Model\VO\RefreshToken\RefreshTokenValue;
 
 final readonly class RevokeRefreshTokenService implements RevokeRefreshTokenServiceInterface
 {
-    public function __construct(private RefreshTokenRepository $repository) {}
+    public function __construct(private RefreshTokenRepository $repository)
+    {
+    }
 
     /** @throws RefreshTokenNotFoundException */
     public function __invoke(RefreshTokenValue $value): void

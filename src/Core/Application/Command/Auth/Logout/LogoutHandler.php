@@ -18,7 +18,8 @@ final readonly class LogoutHandler implements CommandHandler, SecurableHandler
     public function __construct(
         private RevokeRefreshTokenServiceInterface $revokeService,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(LogoutCommand $command): void
     {

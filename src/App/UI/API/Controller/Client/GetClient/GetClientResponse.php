@@ -13,7 +13,8 @@ final readonly class GetClientResponse
         public string $name,
         public string $sectorId,
         public bool $isActive,
-    ) {}
+    ) {
+    }
 
     public static function from(Client $client): self
     {

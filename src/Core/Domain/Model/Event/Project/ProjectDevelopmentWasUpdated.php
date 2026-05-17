@@ -16,5 +16,6 @@ final readonly class ProjectDevelopmentWasUpdated
         public DevelopmentStatus $status,
         public DevelopmentProgress $progress,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 }

@@ -13,5 +13,6 @@ final readonly class CreateSectorCommand implements Command
         public SecurityToken $securityToken,
         public string $id,
         public string $name,
-    ) {}
+    ) {
+    }
 }

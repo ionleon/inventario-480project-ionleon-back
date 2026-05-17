@@ -10,7 +10,9 @@ use App\Core\Domain\Model\VO\User\UserId;
 
 final readonly class DeleteUserService implements DeleteUserServiceInterface
 {
-    public function __construct(private UserRepository $repository) {}
+    public function __construct(private UserRepository $repository)
+    {
+    }
 
     /** @throws UserNotFoundException */
     public function __invoke(UserId $id): void

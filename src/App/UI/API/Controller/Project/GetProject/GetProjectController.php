@@ -18,7 +18,8 @@ final class GetProjectController
     public function __construct(
         private readonly QueryBus $queryBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{id}', methods: ['GET'])]
     public function __invoke(string $id): Response

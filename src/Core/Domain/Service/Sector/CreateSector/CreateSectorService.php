@@ -12,7 +12,9 @@ use App\Core\Domain\Model\VO\Sector\SectorName;
 
 final readonly class CreateSectorService implements CreateSectorServiceInterface
 {
-    public function __construct(private SectorRepository $repository) {}
+    public function __construct(private SectorRepository $repository)
+    {
+    }
 
     /** @throws DuplicatedSectorNameException */
     public function __invoke(SectorId $id, SectorName $name): Sector

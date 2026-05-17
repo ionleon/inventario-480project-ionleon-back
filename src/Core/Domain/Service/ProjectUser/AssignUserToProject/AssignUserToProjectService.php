@@ -23,7 +23,8 @@ final readonly class AssignUserToProjectService implements AssignUserToProjectSe
         private ProjectRepository $projectRepository,
         private UserRepository $userRepository,
         private ProjectRoleRepository $projectRoleRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         ProjectUserId $id,

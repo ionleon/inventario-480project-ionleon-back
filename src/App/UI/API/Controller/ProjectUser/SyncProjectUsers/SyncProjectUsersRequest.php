@@ -11,5 +11,6 @@ final readonly class SyncProjectUsersRequest
      */
     public function __construct(
         public array $users = [],
-    ) {}
+    ) {
+    }
 }

@@ -16,7 +16,8 @@ final readonly class UpdateProjectUserService implements UpdateProjectUserServic
     public function __construct(
         private ProjectUserRepository $projectUserRepository,
         private ProjectRoleRepository $projectRoleRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         ProjectUserId $id,

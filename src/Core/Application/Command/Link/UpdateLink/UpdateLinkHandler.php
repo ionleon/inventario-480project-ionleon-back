@@ -14,7 +14,8 @@ final readonly class UpdateLinkHandler implements CommandHandler
 {
     public function __construct(
         private UpdateLinkServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(UpdateLinkCommand $command): void
     {

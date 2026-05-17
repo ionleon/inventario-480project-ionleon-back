@@ -13,7 +13,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class OrmContactRepository implements ContactRepository
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function add(Contact $contact): void
     {

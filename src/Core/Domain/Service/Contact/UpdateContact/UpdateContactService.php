@@ -14,7 +14,9 @@ use App\Core\Domain\Model\VO\Contact\ContactName;
 
 final readonly class UpdateContactService implements UpdateContactServiceInterface
 {
-    public function __construct(private ContactRepository $repository) {}
+    public function __construct(private ContactRepository $repository)
+    {
+    }
 
     /**
      * @throws ContactNotFoundException

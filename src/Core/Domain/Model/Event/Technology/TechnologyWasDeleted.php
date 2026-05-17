@@ -12,7 +12,8 @@ final readonly class TechnologyWasDeleted
     public function __construct(
         public TechnologyId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\Technology $technology): self
     {

@@ -10,5 +10,6 @@ class UserFilters
         public ?string $term = null,
         public ?string $role = null,
         public ?bool $isActive = null,
-    ) {}
+    ) {
+    }
 }

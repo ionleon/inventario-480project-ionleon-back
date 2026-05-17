@@ -12,7 +12,9 @@ use App\Core\Domain\Model\VO\Technology\TechnologyName;
 
 final readonly class CreateTechnologyService implements CreateTechnologyServiceInterface
 {
-    public function __construct(private TechnologyRepository $repository) {}
+    public function __construct(private TechnologyRepository $repository)
+    {
+    }
 
     /** @throws DuplicatedTechnologyNameException */
     public function __invoke(TechnologyId $id, TechnologyName $name): Technology

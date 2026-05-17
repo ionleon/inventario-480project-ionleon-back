@@ -16,7 +16,8 @@ final readonly class ContactResponse
         public string $phoneNumber,
         public ?string $note,
         public bool $isMain,
-    ) {}
+    ) {
+    }
 
     public static function from(Contact $contact): self
     {

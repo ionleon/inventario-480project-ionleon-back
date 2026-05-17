@@ -11,7 +11,9 @@ use App\Core\Domain\Model\VO\Project\ProjectId;
 
 final readonly class GetProjectHandler implements QueryHandler
 {
-    public function __construct(private ProjectRepository $repository) {}
+    public function __construct(private ProjectRepository $repository)
+    {
+    }
 
     public function __invoke(GetProjectQuery $query): GetProjectResponse
     {

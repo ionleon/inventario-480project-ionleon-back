@@ -12,5 +12,6 @@ final readonly class DeleteUserCommand implements Command
     public function __construct(
         public SecurityToken $securityToken,
         public string $id,
-    ) {}
+    ) {
+    }
 }

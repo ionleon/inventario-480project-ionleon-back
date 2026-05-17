@@ -13,7 +13,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class OrmProjectRoleRepository implements ProjectRoleRepository
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function add(ProjectRole $projectRole): void
     {

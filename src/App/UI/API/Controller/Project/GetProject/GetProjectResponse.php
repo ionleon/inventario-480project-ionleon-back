@@ -24,7 +24,8 @@ final readonly class GetProjectResponse
         public ?string $developmentStatus,
         public ?string $developmentNotes,
         public ?int $developmentProgress,
-    ) {}
+    ) {
+    }
 
     public static function from(Project $project): self
     {

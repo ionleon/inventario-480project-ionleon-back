@@ -20,7 +20,8 @@ final readonly class UpdateUserHandler implements CommandHandler, SecurableHandl
     public function __construct(
         private UpdateUserServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(UpdateUserCommand $command): void
     {

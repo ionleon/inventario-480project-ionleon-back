@@ -12,5 +12,6 @@ final readonly class SectorWasDeleted
     public function __construct(
         public SectorId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 }

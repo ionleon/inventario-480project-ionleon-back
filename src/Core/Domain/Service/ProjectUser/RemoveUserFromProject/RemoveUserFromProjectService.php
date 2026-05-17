@@ -12,7 +12,8 @@ final readonly class RemoveUserFromProjectService implements RemoveUserFromProje
 {
     public function __construct(
         private ProjectUserRepository $projectUserRepository,
-    ) {}
+    ) {
+    }
 
     /** @throws ProjectUserNotFoundException */
     public function __invoke(ProjectUserId $id): void

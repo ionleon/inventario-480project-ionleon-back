@@ -11,7 +11,9 @@ use App\Core\Domain\Model\VO\Sector\SectorId;
 
 final readonly class GetSectorHandler implements QueryHandler
 {
-    public function __construct(private SectorRepository $repository) {}
+    public function __construct(private SectorRepository $repository)
+    {
+    }
 
     public function __invoke(GetSectorQuery $query): GetSectorResponse
     {

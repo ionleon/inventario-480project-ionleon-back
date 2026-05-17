@@ -10,7 +10,9 @@ use App\Core\Domain\Model\VO\Client\ClientId;
 
 final readonly class ToggleClientActivationService implements ToggleClientActivationServiceInterface
 {
-    public function __construct(private ClientRepository $repository) {}
+    public function __construct(private ClientRepository $repository)
+    {
+    }
 
     /** @throws ClientNotFoundException */
     public function __invoke(ClientId $id): void

@@ -8,26 +8,24 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener
 {
-        public function onKernelException(ExceptionEvent $event): void
-        {
+    public function onKernelException(ExceptionEvent $event): void
+    {
 
-            $exception = $event->getThrowable();
+        $exception = $event->getThrowable();
 
-            $responseData = [
-                'error' => 'Internal Server Error',
-                'message' => $exception->getMessage(),
-                'code' => 500
-            ];
+        $responseData = [
+            'error' => 'Internal Server Error',
+            'message' => $exception->getMessage(),
+            'code' => 500
+        ];
 
-            if($exception instanceof HttpExceptionInterface) {
-                $responseData['code'] = $exception->getStatusCode();
-                $responseData['error'] = 'HTTP Error';
-            }
-
-            $response = new JsonResponse($responseData, $responseData['code']);
-
-            $event->setResponse($response);
-
+        if ($exception instanceof HttpExceptionInterface) {
+            $responseData['code'] = $exception->getStatusCode();
+            $responseData['error'] = 'HTTP Error';
         }
 
+        $response = new JsonResponse($responseData, $responseData['code']);
+
+        $event->setResponse($response);
+    }
 }

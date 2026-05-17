@@ -18,7 +18,8 @@ final class CreateSectorController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/sectors', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateSectorRequest $request): Response

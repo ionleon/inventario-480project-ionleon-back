@@ -18,7 +18,8 @@ final class UpdateTimeEntryController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/time-entries/{id}', methods: ['PUT'])]
     public function __invoke(string $id, #[MapRequestPayload] UpdateTimeEntryRequest $request): Response

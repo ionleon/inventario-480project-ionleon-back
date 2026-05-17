@@ -22,7 +22,8 @@ final class RemoveUserFromProjectController
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
         private readonly ProjectUserRepository $projectUserRepository,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{id}/users/{userId}', methods: ['DELETE'])]
     public function __invoke(string $id, string $userId): Response

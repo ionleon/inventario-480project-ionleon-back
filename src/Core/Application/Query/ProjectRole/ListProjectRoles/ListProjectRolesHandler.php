@@ -10,7 +10,9 @@ use App\Core\Domain\Model\Repository\ProjectRoleRepository;
 
 final readonly class ListProjectRolesHandler implements QueryHandler
 {
-    public function __construct(private ProjectRoleRepository $repository) {}
+    public function __construct(private ProjectRoleRepository $repository)
+    {
+    }
 
     public function __invoke(ListProjectRolesQuery $query): ListProjectRolesResponse
     {

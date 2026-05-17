@@ -18,7 +18,8 @@ final readonly class DeleteSectorHandler implements CommandHandler, SecurableHan
     public function __construct(
         private DeleteSectorServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(DeleteSectorCommand $command): void
     {

@@ -20,7 +20,8 @@ final readonly class UpdateProjectHandler implements CommandHandler
 {
     public function __construct(
         private UpdateProjectServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(UpdateProjectCommand $command): void
     {

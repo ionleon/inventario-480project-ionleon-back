@@ -16,5 +16,6 @@ final readonly class ListProjectsQuery implements Query
         public ?bool $isActive = null,
         public int $page = 1,
         public int $limit = 10,
-    ) {}
+    ) {
+    }
 }

@@ -15,7 +15,8 @@ final readonly class LinkWasCreated
         public LinkId $id,
         public ProjectId $projectId,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(Link $link): self
     {

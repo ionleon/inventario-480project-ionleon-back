@@ -11,18 +11,15 @@ final readonly class CreateTimeEntryForUserRequest
     public function __construct(
         #[Assert\Uuid]
         public ?string $id = null,
-
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $projectId = '',
-
         #[Assert\NotBlank]
         public string $date = '',
-
         #[Assert\NotBlank]
         #[Assert\Positive]
         public float $hours = 0.0,
-
         public ?string $description = null,
-    ) {}
+    ) {
+    }
 }

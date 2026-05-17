@@ -19,7 +19,8 @@ final readonly class UpdateSectorHandler implements CommandHandler, SecurableHan
     public function __construct(
         private UpdateSectorServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(UpdateSectorCommand $command): void
     {

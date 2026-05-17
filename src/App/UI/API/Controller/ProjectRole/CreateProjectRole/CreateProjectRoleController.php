@@ -18,7 +18,8 @@ final class CreateProjectRoleController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/project-roles', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateProjectRoleRequest $request): Response

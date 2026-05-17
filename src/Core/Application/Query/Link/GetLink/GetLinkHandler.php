@@ -11,7 +11,9 @@ use App\Core\Domain\Model\VO\Link\LinkId;
 
 final readonly class GetLinkHandler implements QueryHandler
 {
-    public function __construct(private LinkRepository $repository) {}
+    public function __construct(private LinkRepository $repository)
+    {
+    }
 
     public function __invoke(GetLinkQuery $query): GetLinkResponse
     {

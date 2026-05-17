@@ -11,7 +11,9 @@ use App\Core\Domain\Model\VO\Client\ClientId;
 
 final readonly class GetClientHandler implements QueryHandler
 {
-    public function __construct(private ClientRepository $repository) {}
+    public function __construct(private ClientRepository $repository)
+    {
+    }
 
     public function __invoke(GetClientQuery $query): GetClientResponse
     {

@@ -12,9 +12,9 @@ final readonly class UpdateProjectUserRequest
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $roleId,
-
         #[Assert\NotNull]
         #[Assert\Range(min: 0, max: 100)]
         public int $allocation = 100,
-    ) {}
+    ) {
+    }
 }

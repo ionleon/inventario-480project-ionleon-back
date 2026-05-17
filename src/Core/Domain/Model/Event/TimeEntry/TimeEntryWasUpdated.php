@@ -12,5 +12,6 @@ final readonly class TimeEntryWasUpdated
     public function __construct(
         public TimeEntryId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 }

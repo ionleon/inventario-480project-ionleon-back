@@ -18,7 +18,8 @@ final readonly class DeleteProjectRoleHandler implements CommandHandler, Securab
     public function __construct(
         private DeleteProjectRoleServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(DeleteProjectRoleCommand $command): void
     {

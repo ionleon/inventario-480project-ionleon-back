@@ -18,7 +18,8 @@ final readonly class ChangePasswordHandler implements CommandHandler, SecurableH
     public function __construct(
         private ChangePasswordServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ChangePasswordCommand $command): void
     {

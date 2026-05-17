@@ -13,5 +13,6 @@ final readonly class CreateProjectRoleRequest
         public string $id,
         #[Assert\NotBlank, Assert\Length(min: 2, max: 80)]
         public string $name,
-    ) {}
+    ) {
+    }
 }

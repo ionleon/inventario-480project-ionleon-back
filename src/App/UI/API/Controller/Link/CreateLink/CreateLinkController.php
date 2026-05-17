@@ -18,7 +18,8 @@ final class CreateLinkController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/links', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateLinkRequest $request): Response

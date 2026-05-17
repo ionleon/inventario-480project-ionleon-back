@@ -26,7 +26,8 @@ class ProjectUser extends AggregateRoot
         private ProjectRoleId $roleId,
         private ProjectUserAllocation $allocation,
         private bool $isActive,
-    ) {}
+    ) {
+    }
 
     public static function assign(
         ProjectUserId $id,

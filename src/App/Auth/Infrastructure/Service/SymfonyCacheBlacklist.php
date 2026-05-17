@@ -11,7 +11,8 @@ final class SymfonyCacheBlacklist implements TokenBlacklistInterface
 {
     public function __construct(
         private readonly CacheItemPoolInterface $blacklistCache,
-    ) {}
+    ) {
+    }
 
     public function add(string $jti, int $ttl): void
     {

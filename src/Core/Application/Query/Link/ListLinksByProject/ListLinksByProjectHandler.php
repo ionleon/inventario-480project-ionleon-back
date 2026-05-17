@@ -12,7 +12,9 @@ use App\Core\Domain\Model\VO\Project\ProjectId;
 
 final readonly class ListLinksByProjectHandler implements QueryHandler
 {
-    public function __construct(private LinkRepository $repository) {}
+    public function __construct(private LinkRepository $repository)
+    {
+    }
 
     /** @return list<LinkResponse> */
     public function __invoke(ListLinksByProjectQuery $query): array

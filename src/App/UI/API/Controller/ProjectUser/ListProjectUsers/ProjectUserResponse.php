@@ -15,7 +15,8 @@ final readonly class ProjectUserResponse
         public string $roleId,
         public int $allocation,
         public bool $isActive,
-    ) {}
+    ) {
+    }
 
     public static function from(ProjectUser $projectUser): self
     {

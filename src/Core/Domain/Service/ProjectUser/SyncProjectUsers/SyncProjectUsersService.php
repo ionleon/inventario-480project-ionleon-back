@@ -22,7 +22,8 @@ final readonly class SyncProjectUsersService implements SyncProjectUsersServiceI
         private ProjectRepository $projectRepository,
         private UserRepository $userRepository,
         private ProjectRoleRepository $projectRoleRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * @param list<array{userId: string, roleId: string, allocation: int}> $users

@@ -12,7 +12,9 @@ use App\Core\Domain\Model\VO\ProjectRole\ProjectRoleName;
 
 final readonly class CreateProjectRoleService implements CreateProjectRoleServiceInterface
 {
-    public function __construct(private ProjectRoleRepository $repository) {}
+    public function __construct(private ProjectRoleRepository $repository)
+    {
+    }
 
     /** @throws DuplicatedProjectRoleNameException */
     public function __invoke(ProjectRoleId $id, ProjectRoleName $name): ProjectRole

@@ -13,7 +13,9 @@ use App\Core\Domain\Model\VO\User\UserSurname;
 
 final readonly class UpdateUserService implements UpdateUserServiceInterface
 {
-    public function __construct(private UserRepository $repository) {}
+    public function __construct(private UserRepository $repository)
+    {
+    }
 
     /** @throws UserNotFoundException */
     public function __invoke(UserId $id, UserName $name, UserSurname $surname): User

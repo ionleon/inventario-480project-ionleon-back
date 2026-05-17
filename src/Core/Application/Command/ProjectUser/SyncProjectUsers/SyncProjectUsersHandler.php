@@ -12,7 +12,8 @@ final readonly class SyncProjectUsersHandler implements CommandHandler
 {
     public function __construct(
         private SyncProjectUsersServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(SyncProjectUsersCommand $command): void
     {

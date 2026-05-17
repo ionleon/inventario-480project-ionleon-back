@@ -18,7 +18,8 @@ final class GetTimeEntryController
     public function __construct(
         private readonly QueryBus $queryBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/time-entries/{id}', methods: ['GET'])]
     public function __invoke(string $id): Response

@@ -15,7 +15,8 @@ final readonly class CreateLinkHandler implements CommandHandler
 {
     public function __construct(
         private CreateLinkServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(CreateLinkCommand $command): void
     {

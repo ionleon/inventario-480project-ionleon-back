@@ -17,7 +17,8 @@ final class DeleteContactController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/clients/{clientId}/contacts/{id}', methods: ['DELETE'])]
     public function __invoke(string $id): Response

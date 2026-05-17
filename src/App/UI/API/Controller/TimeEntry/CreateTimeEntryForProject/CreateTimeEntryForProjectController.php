@@ -19,7 +19,8 @@ final class CreateTimeEntryForProjectController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{id}/time-entries', methods: ['POST'])]
     public function __invoke(string $id, #[MapRequestPayload] CreateTimeEntryForProjectRequest $request): Response

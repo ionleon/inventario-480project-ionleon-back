@@ -12,7 +12,8 @@ final readonly class DeleteLinkHandler implements CommandHandler
 {
     public function __construct(
         private DeleteLinkServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(DeleteLinkCommand $command): void
     {

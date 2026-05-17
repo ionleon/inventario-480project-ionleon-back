@@ -12,7 +12,8 @@ final readonly class ToggleProjectUserActivationService implements ToggleProject
 {
     public function __construct(
         private ProjectUserRepository $projectUserRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ProjectUserId $id): ProjectUser
     {

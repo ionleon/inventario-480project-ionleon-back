@@ -23,7 +23,8 @@ final readonly class CreateUserHandler implements CommandHandler, SecurableHandl
     public function __construct(
         private CreateUserServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(CreateUserCommand $command): void
     {

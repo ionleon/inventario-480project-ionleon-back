@@ -11,7 +11,8 @@ final readonly class ListContactsByClientResponse
     /** @param list<ContactResponse> $items */
     public function __construct(
         public array $items,
-    ) {}
+    ) {
+    }
 
     /** @param list<Contact> $contacts */
     public static function from(array $contacts): self

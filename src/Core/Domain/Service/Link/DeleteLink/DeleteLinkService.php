@@ -9,7 +9,9 @@ use App\Core\Domain\Model\VO\Link\LinkId;
 
 final readonly class DeleteLinkService implements DeleteLinkServiceInterface
 {
-    public function __construct(private LinkRepository $linkRepository) {}
+    public function __construct(private LinkRepository $linkRepository)
+    {
+    }
 
     public function __invoke(LinkId $id): void
     {

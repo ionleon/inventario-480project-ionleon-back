@@ -14,7 +14,8 @@ final readonly class ProjectRoleWasCreated
         public ProjectRoleId $id,
         public ProjectRoleName $name,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\ProjectRole $projectRole): self
     {

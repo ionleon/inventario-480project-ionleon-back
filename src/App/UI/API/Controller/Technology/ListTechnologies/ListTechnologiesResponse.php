@@ -11,7 +11,8 @@ final readonly class ListTechnologiesResponse
     /** @param list<array{id: string, name: string}> $technologies */
     public function __construct(
         public array $technologies,
-    ) {}
+    ) {
+    }
 
     /** @param list<Technology> $technologies */
     public static function from(array $technologies): self

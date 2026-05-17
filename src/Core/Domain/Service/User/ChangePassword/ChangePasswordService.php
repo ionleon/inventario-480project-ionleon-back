@@ -16,7 +16,8 @@ final readonly class ChangePasswordService implements ChangePasswordServiceInter
     public function __construct(
         private UserRepository $repository,
         private UserPasswordHasherInterface $passwordHasher,
-    ) {}
+    ) {
+    }
 
     /** @throws UserNotFoundException */
     public function __invoke(UserId $id, string $oldPassword, string $newPassword): void

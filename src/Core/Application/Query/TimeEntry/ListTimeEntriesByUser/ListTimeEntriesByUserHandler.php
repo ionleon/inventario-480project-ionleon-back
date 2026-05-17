@@ -12,7 +12,9 @@ use App\Core\Domain\Model\VO\User\UserId;
 
 final readonly class ListTimeEntriesByUserHandler implements QueryHandler
 {
-    public function __construct(private TimeEntryRepository $repository) {}
+    public function __construct(private TimeEntryRepository $repository)
+    {
+    }
 
     /** @return list<TimeEntryResponse> */
     public function __invoke(ListTimeEntriesByUserQuery $query): array

@@ -18,7 +18,8 @@ final readonly class DeleteUserHandler implements CommandHandler, SecurableHandl
     public function __construct(
         private DeleteUserServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(DeleteUserCommand $command): void
     {

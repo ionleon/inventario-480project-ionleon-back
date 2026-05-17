@@ -12,16 +12,14 @@ final readonly class AssignUserToProjectRequest
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $userId,
-
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $roleId,
-
         #[Assert\Uuid]
         public ?string $id = null,
-
         #[Assert\NotNull]
         #[Assert\Range(min: 0, max: 100)]
         public int $allocation = 100,
-    ) {}
+    ) {
+    }
 }

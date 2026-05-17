@@ -22,7 +22,8 @@ final readonly class CreateContactHandler implements CommandHandler, SecurableHa
     public function __construct(
         private CreateContactServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(CreateContactCommand $command): void
     {

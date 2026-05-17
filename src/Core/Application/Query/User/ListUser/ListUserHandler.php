@@ -11,7 +11,9 @@ use App\Core\Domain\Model\Repository\UserRepository;
 
 final readonly class ListUserHandler implements QueryHandler
 {
-    public function __construct(private UserRepository $repository) {}
+    public function __construct(private UserRepository $repository)
+    {
+    }
 
     public function __invoke(ListUserQuery $query): ListUserResponse
     {

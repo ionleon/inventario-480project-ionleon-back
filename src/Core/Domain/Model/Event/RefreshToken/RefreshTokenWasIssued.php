@@ -16,7 +16,8 @@ final readonly class RefreshTokenWasIssued
         public string $username,
         public ?DateTimeInterface $valid,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(RefreshToken $token): self
     {

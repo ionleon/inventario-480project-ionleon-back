@@ -13,7 +13,8 @@ final readonly class ExceptionListener
         private GetCurrentEnvironment $getCurrentEnvironment,
         private MapperExceptionToJsonErrorResponse $mapper,
         private LoggerInterface $logger,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ExceptionEvent $event): void
     {

@@ -13,7 +13,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class OrmSectorRepository implements SectorRepository
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function add(Sector $sector): void
     {

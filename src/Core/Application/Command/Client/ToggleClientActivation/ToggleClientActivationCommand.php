@@ -12,5 +12,6 @@ final readonly class ToggleClientActivationCommand implements Command
     public function __construct(
         public SecurityToken $securityToken,
         public string $id,
-    ) {}
+    ) {
+    }
 }

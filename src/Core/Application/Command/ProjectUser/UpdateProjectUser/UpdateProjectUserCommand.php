@@ -14,5 +14,6 @@ final readonly class UpdateProjectUserCommand implements Command
         public string $id,
         public string $roleId,
         public int $allocation,
-    ) {}
+    ) {
+    }
 }

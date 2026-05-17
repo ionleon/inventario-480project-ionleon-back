@@ -9,5 +9,6 @@ final readonly class UpdateUserRequest
     public function __construct(
         public string $name,
         public string $surname,
-    ) {}
+    ) {
+    }
 }

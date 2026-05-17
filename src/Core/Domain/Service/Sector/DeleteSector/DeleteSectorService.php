@@ -15,7 +15,9 @@ final readonly class DeleteSectorService implements DeleteSectorServiceInterface
     // exists with this sector_id, throw a DomainException blocking the deletion.
     // The check will be implemented via the ClientRepository once Client is migrated.
 
-    public function __construct(private SectorRepository $repository) {}
+    public function __construct(private SectorRepository $repository)
+    {
+    }
 
     /** @throws SectorNotFoundException */
     public function __invoke(SectorId $id): void

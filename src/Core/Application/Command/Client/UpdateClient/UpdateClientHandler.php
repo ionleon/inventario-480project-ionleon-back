@@ -20,7 +20,8 @@ final readonly class UpdateClientHandler implements CommandHandler, SecurableHan
     public function __construct(
         private UpdateClientServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(UpdateClientCommand $command): void
     {

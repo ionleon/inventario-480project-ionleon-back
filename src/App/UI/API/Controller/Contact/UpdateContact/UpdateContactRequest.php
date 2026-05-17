@@ -17,5 +17,6 @@ final readonly class UpdateContactRequest
         public string $phoneNumber,
         #[Assert\Length(max: 2000)]
         public ?string $note = null,
-    ) {}
+    ) {
+    }
 }

@@ -18,7 +18,8 @@ final class CreateUserController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/users', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateUserRequest $request): Response

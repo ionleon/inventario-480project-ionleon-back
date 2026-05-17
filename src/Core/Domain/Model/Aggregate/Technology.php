@@ -14,7 +14,8 @@ class Technology extends AggregateRoot
     private function __construct(
         private TechnologyId $id,
         private TechnologyName $name,
-    ) {}
+    ) {
+    }
 
     public static function create(
         TechnologyId $id,

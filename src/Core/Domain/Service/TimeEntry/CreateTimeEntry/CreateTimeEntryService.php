@@ -24,7 +24,8 @@ final readonly class CreateTimeEntryService implements CreateTimeEntryServiceInt
         private ProjectRepository $projectRepository,
         private UserRepository $userRepository,
         private ProjectUserRepository $projectUserRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         TimeEntryId $id,

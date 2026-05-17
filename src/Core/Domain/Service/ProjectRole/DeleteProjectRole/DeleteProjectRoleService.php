@@ -15,7 +15,9 @@ final readonly class DeleteProjectRoleService implements DeleteProjectRoleServic
     // ProjectUser exists with this project_role_id, throw a DomainException blocking deletion.
     // The check will be implemented via the ProjectUserRepository once ProjectUser is migrated.
 
-    public function __construct(private ProjectRoleRepository $repository) {}
+    public function __construct(private ProjectRoleRepository $repository)
+    {
+    }
 
     /** @throws ProjectRoleNotFoundException */
     public function __invoke(ProjectRoleId $id): void

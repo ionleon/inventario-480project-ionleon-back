@@ -18,7 +18,8 @@ final class ListTimeEntriesByProjectController
     public function __construct(
         private readonly QueryBus $queryBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{projectId}/time-entries', methods: ['GET'])]
     public function __invoke(string $projectId): Response

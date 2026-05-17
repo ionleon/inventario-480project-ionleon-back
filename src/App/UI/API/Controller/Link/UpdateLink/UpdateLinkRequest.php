@@ -11,8 +11,8 @@ final readonly class UpdateLinkRequest
     public function __construct(
         #[Assert\NotBlank, Assert\Url]
         public string $url,
-
         #[Assert\Length(max: 100)]
         public ?string $label = null,
-    ) {}
+    ) {
+    }
 }

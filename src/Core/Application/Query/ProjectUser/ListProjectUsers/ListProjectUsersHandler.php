@@ -12,7 +12,9 @@ use App\Core\Domain\Model\VO\Project\ProjectId;
 
 final readonly class ListProjectUsersHandler implements QueryHandler
 {
-    public function __construct(private ProjectUserRepository $repository) {}
+    public function __construct(private ProjectUserRepository $repository)
+    {
+    }
 
     /** @return list<ProjectUserResponse> */
     public function __invoke(ListProjectUsersQuery $query): array

@@ -18,7 +18,8 @@ final class CreateProjectController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateProjectRequest $request): Response

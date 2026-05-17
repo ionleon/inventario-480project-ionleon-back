@@ -18,7 +18,8 @@ final readonly class ForceLogoutHandler implements CommandHandler, SecurableHand
     public function __construct(
         private RevokeAllRefreshTokensForUserServiceInterface $revokeAllService,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ForceLogoutCommand $command): void
     {

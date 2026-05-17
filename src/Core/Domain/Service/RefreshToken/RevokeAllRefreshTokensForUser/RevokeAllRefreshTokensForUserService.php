@@ -8,7 +8,9 @@ use App\Core\Domain\Model\Repository\RefreshTokenRepository;
 
 final readonly class RevokeAllRefreshTokensForUserService implements RevokeAllRefreshTokensForUserServiceInterface
 {
-    public function __construct(private RefreshTokenRepository $repository) {}
+    public function __construct(private RefreshTokenRepository $repository)
+    {
+    }
 
     public function __invoke(string $username): void
     {

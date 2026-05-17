@@ -18,5 +18,6 @@ final readonly class TimeEntryWasCreated
         public TimeEntryDate $date,
         public TimeEntryHours $hours,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 }

@@ -12,7 +12,8 @@ final readonly class ClientWasDeactivated
     public function __construct(
         public ClientId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\Client $client): self
     {

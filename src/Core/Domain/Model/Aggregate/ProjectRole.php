@@ -15,7 +15,8 @@ class ProjectRole extends AggregateRoot
     private function __construct(
         private ProjectRoleId $id,
         private ProjectRoleName $name,
-    ) {}
+    ) {
+    }
 
     public static function create(
         ProjectRoleId $id,

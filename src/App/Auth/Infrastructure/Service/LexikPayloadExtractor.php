@@ -15,7 +15,8 @@ final class LexikPayloadExtractor implements TokenPayloadExtractorInterface
         private readonly TokenStorageInterface $tokenStorage,
         private readonly JWTTokenManagerInterface $jwtManager,
         private readonly RequestStack $requestStack,
-    ) {}
+    ) {
+    }
 
     public function extractFromCurrentRequest(): ?array
     {

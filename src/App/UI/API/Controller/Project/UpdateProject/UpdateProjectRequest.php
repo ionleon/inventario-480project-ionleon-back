@@ -24,5 +24,6 @@ final readonly class UpdateProjectRequest
         public ?string $startDate = null,
         public ?string $endDate = null,
         public bool $isActive = true,
-    ) {}
+    ) {
+    }
 }

@@ -22,5 +22,6 @@ final readonly class CreateProjectCommand implements Command
         public array $technologyIds,
         public ?string $startDate,
         public ?string $endDate,
-    ) {}
+    ) {
+    }
 }

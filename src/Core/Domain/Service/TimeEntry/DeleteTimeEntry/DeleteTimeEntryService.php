@@ -11,7 +11,8 @@ final readonly class DeleteTimeEntryService implements DeleteTimeEntryServiceInt
 {
     public function __construct(
         private TimeEntryRepository $timeEntryRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(TimeEntryId $id): void
     {

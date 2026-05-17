@@ -14,7 +14,8 @@ final readonly class TimeEntryResponse
         public string $date,
         public string $hours,
         public ?string $description,
-    ) {}
+    ) {
+    }
 
     public static function from(TimeEntry $timeEntry): self
     {

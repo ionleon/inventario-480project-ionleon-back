@@ -17,7 +17,8 @@ final class ToggleProjectActivationController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/projects/{id}', methods: ['PATCH'])]
     public function __invoke(string $id): Response

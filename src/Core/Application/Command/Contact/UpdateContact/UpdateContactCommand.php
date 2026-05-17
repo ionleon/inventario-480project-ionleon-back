@@ -16,5 +16,6 @@ final readonly class UpdateContactCommand implements Command
         public string $email,
         public string $phoneNumber,
         public ?string $note,
-    ) {}
+    ) {
+    }
 }

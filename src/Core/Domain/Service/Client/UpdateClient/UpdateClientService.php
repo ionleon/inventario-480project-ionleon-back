@@ -18,7 +18,8 @@ final readonly class UpdateClientService implements UpdateClientServiceInterface
     public function __construct(
         private ClientRepository $clientRepository,
         private SectorRepository $sectorRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * @throws ClientNotFoundException

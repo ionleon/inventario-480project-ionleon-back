@@ -15,5 +15,6 @@ final readonly class UserRoleWasChanged
         public SystemRole $oldRole,
         public SystemRole $newRole,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 }

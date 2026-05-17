@@ -9,5 +9,6 @@ final readonly class JsonContentErrorResponse
     public function __construct(
         public string $code,
         public string $message = '',
-    ) {}
+    ) {
+    }
 }

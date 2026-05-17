@@ -16,10 +16,14 @@ final class BusContractTest extends TestCase
 {
     public function test_GivenMarkerInterfaces_WhenImplemented_ThenInstanceofPasses(): void
     {
-        $cmd = new class implements Command {};
-        $qry = new class implements Query {};
-        $cmdH = new class implements CommandHandler {};
-        $qryH = new class implements QueryHandler {};
+        $cmd = new class implements Command {
+        };
+        $qry = new class implements Query {
+        };
+        $cmdH = new class implements CommandHandler {
+        };
+        $qryH = new class implements QueryHandler {
+        };
 
         self::assertInstanceOf(Command::class, $cmd);
         self::assertInstanceOf(Query::class, $qry);

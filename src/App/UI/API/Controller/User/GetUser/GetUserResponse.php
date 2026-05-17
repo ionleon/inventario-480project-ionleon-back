@@ -16,7 +16,8 @@ final readonly class GetUserResponse
         public string $role,
         public bool $isActive,
         public bool $firstTime,
-    ) {}
+    ) {
+    }
 
     public static function from(User $user): self
     {

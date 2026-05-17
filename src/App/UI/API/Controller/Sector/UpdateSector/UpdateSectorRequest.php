@@ -11,5 +11,6 @@ final readonly class UpdateSectorRequest
     public function __construct(
         #[Assert\NotBlank, Assert\Length(min: 2, max: 100)]
         public string $name,
-    ) {}
+    ) {
+    }
 }

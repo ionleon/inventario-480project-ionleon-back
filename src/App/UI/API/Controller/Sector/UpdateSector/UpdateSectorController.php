@@ -18,7 +18,8 @@ final class UpdateSectorController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/sectors/{id}', methods: ['PATCH'])]
     public function __invoke(string $id, #[MapRequestPayload] UpdateSectorRequest $request): Response

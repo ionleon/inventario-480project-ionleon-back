@@ -15,5 +15,6 @@ final readonly class CreateClientRequest
         public string $name,
         #[Assert\NotBlank, Assert\Uuid]
         public string $sectorId,
-    ) {}
+    ) {
+    }
 }

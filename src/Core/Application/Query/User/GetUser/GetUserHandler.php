@@ -11,7 +11,9 @@ use App\Core\Domain\Model\VO\User\UserId;
 
 final readonly class GetUserHandler implements QueryHandler
 {
-    public function __construct(private UserRepository $repository) {}
+    public function __construct(private UserRepository $repository)
+    {
+    }
 
     public function __invoke(GetUserQuery $query): GetUserResponse
     {

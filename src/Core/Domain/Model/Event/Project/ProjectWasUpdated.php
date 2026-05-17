@@ -12,7 +12,8 @@ final readonly class ProjectWasUpdated
     public function __construct(
         public ProjectId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(ProjectId $id): self
     {

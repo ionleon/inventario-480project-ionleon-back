@@ -12,7 +12,8 @@ final readonly class DeleteProjectHandler implements CommandHandler
 {
     public function __construct(
         private DeleteProjectServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(DeleteProjectCommand $command): void
     {

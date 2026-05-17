@@ -14,7 +14,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class OrmProjectUserRepository implements ProjectUserRepository
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function add(ProjectUser $projectUser): void
     {

@@ -18,7 +18,8 @@ final readonly class MarkContactAsMainHandler implements CommandHandler, Securab
     public function __construct(
         private MarkContactAsMainServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(MarkContactAsMainCommand $command): void
     {

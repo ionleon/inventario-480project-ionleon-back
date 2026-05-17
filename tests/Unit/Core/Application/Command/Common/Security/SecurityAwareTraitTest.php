@@ -38,10 +38,16 @@ final class SecurityAwareTraitTest extends TestCase
 
     private function makeHandler(SecurityChecker $checker): SecurableHandler
     {
-        return new class($checker) implements SecurableHandler {
+        return new class ($checker) implements SecurableHandler {
             use SecurityAwareTrait;
-            public function __construct(private readonly SecurityChecker $checker) {}
-            public function securityChecker(): SecurityChecker { return $this->checker; }
+
+            public function __construct(private readonly SecurityChecker $checker)
+            {
+            }
+            public function securityChecker(): SecurityChecker
+            {
+                return $this->checker;
+            }
         };
     }
 }

@@ -17,7 +17,8 @@ final class ForceLogoutController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/users/{identifier}/force-logout', methods: ['POST'])]
     public function __invoke(string $identifier): Response

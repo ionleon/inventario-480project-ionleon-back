@@ -19,7 +19,8 @@ final readonly class CreateContactService implements CreateContactServiceInterfa
     public function __construct(
         private ClientRepository $clientRepository,
         private ContactRepository $contactRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * @throws ClientNotFoundException

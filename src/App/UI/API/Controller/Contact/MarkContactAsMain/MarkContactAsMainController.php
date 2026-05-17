@@ -17,7 +17,8 @@ final class MarkContactAsMainController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/clients/{clientId}/contacts/{id}/main', methods: ['PATCH'])]
     public function __invoke(string $id): Response

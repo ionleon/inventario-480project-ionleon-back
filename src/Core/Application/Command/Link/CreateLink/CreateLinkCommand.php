@@ -15,5 +15,6 @@ final readonly class CreateLinkCommand implements Command
         public string $projectId,
         public string $url,
         public ?string $label,
-    ) {}
+    ) {
+    }
 }

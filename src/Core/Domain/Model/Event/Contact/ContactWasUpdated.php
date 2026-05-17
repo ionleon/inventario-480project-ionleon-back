@@ -12,7 +12,8 @@ final readonly class ContactWasUpdated
     public function __construct(
         public ContactId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\Contact $contact): self
     {

@@ -18,7 +18,8 @@ final readonly class ToggleUserActivationHandler implements CommandHandler, Secu
     public function __construct(
         private ToggleUserActivationServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ToggleUserActivationCommand $command): void
     {

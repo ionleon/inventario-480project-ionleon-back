@@ -16,7 +16,9 @@ use App\Shared\Domain\Enum\SystemRole;
 
 final readonly class CreateUserService implements CreateUserServiceInterface
 {
-    public function __construct(private UserRepository $repository) {}
+    public function __construct(private UserRepository $repository)
+    {
+    }
 
     /** @throws DuplicatedUserEmailException */
     public function __invoke(

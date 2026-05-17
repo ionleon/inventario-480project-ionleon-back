@@ -17,5 +17,6 @@ final readonly class CreateTimeEntryCommand implements Command
         public string $date,
         public string $hours,
         public ?string $description,
-    ) {}
+    ) {
+    }
 }

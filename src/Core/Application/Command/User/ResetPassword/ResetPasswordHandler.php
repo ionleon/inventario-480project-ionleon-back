@@ -18,7 +18,8 @@ final readonly class ResetPasswordHandler implements CommandHandler, SecurableHa
     public function __construct(
         private ResetPasswordServiceInterface $service,
         private SecurityChecker $securityChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ResetPasswordCommand $command): void
     {

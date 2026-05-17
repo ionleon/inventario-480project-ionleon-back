@@ -17,7 +17,8 @@ final readonly class ListProjectsResponse
         public int $currentPage,
         public int $itemsPerPage,
         public int $totalPages,
-    ) {}
+    ) {
+    }
 
     public static function from(PaginatedResult $result): self
     {

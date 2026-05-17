@@ -12,5 +12,6 @@ final readonly class TimeEntryWasDeleted
     public function __construct(
         public TimeEntryId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 }

@@ -18,7 +18,8 @@ final class ListSectorsController
     public function __construct(
         private readonly QueryBus $queryBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/sectors', methods: ['GET'])]
     public function __invoke(): Response

@@ -12,7 +12,8 @@ final readonly class SectorWasUpdated
     public function __construct(
         public SectorId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\Sector $sector): self
     {

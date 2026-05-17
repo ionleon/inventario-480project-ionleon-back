@@ -12,7 +12,8 @@ final readonly class ToggleProjectUserActivationHandler implements CommandHandle
 {
     public function __construct(
         private ToggleProjectUserActivationServiceInterface $service,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ToggleProjectUserActivationCommand $command): void
     {

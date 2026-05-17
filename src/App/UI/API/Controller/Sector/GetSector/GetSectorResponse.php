@@ -11,7 +11,8 @@ final readonly class GetSectorResponse
     public function __construct(
         public string $id,
         public string $name,
-    ) {}
+    ) {
+    }
 
     public static function from(Sector $sector): self
     {

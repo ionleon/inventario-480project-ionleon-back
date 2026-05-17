@@ -12,7 +12,8 @@ final readonly class UserWasUpdated
     public function __construct(
         public UserId $id,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\User $user): self
     {

@@ -15,7 +15,8 @@ class Sector extends AggregateRoot
     private function __construct(
         private SectorId $id,
         private SectorName $name,
-    ) {}
+    ) {
+    }
 
     public static function create(
         SectorId $id,

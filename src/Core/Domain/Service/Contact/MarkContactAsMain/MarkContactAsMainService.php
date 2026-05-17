@@ -10,7 +10,9 @@ use App\Core\Domain\Model\VO\Contact\ContactId;
 
 final readonly class MarkContactAsMainService implements MarkContactAsMainServiceInterface
 {
-    public function __construct(private ContactRepository $repository) {}
+    public function __construct(private ContactRepository $repository)
+    {
+    }
 
     /**
      * @throws ContactNotFoundException

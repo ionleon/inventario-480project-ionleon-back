@@ -17,7 +17,8 @@ final class DeleteProjectRoleController
     public function __construct(
         private readonly CommandBus $commandBus,
         private readonly SecurityTokenExtractorInterface $securityTokenExtractor,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/project-roles/{id}', methods: ['DELETE'])]
     public function __invoke(string $id): Response

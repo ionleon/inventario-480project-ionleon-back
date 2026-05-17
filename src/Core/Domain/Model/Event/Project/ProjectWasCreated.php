@@ -19,7 +19,8 @@ final readonly class ProjectWasCreated
         public ClientId $clientId,
         public ?UserId $managerId,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(Project $project): self
     {

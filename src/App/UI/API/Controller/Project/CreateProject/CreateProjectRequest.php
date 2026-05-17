@@ -25,5 +25,6 @@ final readonly class CreateProjectRequest
         public array $technologyIds = [],
         public ?string $startDate = null,
         public ?string $endDate = null,
-    ) {}
+    ) {
+    }
 }

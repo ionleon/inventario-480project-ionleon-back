@@ -15,7 +15,9 @@ final readonly class DeleteTechnologyService implements DeleteTechnologyServiceI
     // Development exists with this technology_id, throw a DomainException blocking deletion.
     // The check will be implemented via the DevelopmentRepository once Development is migrated.
 
-    public function __construct(private TechnologyRepository $repository) {}
+    public function __construct(private TechnologyRepository $repository)
+    {
+    }
 
     /** @throws TechnologyNotFoundException */
     public function __invoke(TechnologyId $id): void

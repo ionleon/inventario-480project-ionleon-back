@@ -16,5 +16,6 @@ final readonly class SyncProjectUsersCommand implements Command
         public SecurityToken $securityToken,
         public string $projectId,
         public array $users,
-    ) {}
+    ) {
+    }
 }

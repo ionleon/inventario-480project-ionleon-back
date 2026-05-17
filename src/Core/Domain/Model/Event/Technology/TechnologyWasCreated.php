@@ -14,7 +14,8 @@ final readonly class TechnologyWasCreated
         public TechnologyId $id,
         public TechnologyName $name,
         public DateTimeImmutable $occurredAt,
-    ) {}
+    ) {
+    }
 
     public static function from(\App\Core\Domain\Model\Aggregate\Technology $technology): self
     {

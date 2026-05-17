@@ -23,7 +23,8 @@ class TimeEntry extends AggregateRoot
         private TimeEntryDate $date,
         private TimeEntryHours $hours,
         private ?TimeEntryDescription $description,
-    ) {}
+    ) {
+    }
 
     public static function create(
         TimeEntryId $id,
