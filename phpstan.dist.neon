@@ -1,6 +1,3 @@
-includes:
-    - phpstan-baseline.neon
-
 parameters:
     level: 6
     reportUnmatchedIgnoredErrors: false
@@ -11,7 +8,26 @@ parameters:
         - src/
         - tests/
     excludePaths:
+        # Codeception generates these on each `codecept build`; not worth analyzing.
         - tests/Support/_generated/
+        # The Tester classes consume generated traits; excluding them avoids the
+        # "uses unknown trait" cascade (phpstan can't ignore that error by pattern).
         - tests/Support/ApiTester.php
         - tests/Support/FunctionalTester.php
         - tests/Support/UnitTester.php
+    ignoreErrors:
+        # Cest tests reference Tester methods (haveHttpHeader, sendGet, etc.) injected
+        # by the generated trait. Since the Testers are excluded from analysis,
+        # phpstan can't see those methods. Suppress the cascade.
+        - identifier: method.notFound
+          message: '#Call to an undefined method App\\Tests\\(Api|Functional|Unit)Tester::#'
+        # OrmRefreshTokenRepository extends ServiceEntityRepository AND implements the
+        # bundle's RefreshTokenRepositoryInterface. Both parametrize the ObjectRepository
+        # template T differently (RefreshToken vs RefreshTokenInterface). The conflict is
+        # structural and forced by the bundle. Documented in the class doc + deviations doc.
+        - identifier: generics.interfaceConflict
+          path: src/Core/Infrastructure/Persistence/Doctrine/ORM/OrmRefreshTokenRepository.php
+        - identifier: missingType.generics
+          path: src/Core/Infrastructure/Persistence/Doctrine/ORM/OrmRefreshTokenRepository.php
+        - message: '#specifies template type T of interface Doctrine\\Persistence\\ObjectRepository#'
+          path: src/Core/Infrastructure/Persistence/Doctrine/ORM/OrmRefreshTokenRepository.php

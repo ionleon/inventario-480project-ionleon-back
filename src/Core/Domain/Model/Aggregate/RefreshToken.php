@@ -26,7 +26,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class RefreshToken extends AggregateRoot implements RefreshTokenInterface
 {
-    private ?int $id = null;
+    /** Doctrine assigns this on flush (auto-increment); never set in domain code. */
+    private ?int $id = null; // @phpstan-ignore property.unusedType
     private ?string $refreshToken = null;
     private ?string $username = null;
     private ?DateTimeInterface $valid = null;
@@ -52,9 +53,12 @@ class RefreshToken extends AggregateRoot implements RefreshTokenInterface
             $valid->modify($ttl . ' seconds');
         }
 
-        $instance = new static($refreshToken, $user->getUserIdentifier(), $valid);
+        $instance = new self($refreshToken, $user->getUserIdentifier(), $valid);
         $instance->recordEvent(RefreshTokenWasIssued::from($instance));
 
+        // Interface declares `static` return; we instantiate via `new self()` because
+        // Doctrine subclasses the entity via proxies, so `new static()` is unsafe.
+        /** @phpstan-ignore return.type */
         return $instance;
     }
 

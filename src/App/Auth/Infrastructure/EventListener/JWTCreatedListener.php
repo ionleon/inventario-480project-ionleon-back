@@ -6,15 +6,10 @@ namespace App\App\Auth\Infrastructure\EventListener;
 
 use App\Core\Domain\Model\Aggregate\User as AppUser;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Uid\Uuid;
 
 final class JWTCreatedListener
 {
-    public function __construct(
-        private readonly RequestStack $requestStack,
-    ) {}
-
     public function onJWTCreated(JWTCreatedEvent $event): void
     {
         /** @var AppUser $user */

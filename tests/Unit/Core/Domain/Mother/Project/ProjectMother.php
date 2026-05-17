@@ -17,6 +17,7 @@ use App\Tests\Unit\Core\Domain\Mother\User\UserIdMother;
 
 final class ProjectMother
 {
+    /** @param list<\App\Core\Domain\Model\Aggregate\Technology> $technologies */
     public static function create(
         ?ProjectId $id = null,
         ?ProjectName $name = null,

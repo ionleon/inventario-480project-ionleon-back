@@ -10,7 +10,8 @@ namespace App\Core\Domain\Model\VO\TimeEntry;
  */
 final readonly class TimeEntryDescription
 {
-    private const MAX_LENGTH = 500;
+    /** Max length enforced at the Request DTO layer via #[Assert\Length(max: 500)]. */
+    public const int MAX_LENGTH = 500;
 
     private string $value;
 

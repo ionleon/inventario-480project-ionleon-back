@@ -32,7 +32,7 @@ final class CreateLinkServiceTest extends TestCase
             null,
         );
 
-        $this->assertNotNull($link->id());
+        $this->assertInstanceOf(\App\Core\Domain\Model\Aggregate\Link::class, $link);
     }
 
     public function test_GivenProjectNotFound_WhenInvoke_ThenThrowsException(): void

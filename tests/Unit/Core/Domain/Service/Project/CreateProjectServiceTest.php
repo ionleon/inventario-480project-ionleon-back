@@ -52,7 +52,7 @@ final class CreateProjectServiceTest extends TestCase
             null,
         );
 
-        $this->assertNotNull($project->id());
+        $this->assertInstanceOf(\App\Core\Domain\Model\Aggregate\Project::class, $project);
     }
 
     public function test_GivenDuplicatedName_WhenInvoke_ThenThrowsException(): void

@@ -10,6 +10,7 @@ use Codeception\Extension;
 
 final class DbMigrationExtension extends Extension
 {
+    /** @var array<string, string> */
     public static array $events = [
         Events::SUITE_BEFORE => 'beforeSuite',
     ];

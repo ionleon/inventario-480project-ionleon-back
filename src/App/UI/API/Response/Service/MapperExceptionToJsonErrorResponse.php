@@ -21,13 +21,12 @@ final readonly class MapperExceptionToJsonErrorResponse
     {
         // Unwrap Messenger's HandlerFailedException to get the real domain exception
         while ($exception instanceof HandlerFailedException) {
-            $nested = method_exists($exception, 'getWrappedExceptions')
-                ? $exception->getWrappedExceptions()
-                : [];
-            $exception = $nested[0] ?? $exception->getPrevious() ?? $exception;
-            if ($exception instanceof HandlerFailedException === false) {
+            $nested = $exception->getWrappedExceptions();
+            $next = $nested[0] ?? $exception->getPrevious() ?? null;
+            if ($next === null || $next === $exception) {
                 break;
             }
+            $exception = $next;
         }
 
         // 403 — ForbiddenException is a CustomException, handle first so it gets 403

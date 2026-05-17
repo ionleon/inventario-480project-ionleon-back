@@ -42,7 +42,7 @@ final readonly class SyncProjectUsersService implements SyncProjectUsersServiceI
         foreach ($users as $data) {
             $userId = $data['userId'];
             $roleId = new ProjectRoleId($data['roleId']);
-            $allocation = new ProjectUserAllocation($data['allocation'] ?? 0);
+            $allocation = new ProjectUserAllocation($data['allocation']);
 
             $this->userRepository->findOneOrFail(new UserId($userId));
             $this->projectRoleRepository->findOneOrFail($roleId);

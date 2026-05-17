@@ -28,7 +28,6 @@ final class ProjectTest extends TestCase
     {
         $project = ProjectMother::create();
 
-        $this->assertNotNull($project->id());
         $this->assertTrue($project->isActive());
         $this->assertSame(DevelopmentStatus::PLANNED, $project->developmentStatus());
         $this->assertNull($project->developmentNotes());

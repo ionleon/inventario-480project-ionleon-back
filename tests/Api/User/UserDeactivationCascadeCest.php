@@ -43,9 +43,6 @@ final class UserDeactivationCascadeCest
         // Find ANY employee with ProjectUser rows (active or not) and prepare scenario.
         $targetUser = null;
         foreach ($userRepo->all() as $u) {
-            if (!$u instanceof User) {
-                continue;
-            }
             if ($u->role() !== SystemRole::EMPLOYEE) {
                 continue;
             }

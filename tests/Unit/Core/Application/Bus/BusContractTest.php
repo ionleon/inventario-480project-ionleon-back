@@ -29,7 +29,11 @@ final class BusContractTest extends TestCase
 
     public function test_GivenBusInterfaces_WhenInspected_ThenExpectedMethodsExist(): void
     {
-        self::assertTrue(method_exists(CommandBus::class, 'dispatch'));
-        self::assertTrue(method_exists(QueryBus::class, 'ask'));
+        // Reflection check — `method_exists` would be statically known and
+        // optimized away by phpstan as "always true". Reflection is dynamic.
+        $cmdBus = new \ReflectionClass(CommandBus::class);
+        $qryBus = new \ReflectionClass(QueryBus::class);
+        self::assertTrue($cmdBus->hasMethod('dispatch'));
+        self::assertTrue($qryBus->hasMethod('ask'));
     }
 }

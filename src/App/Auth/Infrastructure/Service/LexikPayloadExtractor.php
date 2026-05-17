@@ -44,7 +44,10 @@ final class LexikPayloadExtractor implements TokenPayloadExtractorInterface
         return null;
     }
 
-    /** @return array{jti: string, exp: int, ttl: int}|null */
+    /**
+     * @param array<string, mixed> $payload
+     * @return array{jti: string, exp: int, ttl: int}|null
+     */
     private function formatPayload(array $payload): ?array
     {
         if (!$payload || !isset($payload['jti'], $payload['exp'])) {
