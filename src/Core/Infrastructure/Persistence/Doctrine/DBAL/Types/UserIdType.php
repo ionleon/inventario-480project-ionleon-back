@@ -14,7 +14,7 @@ final class UserIdType extends Type
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getStringTypeDeclarationSQL(['length' => 36, 'fixed' => true]);
+        return $platform->getGuidTypeDeclarationSQL($column);
     }
 
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?UserId
