@@ -22,3 +22,13 @@ phpstan.neon
 /phpunit.xml
 /.phpunit.cache/
 ###< phpunit/phpunit ###
+
+# Tool caches
+.deptrac.cache
+
+# Claude/agent artifacts
+.claude/
+.claire/
+
+# Windows zone identifier files
+*:Zone.Identifier
